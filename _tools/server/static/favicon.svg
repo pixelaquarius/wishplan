@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <!-- Matte Obsidian Squircle -->
+  <rect x="8" y="8" width="240" height="240" rx="56" fill="#0B0B0D" stroke="#27272A" stroke-width="4"/>
+  <!-- Claude-inspired Stylized Geometric Spark / Aperture Starburst in Pure White -->
+  <g transform="translate(128,128)" stroke="#FAFAFA" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- 10 Asymmetric Organic Rays (Claude-style geometric sunburst) -->
+    <line x1="0" y1="-16" x2="0" y2="-74" stroke-width="15"/>
+    <line x1="11" y1="-12" x2="50" y2="-54" stroke-width="14"/>
+    <line x1="16" y1="-2" x2="74" y2="-10" stroke-width="15"/>
+    <line x1="14" y1="10" x2="62" y2="38" stroke-width="14"/>
+    <line x1="5" y1="16" x2="22" y2="70" stroke-width="15"/>
+    <line x1="-8" y1="15" x2="-34" y2="66" stroke-width="14"/>
+    <line x1="-15" y1="7" x2="-68" y2="28" stroke-width="15"/>
+    <line x1="-16" y1="-5" x2="-72" y2="-20" stroke-width="14"/>
+    <line x1="-10" y1="-13" x2="-44" y2="-58" stroke-width="14"/>
+    <!-- Core Negative-Space Center Ring -->
+    <circle cx="0" cy="0" r="14" fill="#FAFAFA" stroke="none"/>
+  </g>
+</svg>

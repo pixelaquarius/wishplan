@@ -1,0 +1,1723 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WishEdit — AI Video NLE</title>
+  <link rel="icon" type="image/svg+xml" href="/static/favicon.svg?v=4.0" />
+  <link rel="icon" type="image/x-icon" href="/static/favicon.ico?v=4.0" />
+  <link rel="apple-touch-icon" href="/static/apple-touch-icon.png?v=4.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="/static/styles.css?v=4.0" />
+</head>
+<body data-layout="wide" class="bg-[#0B0C0E] text-[#F4F4F5] h-[100dvh] w-screen overflow-hidden flex flex-col select-none">
+
+  <!-- ==================== 1. CAPCUT / DAVINCI PROJECT MANAGER HOME SCREEN ==================== -->
+  <div id="homeLauncherScreen" class="hidden fixed inset-0 z-40 bg-[#0A0B0E] flex overflow-hidden select-none">
+    <!-- Left Navigation Rail -->
+    <aside class="w-56 bg-[#101216] border-r border-[#1F2229] flex flex-col justify-between p-3.5 shrink-0">
+      <div class="space-y-5">
+        <div class="flex items-center gap-2.5 px-1.5 pt-0.5">
+          <img src="/static/favicon.svg?v=4.0" alt="WishEdit" class="w-7 h-7 rounded-lg" />
+          <div>
+            <div class="text-sm font-bold text-zinc-100 tracking-tight">WishEdit</div>
+            <div class="text-[11px] text-zinc-500">Desktop Studio</div>
+          </div>
+        </div>
+
+        <nav class="space-y-1 text-xs font-medium">
+          <button type="button" id="btnHomeNavProjects" class="w-full h-9 px-3 rounded-lg bg-[#1C2026] text-zinc-100 flex items-center gap-2.5">
+            <svg class="w-4 h-4 text-cyan-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span>Trang chủ dự án</span>
+          </button>
+          <button type="button" id="btnHomeNavStyleRefs" class="w-full h-9 px-3 rounded-lg hover:bg-[#181B20] text-zinc-400 hover:text-zinc-100 flex items-center gap-2.5 transition-colors">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            <span>Mẫu phong cách</span>
+          </button>
+          <button type="button" id="btnHomeNavSettings" class="w-full h-9 px-3 rounded-lg hover:bg-[#181B20] text-zinc-400 hover:text-zinc-100 flex items-center gap-2.5 transition-colors">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            <span>Cài đặt</span>
+          </button>
+        </nav>
+      </div>
+
+      <div class="p-3 rounded-xl bg-[#15181E] border border-[#22262F] space-y-1.5">
+        <div class="text-[11px] font-semibold text-zinc-200">Chuẩn xuất mặc định</div>
+        <div class="text-[11px] font-mono text-cyan-400">Remotion Full · 1080P</div>
+        <div class="text-[10px] text-zinc-500">9:16 · 30fps · Rec.709 · -14 LUFS</div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="flex-1 min-w-0 flex flex-col overflow-y-auto custom-scroll p-6 space-y-6">
+      <!-- Top Action Banner (+ Create Project like CapCut) -->
+      <button
+        type="button"
+        id="btnHomeCreateProject"
+        class="w-full h-32 rounded-2xl bg-gradient-to-r from-[#22D3EE] via-[#06B6D4] to-[#0891B2] hover:brightness-105 text-zinc-950 flex items-center justify-center gap-3 shadow-lg transition-all shrink-0"
+      >
+        <span class="w-8 h-8 rounded-lg bg-zinc-950 text-cyan-300 flex items-center justify-center font-bold text-lg">+</span>
+        <span class="text-lg font-bold tracking-tight">Tạo dự án mới</span>
+      </button>
+
+      <!-- Quick Workflow Shortcuts (4 clean tiles, no duplicate AI chatbox) -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 shrink-0">
+        <button type="button" data-home-action="auto_cut" class="p-3.5 rounded-xl bg-[#13151A] hover:bg-[#191C22] border border-[#22252D] hover:border-cyan-400/50 text-left flex flex-col justify-between transition-colors">
+          <span class="w-7 h-7 rounded-lg bg-[#1E222A] text-cyan-300 flex items-center justify-center text-xs font-mono">01</span>
+          <div class="mt-3">
+            <div class="text-xs font-semibold text-zinc-100">Tự cắt khoảng lặng</div>
+            <div class="text-[11px] text-zinc-500 mt-0.5">Tách lời &amp; gom retake</div>
+          </div>
+        </button>
+        <button type="button" data-home-action="traffic_filter" class="p-3.5 rounded-xl bg-[#13151A] hover:bg-[#191C22] border border-[#22252D] hover:border-cyan-400/50 text-left flex flex-col justify-between transition-colors">
+          <span class="w-7 h-7 rounded-lg bg-[#1E222A] text-cyan-300 flex items-center justify-center text-xs font-mono">02</span>
+          <div class="mt-3">
+            <div class="text-xs font-semibold text-zinc-100">Chống bóp traffic</div>
+            <div class="text-[11px] text-zinc-500 mt-0.5">Lọc từ mua bán, giá cả</div>
+          </div>
+        </button>
+        <button type="button" data-home-action="auto_broll" class="p-3.5 rounded-xl bg-[#13151A] hover:bg-[#191C22] border border-[#22252D] hover:border-cyan-400/50 text-left flex flex-col justify-between transition-colors">
+          <span class="w-7 h-7 rounded-lg bg-[#1E222A] text-cyan-300 flex items-center justify-center text-xs font-mono">03</span>
+          <div class="mt-3">
+            <div class="text-xs font-semibold text-zinc-100">B-Roll cận cảnh</div>
+            <div class="text-[11px] text-zinc-500 mt-0.5">Trích góc cận &amp; thẻ</div>
+          </div>
+        </button>
+        <button type="button" data-home-action="remotion_export" class="p-3.5 rounded-xl bg-[#13151A] hover:bg-[#191C22] border border-[#22252D] hover:border-cyan-400/50 text-left flex flex-col justify-between transition-colors">
+          <span class="w-7 h-7 rounded-lg bg-[#1E222A] text-cyan-300 flex items-center justify-center text-xs font-mono">04</span>
+          <div class="mt-3">
+            <div class="text-xs font-semibold text-zinc-100">Remotion Full</div>
+            <div class="text-[11px] text-zinc-500 mt-0.5">Hook, Sub động &amp; Màu</div>
+          </div>
+        </button>
+      </div>
+
+      <!-- Projects Grid -->
+      <div class="space-y-3 flex-1 min-h-0">
+        <div class="flex items-center justify-between">
+          <h2 class="text-sm font-bold text-zinc-100">Dự án gần đây (<span id="homeProjectsCount">0</span>)</h2>
+          <div class="flex items-center gap-2">
+            <input
+              id="inpHomeSearchProject"
+              type="text"
+              placeholder="Tìm dự án..."
+              class="h-7 w-44 rounded-lg bg-[#14161B] border border-[#252830] px-2.5 text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-cyan-400"
+            />
+            <button type="button" id="btnCloseHomeToEditor" class="h-7 px-3 rounded-lg bg-[#1C2026] hover:bg-[#252A32] text-zinc-200 text-xs font-medium">
+              Vào trình dựng →
+            </button>
+          </div>
+        </div>
+        <div id="homeProjectsGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 2. TOP BAR (Clean CapCut Desktop NLE Header) ==================== -->
+  <header id="topHeader" class="h-11 bg-[#111216] border-b border-[#22242C] px-3 flex items-center justify-between gap-2 shrink-0 z-30">
+    <!-- LEFT CLUSTER -->
+    <div id="hdrLeftCluster" class="flex items-center gap-2 min-w-0 flex-1 overflow-hidden">
+      <button
+        id="btnOpenHomeLauncher"
+        type="button"
+        title="Quay về trang Quản lý Dự án (Trang chủ WishEdit)"
+        class="h-7 px-2 rounded-md bg-[#181A20] hover:bg-[#22252D] border border-[#282B35] flex items-center gap-1.5 text-xs font-semibold text-zinc-100 shrink-0 transition-colors"
+      >
+        <img src="/static/favicon.svg?v=4.0" alt="WishEdit" class="w-4 h-4 rounded-sm" />
+        <span>Trang chủ</span>
+      </button>
+
+      <span class="text-zinc-700 shrink-0">/</span>
+
+      <!-- Current Project Title (Managed from Home Screen; Auto-saved) -->
+      <div class="flex items-center gap-1.5 min-w-0 shrink-0">
+        <span id="currentProjectNameLabel" class="px-2 py-1 rounded-md bg-[#181A20] border border-[#282B35] text-xs font-semibold text-zinc-100 truncate max-w-[160px]">Demo</span>
+        <select id="projectSelect" aria-label="Chọn dự án" class="hidden"></select>
+        <button id="btnNewProject" type="button" class="hidden"></button>
+        <button id="btnOpenFolder" type="button" class="hidden"><span id="projectFolderBadge">Projects/Demo</span></button>
+      </div>
+
+      <span
+        id="durationBadge"
+        class="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-mono font-medium bg-[#181A20] text-zinc-300 border border-[#282B35] whitespace-nowrap shrink-0"
+      >0.0s</span>
+
+      <span
+        id="autoSaveStatusBadge"
+        class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium text-zinc-400 whitespace-nowrap shrink-0"
+      >
+        <span id="autoSaveDot" class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+        <span id="autoSaveText">Tự động lưu</span>
+      </span>
+
+      <button id="btnGapAlertPill" class="hidden" type="button"><span id="gapAlertText">0 gợi ý B-Roll</span></button>
+      <button id="btnHardwarePill" class="hidden" type="button"><span id="hwStatusText">Auto GPU</span></button>
+      <button id="btnAiStatusPill" class="hidden" type="button"><span id="aiStatusText">AI Sẵn sàng</span></button>
+    </div>
+
+    <!-- CENTER LIVE JOB PROGRESS -->
+    <div id="hdrCenterCluster" class="flex items-center gap-1.5 text-xs text-zinc-400 shrink-0">
+      <button id="jobProgressWrap" type="button" class="hidden items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 text-xs font-medium max-w-[260px]">
+        <span class="inline-block w-2 h-2 rounded-full bg-cyan-400 animate-pulse shrink-0"></span>
+        <span id="jobProgressText" class="truncate">Đang xử lý...</span>
+      </button>
+      <span id="qaBadge" class="hidden"></span>
+    </div>
+
+    <!-- RIGHT ACTIONS (Minimalist CapCut Desktop Bar: Cài đặt | Toàn màn hình | Xuất Video) -->
+    <div id="hdrRightCluster" class="flex items-center gap-1.5 shrink-0">
+      <button id="btnQuickAiChat" type="button" class="hidden"></button>
+      <button id="btnOpenLogs" type="button" class="hidden"></button>
+      <button id="btnSaveAll" type="button" class="hidden"></button>
+      <button id="btnOpenBridge" class="hidden" type="button">Bridge</button>
+      <div class="hidden" id="headerOverflowWrap">
+        <button id="btnHeaderOverflow" type="button">⋯ <span id="hdrOverflowCount">0</span></button>
+        <div id="headerOverflowDropdown" class="hidden"></div>
+      </div>
+
+      <button
+        id="btnOpenSettings"
+        type="button"
+        title="Cài đặt (Draft, Edit, Performance, General, Logs & QA)"
+        class="inline-flex items-center gap-1.5 h-7 px-2.5 rounded-md border border-[#282B35] bg-[#181A20] hover:bg-[#22252D] text-xs font-medium text-zinc-200 transition-colors whitespace-nowrap"
+      >
+        <svg class="w-3.5 h-3.5 text-zinc-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>Cài đặt</span>
+      </button>
+
+      <button
+        id="btnToggleAppFullscreen"
+        type="button"
+        title="Bật / Tắt chế độ Toàn màn hình (F11)"
+        class="inline-flex items-center justify-center h-7 w-7 rounded-md border border-[#282B35] bg-[#181A20] hover:bg-[#22252D] text-zinc-200 transition-colors"
+      >
+        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+      </button>
+
+      <button
+        id="btnRender"
+        type="button"
+        title="Mở bảng Xuất Video & Dựng tự động AI (Export)"
+        class="h-7 px-3.5 rounded-md bg-[#22D3EE] hover:bg-[#06B6D4] text-zinc-950 text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all whitespace-nowrap"
+      >
+        <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span>Xuất Video</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- UPPER WORKSPACE (Wide 3-Col >=1280 | Compact 2-Col 768..1279 | Mobile 1-Col <768) -->
+  <main id="mainWorkspace" class="flex-1 min-h-0 flex overflow-hidden relative">
+
+    <!-- LEFT PANEL: CAPCUT-STYLE 2-COLUMN (X & Y) MEDIA POOL + STYLE REF + EDL + BRIEF -->
+    <section id="paneLeft" data-mpane="edl" class="m-pane w-[34%] min-w-[290px] max-w-[540px] h-full bg-[#111115] border-r border-[#26262F] flex-col min-h-0">
+      <div class="h-10 border-b border-[#26262F] px-2 flex items-center justify-between gap-1 shrink-0 bg-[#141419]">
+        <div class="flex items-center gap-1 min-w-0 overflow-x-auto no-scrollbar" id="leftTabs">
+          <button data-tab="pool" class="left-tab active px-2 py-1 rounded-md text-xs font-semibold flex items-center gap-1 whitespace-nowrap">
+            <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            <span>Media Pool</span>
+          </button>
+          <button data-tab="edl" class="left-tab px-2 py-1 rounded-md text-xs font-medium flex items-center gap-1 whitespace-nowrap">
+            <span>EDL (<span id="edlCountLabel">0</span>)</span>
+          </button>
+          <button data-tab="pipeline" class="left-tab px-2 py-1 rounded-md text-xs font-medium flex items-center gap-1 whitespace-nowrap">
+            <span>Brief &amp; Tách lời</span>
+          </button>
+        </div>
+        <div class="flex items-center gap-1 shrink-0">
+          <button id="btnRefresh" title="Làm mới dữ liệu dự án" class="text-[11px] text-zinc-400 hover:text-zinc-100 font-medium px-1.5 py-0.5 rounded hover:bg-zinc-800 whitespace-nowrap">↻</button>
+          <button id="btnSwapToInspectorCompact" title="Chuyển sang bảng Điều chỉnh" class="hidden compact-only-btn h-6 px-2 rounded bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 text-[10px] font-semibold">Chỉnh →</button>
+        </div>
+      </div>
+
+      <!-- Hidden File Inputs (Supports .mov, .MOV, .mp4, .mkv, images, audio, .cube/.3dl, style_refs + multi-select) -->
+      <input id="inputUploadRaw" type="file" multiple accept=".mp4,.mov,.MOV,.mkv,.avi,.webm,.m4v,video/mp4,video/quicktime,video/*" class="hidden" />
+      <input id="inputUploadBroll" type="file" multiple accept=".mp4,.mov,.MOV,.mkv,.webm,.m4v,.avi,.png,.jpg,.jpeg,.webp,.gif,image/*,video/mp4,video/quicktime,video/*" class="hidden" />
+      <input id="inputUploadStyleRef" type="file" multiple accept=".mp4,.mov,.MOV,.mkv,.webm,.m4v,.avi,video/mp4,video/quicktime,video/*" class="hidden" />
+      <input id="inputUploadMusic" type="file" multiple accept=".mp3,.wav,.m4a,.aac,.flac,.ogg,audio/*" class="hidden" />
+      <input id="inputUploadSfx" type="file" multiple accept=".wav,.mp3,.m4a,.aac,.ogg,audio/*" class="hidden" />
+      <input id="inputUploadLut" type="file" accept=".cube,.3dl" class="hidden" />
+
+      <!-- TAB 0: CAPCUT-STYLE 2-COLUMN (X & Y) MEDIA POOL -->
+      <div id="tab-pool" class="left-pane flex-1 min-h-0 flex overflow-hidden">
+
+        <!-- COLUMN X: MAIN CATEGORIES RAIL -->
+        <nav id="poolColX" aria-label="Danh mục chính Media Pool" class="w-[54px] shrink-0 bg-[#0D0D11] border-r border-[#26262F] flex flex-col justify-between py-2 px-1 gap-1 select-none">
+          <div class="space-y-1">
+            <button type="button" data-px="media" class="pool-x-btn active w-full py-2 px-1 flex flex-col items-center gap-1 text-[10px] font-semibold">
+              <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+              <span>Media</span>
+            </button>
+            <button type="button" data-px="audio" class="pool-x-btn w-full py-2 px-1 flex flex-col items-center gap-1 text-[10px] font-medium">
+              <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+              <span>Audio</span>
+            </button>
+            <button type="button" data-px="text" class="pool-x-btn w-full py-2 px-1 flex flex-col items-center gap-1 text-[10px] font-medium">
+              <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+              <span>Text/Thẻ</span>
+            </button>
+            <button type="button" data-px="effects" class="pool-x-btn w-full py-2 px-1 flex flex-col items-center gap-1 text-[10px] font-medium">
+              <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span>Hiệu ứng</span>
+            </button>
+            <button type="button" data-px="color" class="pool-x-btn w-full py-2 px-1 flex flex-col items-center gap-1 text-[10px] font-medium">
+              <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
+              <span>Màu/LUT</span>
+            </button>
+          </div>
+
+          <button
+            id="btnPoolQuickAdjust"
+            type="button"
+            title="Mở bảng Điều chỉnh thông số tương ứng ở cột bên phải"
+            class="w-full py-2 px-1 rounded-lg border border-cyan-500/25 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 flex flex-col items-center gap-1 text-[9.5px] font-semibold transition-colors"
+          >
+            <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+            <span>Chỉnh ↗</span>
+          </button>
+        </nav>
+
+        <!-- SUB-WRAP: COLUMN Y + ASSET AREA (Auto stacks Y as top pill strip if narrow <355px) -->
+        <div id="poolSubWrap" class="flex-1 min-w-0 flex min-h-0 overflow-hidden">
+          <!-- COLUMN Y: SUB-CATEGORIES RAIL -->
+          <aside id="poolColY" aria-label="Mục con Media Pool" class="w-[100px] sm:w-[108px] shrink-0 bg-[#121217] border-r border-[#26262F] flex flex-col justify-between p-1.5 overflow-y-auto custom-scroll">
+            <div id="poolSubcategoryList" class="space-y-1"></div>
+
+            <button
+              id="btnColYAdjust"
+              type="button"
+              class="mt-2 w-full px-2 py-1.5 rounded-md border border-[#26262F] bg-[#18181E] hover:bg-cyan-500/15 hover:border-cyan-500/40 text-[10px] font-semibold text-cyan-300 text-left flex items-center justify-between gap-1 transition-colors"
+            >
+              <span id="lblColYAdjust" class="truncate">Điều chỉnh</span>
+              <span>→</span>
+            </button>
+          </aside>
+
+          <!-- ASSET AREA: PURE ASSETS ONLY -->
+          <div id="poolAssetPane" class="flex-1 min-w-0 flex flex-col bg-[#141419] min-h-0">
+            <div class="px-2.5 py-2 border-b border-[#26262F] flex items-center justify-between gap-1.5 shrink-0 bg-[#16161C]">
+              <div class="min-w-0">
+                <div id="poolAssetTitle" class="text-xs font-bold text-zinc-100 truncate">Clip gốc</div>
+                <div id="poolAssetSubtitle" class="text-[11px] text-zinc-500 truncate">MP4, MOV, MKV · Kéo thả</div>
+              </div>
+              <div class="flex items-center gap-1 shrink-0">
+                <button
+                  id="btnPoolContextUpload"
+                  type="button"
+                  class="h-6 px-2.5 rounded bg-cyan-400 hover:bg-cyan-300 text-zinc-950 text-[11px] font-bold flex items-center gap-1 transition-colors whitespace-nowrap"
+                >
+                  + Nhập
+                </button>
+                <button
+                  id="btnPoolOpenAdjust"
+                  type="button"
+                  title="Mở bảng điều chỉnh chi tiết ở bên phải"
+                  class="h-6 px-2 rounded border border-zinc-700 bg-[#1E1E26] hover:bg-zinc-800 text-zinc-200 text-[11px] font-medium shrink-0"
+                >
+                  Chỉnh
+                </button>
+              </div>
+            </div>
+
+            <div id="poolAssetBody" class="flex-1 min-h-0 overflow-y-auto p-2 custom-scroll relative">
+
+              <!-- Y-PANE: MEDIA -> RAW -->
+              <div id="ypane-raw" class="pool-ypane space-y-2">
+                <div id="rawFilesList" class="pool-asset-grid text-xs text-zinc-400">Chưa có clip gốc.</div>
+              </div>
+
+              <!-- Y-PANE: MEDIA -> B-ROLL -->
+              <div id="ypane-broll" class="pool-ypane hidden space-y-2">
+                <div id="brollAssetsList" class="pool-asset-grid text-xs text-zinc-400">Trống</div>
+              </div>
+
+              <!-- Y-PANE: MEDIA -> STYLE REF (StyleRefs/) -->
+              <div id="ypane-style_refs" class="pool-ypane hidden space-y-2.5">
+                <div class="p-2.5 rounded-lg border border-cyan-500/30 bg-cyan-500/5 space-y-2">
+                  <div class="flex items-center justify-between gap-2">
+                    <div class="min-w-0">
+                      <div class="text-xs font-bold text-zinc-100 truncate">Học phong cách (StyleRefs)</div>
+                      <div class="text-[11px] text-zinc-400">Bỏ 3–5 video mẫu để trích nhịp cắt, cỡ chữ &amp; tốc độ nói</div>
+                    </div>
+                    <button id="btnOpenStyleRefsFolder" type="button" class="px-2 py-1 rounded border border-zinc-700 bg-[#18181E] hover:bg-zinc-800 text-[11px] text-zinc-300 shrink-0">Mở thư mục</button>
+                  </div>
+                  <button
+                    id="btnAnalyzeStyleRefs"
+                    type="button"
+                    class="w-full h-7 rounded-md bg-cyan-400 hover:bg-cyan-300 text-zinc-950 text-xs font-bold"
+                  >
+                    Phân tích mẫu phong cách
+                  </button>
+                </div>
+
+                <div id="styleRefsList" class="pool-asset-grid text-xs text-zinc-400"></div>
+
+                <div class="p-2.5 rounded-lg border border-[#26262F] bg-[#18181E] space-y-1.5">
+                  <div class="flex items-center justify-between gap-2">
+                    <span class="text-[11px] font-semibold text-zinc-200">Quy tắc đã học (`style.md`)</span>
+                    <button id="btnSaveStyleMd" type="button" class="text-[10px] font-semibold text-cyan-400 hover:underline">Lưu style.md</button>
+                  </div>
+                  <textarea id="txtStyleMdPreview" rows="5" class="w-full rounded border border-[#26262F] bg-[#111115] p-2 text-[10px] font-mono text-zinc-300 leading-relaxed focus:outline-none focus:border-cyan-500"></textarea>
+                </div>
+              </div>
+
+              <!-- Y-PANE: MEDIA -> OUTPUTS -->
+              <div id="ypane-outputs" class="pool-ypane hidden space-y-2">
+                <div id="outputsList" class="space-y-1.5 text-xs text-zinc-400">Chưa có bản render nào.</div>
+              </div>
+
+              <!-- Y-PANE: AUDIO -> MUSIC -->
+              <div id="ypane-music" class="pool-ypane hidden space-y-2">
+                <div id="musicAssetsList" class="space-y-1.5 text-xs text-zinc-400">Trống</div>
+              </div>
+
+              <!-- Y-PANE: AUDIO -> SFX -->
+              <div id="ypane-sfx" class="pool-ypane hidden space-y-2">
+                <div id="sfxAssetsList" class="space-y-1.5 text-xs text-zinc-400">Trống</div>
+              </div>
+
+              <!-- Y-PANE: AUDIO -> VOICE AI -->
+              <div id="ypane-voice" class="pool-ypane hidden space-y-2">
+                <div id="voiceAssetsList" class="space-y-1.5 text-xs text-zinc-400"></div>
+              </div>
+
+              <!-- Y-PANE: TEXT / CARDS -->
+              <div id="ypane-hook_sub" class="pool-ypane hidden">
+                <div id="textHookSubPresetsGrid" class="pool-asset-grid"></div>
+              </div>
+              <div id="ypane-cards" class="pool-ypane hidden">
+                <div id="textCardsPresetsGrid" class="pool-asset-grid"></div>
+              </div>
+              <div id="ypane-logos" class="pool-ypane hidden">
+                <div id="textLogosPresetsGrid" class="pool-asset-grid"></div>
+              </div>
+
+              <!-- Y-PANE: EFFECTS -->
+              <div id="ypane-transitions" class="pool-ypane hidden">
+                <div id="effectsTransitionGrid" class="pool-asset-grid"></div>
+              </div>
+              <div id="ypane-zoom" class="pool-ypane hidden">
+                <div id="effectsZoomGrid" class="pool-asset-grid"></div>
+              </div>
+
+              <!-- Y-PANE: COLOR / LUT -->
+              <div id="ypane-luts" class="pool-ypane hidden space-y-2">
+                <div id="smartLutsList" class="space-y-1.5"></div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 1: EDL STORYBOARD -->
+      <div id="tab-edl" class="left-pane hidden flex-1 min-h-0 flex flex-col">
+        <div class="px-2.5 py-2 border-b border-[#26262F] flex items-center justify-between gap-2 bg-[#141419] shrink-0">
+          <div class="flex items-center gap-1 flex-wrap">
+            <button data-filter="all" class="edl-filter active px-2 py-0.5 rounded text-[11px] font-medium">Tất cả</button>
+            <button data-filter="kept" class="edl-filter px-2 py-0.5 rounded text-[11px] font-medium">Giữ</button>
+            <button data-filter="drop" class="edl-filter px-2 py-0.5 rounded text-[11px] font-medium">Cắt</button>
+            <button data-filter="watchlist" class="edl-filter px-2 py-0.5 rounded text-[11px] font-medium text-cyan-400">Watchlist (<span id="watchlistCount">0</span>)</button>
+          </div>
+          <span id="edlKeptMeta" class="text-[11px] font-mono text-zinc-400">0s</span>
+        </div>
+
+        <div id="edlList" class="flex-1 min-h-0 overflow-y-auto p-2.5 space-y-2 custom-scroll"></div>
+      </div>
+
+      <!-- TAB 2: DÀN Ý BRIEF & TÁCH LỜI WHISPER -->
+      <div id="tab-pipeline" class="left-pane hidden flex-1 min-h-0 flex flex-col overflow-y-auto p-3 space-y-3 custom-scroll">
+        <div class="p-3 rounded-lg border border-[#26262F] bg-[#18181E] space-y-2">
+          <div class="flex items-center justify-between">
+            <h3 class="text-xs font-semibold text-zinc-200">Brief &amp; Dàn ý mục tiêu</h3>
+            <span id="briefCoverageBadge" class="text-[11px] font-mono px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-400">Brief</span>
+          </div>
+          <textarea
+            id="txtProjectBrief"
+            rows="3"
+            placeholder="- Ý 1: Hook 3 giây mở đầu&#10;- Ý 2: Nội dung trọng tâm & kết luận"
+            class="w-full rounded-md border border-[#26262F] bg-[#111115] p-2 text-xs text-zinc-100 leading-relaxed focus:outline-none focus:border-cyan-400"
+          ></textarea>
+          <div class="flex items-center justify-between gap-2">
+            <span class="text-[11px] text-cyan-300">Gợi ý B-Roll (<span id="gapsCountBadge">0</span>)</span>
+            <div class="flex items-center gap-2">
+              <button id="btnJumpStyleRefs" type="button" class="text-[11px] font-medium text-cyan-400 hover:underline">Mẫu phong cách</button>
+              <button id="btnJumpAssets" type="button" class="text-[11px] font-medium text-cyan-400 hover:underline">Kho B-Roll</button>
+              <button id="btnSaveBrief" type="button" class="h-7 px-2.5 rounded bg-cyan-400 hover:bg-cyan-300 text-zinc-950 text-xs font-bold">
+                Lưu Brief
+              </button>
+            </div>
+          </div>
+          <div id="gapsSuggestionsList" class="space-y-1 max-h-24 overflow-y-auto custom-scroll text-[11px] text-zinc-400"></div>
+        </div>
+
+        <div class="p-3 rounded-lg border border-[#26262F] bg-[#18181E] space-y-2">
+          <div class="flex items-center justify-between">
+            <h3 class="text-xs font-semibold text-zinc-200">Tách lời mới từ Clip gốc (Whisper)</h3>
+            <span class="text-[11px] font-mono text-zinc-400">faster-whisper</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-[11px] text-zinc-400 mb-0.5">Model</label>
+              <select id="whisperModel" class="w-full h-7 rounded border border-[#26262F] bg-[#111115] px-2 text-xs text-zinc-200">
+                <option value="small" selected>small (khuyên dùng)</option>
+                <option value="tiny">tiny (siêu nhanh)</option>
+                <option value="base">base</option>
+                <option value="medium">medium (chính xác cao)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[11px] text-zinc-400 mb-0.5">Mục tiêu giây (0=Tự động)</label>
+              <input id="targetDuration" type="number" value="0" min="0" max="180" class="w-full h-7 rounded border border-[#26262F] bg-[#111115] px-2 text-xs font-mono text-zinc-100" />
+            </div>
+          </div>
+          <input id="forceAiCheck" type="checkbox" checked class="hidden" />
+          <button id="btnRunPipeline" type="button" class="w-full h-8 rounded-md bg-zinc-100 hover:bg-white text-zinc-950 text-xs font-bold">
+            Tách lời &amp; Lọc cảnh tự động (Bước 1–3)
+          </button>
+        </div>
+
+        <div class="p-3 rounded-lg border border-[#26262F] bg-[#18181E] space-y-2">
+          <div class="flex items-center justify-between">
+            <h3 class="text-xs font-semibold text-zinc-200">Chế độ biên tập nhanh</h3>
+            <button id="btnLoadDiff" type="button" class="text-[11px] font-medium text-cyan-400 hover:underline">Xem so sánh EDL</button>
+          </div>
+          <select id="aiPresetSelect" class="w-full h-7 rounded border border-[#26262F] bg-[#111115] px-2 text-xs text-zinc-200">
+            <option value="retake_select">Gom câu nói lặp &amp; giữ ý mạch lạc</option>
+            <option value="hook_pick">Chọn &amp; đẩy Hook 3s lên đầu</option>
+            <option value="reorder_concise">Rút gọn súc tích dưới 48 giây</option>
+            <option value="claims_rewrite">Lọc &amp; viết lại từ nhạy cảm / bóp traffic</option>
+          </select>
+          <div class="grid grid-cols-2 gap-1.5">
+            <button id="btnRunAiRestructure" type="button" class="h-7 rounded bg-cyan-400 hover:bg-cyan-300 text-zinc-950 text-xs font-semibold">
+              Áp dụng chế độ
+            </button>
+            <button id="btnRunAiNoted" type="button" class="h-7 rounded border border-zinc-700 bg-[#141419] hover:bg-zinc-800 text-zinc-200 text-xs font-medium">
+              Xử lý cảnh có Note
+            </button>
+          </div>
+          <button id="btnOpenBridgeInline" type="button" class="hidden"></button>
+          <pre id="diffPreview" class="text-[11px] font-mono text-zinc-400 bg-[#111115] p-2 rounded border border-[#26262F] whitespace-pre-wrap max-h-24 overflow-y-auto">Chưa có dữ liệu so sánh.</pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPLITTER LEFT <-> STAGE (Wide Desktop) -->
+    <div id="splitterLeft" class="panel-splitter" title="Kéo để thay đổi độ rộng Media Pool"></div>
+
+    <!-- CENTER PANEL: 9:16 STAGE PREVIEW + TRANSPORT -->
+    <section id="paneStage" data-mpane="stage" class="m-pane flex flex-1 bg-[#09090B] flex-col min-w-[220px] min-h-0 h-full">
+      <div id="stageHeaderBar" class="min-h-[40px] px-2 sm:px-3 py-1 flex flex-wrap items-center justify-between gap-1.5 border-b border-[#26262F] bg-[#111115] shrink-0">
+        <div class="flex items-center gap-1.5 min-w-0">
+          <button id="btnToggleLeftPanel" title="Thu gọn / Mở Media Pool" class="wide-only-btn h-6 px-1.5 rounded border border-[#26262F] bg-[#18181E] hover:bg-[#22222A] text-xs text-zinc-300 items-center">◧</button>
+          <span id="stageTitleLabel" class="text-xs font-semibold text-zinc-300 truncate">Player — Timeline 01</span>
+          <button id="btnModeOutput" class="hidden" type="button"></button>
+          <button id="btnModeSource" class="hidden" type="button"></button>
+        </div>
+        <div class="flex items-center gap-1 shrink-0">
+          <!-- Compact 2-Column Side Workbench Switcher (visible when width 768..1279px) -->
+          <div id="compactSideSwitch" class="hidden rounded-md border border-[#26262F] bg-[#141419] p-0.5">
+            <button type="button" data-cside="left" class="compact-wb-btn active px-2 py-0.5 rounded text-xs font-semibold">Pool</button>
+            <button type="button" data-cside="right" class="compact-wb-btn px-2 py-0.5 rounded text-xs font-semibold">Điều chỉnh</button>
+          </div>
+
+          <button id="btnToggleOverlays" class="px-2 py-1 rounded border border-[#26262F] bg-[#18181E] text-xs font-medium text-zinc-300 hover:bg-[#22222A] whitespace-nowrap">
+            Overlay: Bật
+          </button>
+          <button id="btnToggleSafeZone" class="px-2 py-1 rounded border border-[#26262F] bg-[#18181E] text-xs font-medium text-zinc-300 hover:bg-[#22222A] whitespace-nowrap">
+            Safe Zone
+          </button>
+          <button id="btnToggleRightPanel" title="Thu gọn / Mở bảng Điều chỉnh" class="wide-only-btn h-6 px-1.5 rounded border border-[#26262F] bg-[#18181E] hover:bg-[#22222A] text-xs text-zinc-300 items-center">◨</button>
+        </div>
+      </div>
+
+      <!-- STAGE CANVAS WRAPPER -->
+      <div id="stageDropArea" class="flex-1 min-h-0 flex items-center justify-center p-2.5 overflow-hidden relative">
+        <div
+          id="stageFrame"
+          class="relative max-w-full max-h-full rounded-xl bg-[#05070B] shadow-2xl border border-[#26262F] overflow-hidden flex items-center justify-center"
+          style="aspect-ratio: 9 / 16;"
+        >
+          <video id="previewPlayer" class="w-full h-full object-cover transition-[filter] duration-150" preload="metadata" playsinline></video>
+
+          <div id="stagePlaceholder" class="hidden absolute inset-0 flex flex-col items-center justify-center text-zinc-500 p-6 text-center bg-gradient-to-b from-zinc-900 to-zinc-950">
+            <svg class="w-12 h-12 mb-2.5 opacity-40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+            <p class="text-xs font-medium text-zinc-300">Chưa có video nguồn trong dự án</p>
+            <p class="text-[11px] text-zinc-500 mt-1">Nhập hoặc kéo thả clip (.mov, .mp4) vào Media Pool</p>
+          </div>
+
+          <div id="liveOverlayLayer" class="hidden absolute inset-0 pointer-events-none select-none overflow-hidden">
+            <div id="ovWatermark" style="font-size: calc(10px * var(--stage-scale, 1));" class="absolute top-[2.4%] left-[4%] font-bold text-white/75 drop-shadow"></div>
+
+            <div id="ovDarkScene" class="hidden absolute inset-0 bg-[#090F1E]/85 backdrop-blur-md flex flex-col items-center justify-center px-[7%] pb-[22%] text-center z-10">
+              <div id="ovDarkMetric" style="font-size: calc(9px * var(--stage-scale, 1));" class="mb-2 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-extrabold uppercase tracking-wider"></div>
+              <div id="ovDarkTitle" style="font-size: calc(13px * var(--stage-scale, 1));" class="font-extrabold text-white uppercase tracking-tight mb-3 drop-shadow"></div>
+              <div id="ovDarkBullets" class="w-full rounded-xl bg-white/95 border border-sky-400 p-3 text-left space-y-1.5 shadow-lg"></div>
+            </div>
+
+            <div id="ovLogoBadge" data-drag-layer="logo" title="Kéo để đổi góc Logo" class="stage-draggable hidden absolute top-[12%] right-[4.5%] z-20 flex items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-900/80 border border-sky-400/70 backdrop-blur-sm shadow">
+              <span class="w-4 h-4 rounded bg-sky-500 text-white text-[9px] font-extrabold flex items-center justify-center">L</span>
+              <span id="ovLogoText" style="font-size: calc(10px * var(--stage-scale, 1));" class="font-bold text-white"></span>
+            </div>
+
+            <div id="ovHook" data-drag-layer="hook" title="Kéo lên/xuống để chỉnh vị trí Hook" class="stage-draggable hidden absolute top-[4.6%] left-[6%] right-[6%] flex flex-col items-center text-center z-20">
+              <span id="ovHookEyebrow" style="font-size: calc(8px * var(--stage-scale, 1));" class="px-2.5 py-0.5 rounded-full bg-gradient-to-r from-blue-600 to-sky-500 text-white font-extrabold uppercase tracking-wider shadow mb-1"></span>
+              <span id="ovHookTitle" style="font-size: calc(13px * var(--stage-scale, 1));" class="font-black text-white uppercase leading-tight drop-shadow-[0_2px_6px_rgba(0,0,0,0.95)]"></span>
+            </div>
+
+            <div id="ovInfoCard" data-drag-layer="infocard" title="Kéo để chỉnh vị trí Thẻ thông tin" class="stage-draggable hidden absolute top-[63%] left-[6%] right-[12%] flex justify-center z-20">
+              <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/95 border border-sky-400 shadow-lg">
+                <span class="w-5 h-5 rounded-full bg-gradient-to-br from-blue-600 to-cyan-500 text-white text-[10px] font-black flex items-center justify-center shrink-0">+</span>
+                <div class="text-left">
+                  <div id="ovCardLabel" style="font-size: calc(10px * var(--stage-scale, 1));" class="font-extrabold text-slate-900 leading-tight"></div>
+                  <div id="ovCardDetail" style="font-size: calc(8px * var(--stage-scale, 1));" class="font-semibold text-slate-600 leading-tight"></div>
+                </div>
+              </div>
+            </div>
+
+            <div id="ovCaptionWrap" data-drag-layer="caption" title="Kéo lên/xuống để chỉnh độ cao Phụ đề" class="stage-draggable hidden absolute bottom-[16.5%] left-[6%] right-[12.5%] flex flex-col items-center text-center z-30">
+              <div id="ovCaptionBox" class="transition-all">
+                <div id="ovCaptionText" style="font-size: calc(14px * var(--stage-scale, 1));" class="font-extrabold leading-snug text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.98)]"></div>
+                <div id="ovCaptionSubtext" style="font-size: calc(9px * var(--stage-scale, 1));" class="hidden mt-1 inline-block px-2 py-0.5 rounded-full bg-slate-900/65 font-semibold text-slate-200"></div>
+              </div>
+            </div>
+          </div>
+
+          <div id="safeZoneOverlay" class="hidden absolute inset-0 pointer-events-none z-40">
+            <div class="absolute top-0 left-0 right-0 h-[5%] border-b border-dashed border-cyan-400/70 bg-cyan-400/10 flex items-center justify-center text-[8px] font-mono text-cyan-200">Top Unsafe</div>
+            <div class="absolute bottom-0 left-0 right-0 h-[14.5%] border-t border-dashed border-rose-400/70 bg-rose-500/15 flex items-center justify-center text-[9px] font-mono text-rose-200">Vùng mô tả TikTok (&gt;= 280px)</div>
+            <div class="absolute right-0 top-[25%] bottom-[14.5%] w-[13%] border-l border-dashed border-rose-400/70 bg-rose-500/15 flex items-center justify-center text-[8px] font-mono text-rose-200 [writing-mode:vertical-rl]">Nút tương tác</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TRANSPORT BAR -->
+      <div id="stageTransportBar" class="h-10 bg-[#111115] border-t border-[#26262F] px-2.5 sm:px-3 flex items-center justify-between gap-2 shrink-0">
+        <div class="flex items-center gap-1.5 shrink-0">
+          <button id="btnPrevSeg" title="Câu trước" aria-label="Câu trước" class="h-7 w-7 rounded hover:bg-[#22222A] border border-[#26262F] bg-[#18181E] flex items-center justify-center text-zinc-300">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg>
+          </button>
+          <button id="btnPlayPause" title="Phát / Tạm dừng (Space)" class="h-7 px-2.5 sm:px-3 rounded bg-cyan-500 hover:bg-cyan-400 text-zinc-950 text-xs font-bold flex items-center gap-1">
+            <span id="playIcon">▶</span>
+            <span id="playLabel" class="hidden sm:inline">Phát</span>
+          </button>
+          <button id="btnNextSeg" title="Câu sau" aria-label="Câu sau" class="h-7 w-7 rounded hover:bg-[#22222A] border border-[#26262F] bg-[#18181E] flex items-center justify-center text-zinc-300">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
+          </button>
+        </div>
+
+        <div class="font-mono text-[11px] sm:text-xs text-zinc-300 whitespace-nowrap">
+          <span id="timeCurrent" class="font-semibold text-cyan-400">00:00.0</span>
+          <span class="text-zinc-600"> / </span>
+          <span id="timeTotal">00:00.0</span>
+        </div>
+
+        <div class="flex items-center gap-2 shrink-0">
+          <div class="text-[10px] sm:text-[11px] text-zinc-400 font-mono truncate max-w-[90px] sm:max-w-[130px]" id="stageSourceInfo">—</div>
+          <button
+            id="btnToggleStageFullscreen"
+            type="button"
+            title="Phóng to toàn màn hình khung xem trước 9:16"
+            class="h-7 w-7 rounded hover:bg-[#22222A] border border-[#26262F] bg-[#18181E] flex items-center justify-center text-zinc-300 transition-colors"
+          >
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPLITTER STAGE <-> RIGHT (Wide Desktop) -->
+    <div id="splitterRight" class="panel-splitter" title="Kéo để thay đổi độ rộng bảng Điều chỉnh"></div>
+
+    <!-- RIGHT PANEL: ALL ADJUSTMENTS & INSPECTOR -->
+    <section id="paneRight" data-mpane="inspector" class="m-pane w-[30%] min-w-[270px] max-w-[480px] h-full bg-[#111216] border-l border-[#22242C] flex-col min-h-0">
+      <div class="min-h-[40px] border-b border-[#22242C] px-2.5 flex items-center justify-between gap-1 shrink-0 bg-[#14161B]">
+        <div class="flex items-center gap-1 overflow-x-auto no-scrollbar min-w-0" id="inspectorTabs">
+          <button data-itab="video" class="insp-tab active px-2 py-1 rounded text-xs font-semibold whitespace-nowrap">Video</button>
+          <button data-itab="hook" class="insp-tab px-2 py-1 rounded text-xs font-medium whitespace-nowrap">Hook</button>
+          <button data-itab="sub" class="insp-tab px-2 py-1 rounded text-xs font-medium whitespace-nowrap">Phụ đề</button>
+          <button data-itab="cards" class="insp-tab px-2 py-1 rounded text-xs font-medium whitespace-nowrap">B-Roll</button>
+          <button data-itab="color" class="insp-tab px-2 py-1 rounded text-xs font-medium whitespace-nowrap">Màu</button>
+          <button data-itab="audio" class="insp-tab px-2 py-1 rounded text-xs font-medium whitespace-nowrap">Âm thanh</button>
+        </div>
+        <button id="btnSwapToPoolCompact" title="Quay lại Media Pool" class="hidden compact-only-btn h-6 px-2 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-semibold shrink-0">← Pool</button>
+      </div>
+
+      <div class="flex-1 min-h-0 overflow-y-auto p-3.5 space-y-3.5 custom-scroll">
+        <!-- INSP 1: VIDEO -->
+        <div id="itab-video" class="insp-pane space-y-3">
+          <div>
+            <label class="block text-xs font-medium text-zinc-300 mb-1">Tên video xuất</label>
+            <input id="inpTopic" type="text" placeholder="Review máy đọc sách XTEINK" class="w-full h-8 rounded-md border border-[#26262F] bg-[#18181E] px-2.5 text-xs text-zinc-100 focus:outline-none focus:border-cyan-400" />
+          </div>
+          <div>
+            <div class="flex justify-between text-xs mb-1">
+              <span class="font-medium text-zinc-300">Tốc độ nhịp nói</span>
+              <span id="valSpeechSpeed" class="font-mono font-semibold text-cyan-400">1.10x</span>
+            </div>
+            <input id="inpSpeechSpeed" type="range" min="0.95" max="1.35" step="0.02" value="1.10" class="w-full accent-cyan-400" />
+          </div>
+
+          <div class="p-3 rounded-lg border border-[#26262F] bg-[#18181E] space-y-2.5">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-zinc-200">Biến đổi khung hình (Transform)</span>
+              <button id="btnResetStageTransform" type="button" class="text-xs font-medium text-cyan-400 hover:underline">Đặt lại</button>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-zinc-400">Tỷ lệ (Scale)</span>
+                <span id="valVideoScale" class="font-mono text-cyan-400">100%</span>
+              </div>
+              <input id="inpVideoScale" type="range" min="0.60" max="2.20" step="0.02" value="1.00" class="w-full accent-cyan-400" />
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <div class="flex justify-between text-xs text-zinc-400 mb-0.5">
+                  <span>Vị trí X</span>
+                  <span id="valVideoOffsetX" class="font-mono text-zinc-200">0%</span>
+                </div>
+                <input id="inpVideoOffsetX" type="range" min="-45" max="45" step="1" value="0" class="w-full accent-cyan-400" />
+              </div>
+              <div>
+                <div class="flex justify-between text-xs text-zinc-400 mb-0.5">
+                  <span>Vị trí Y</span>
+                  <span id="valVideoOffsetY" class="font-mono text-zinc-200">0%</span>
+                </div>
+                <input id="inpVideoOffsetY" type="range" min="-45" max="45" step="1" value="0" class="w-full accent-cyan-400" />
+              </div>
+            </div>
+          </div>
+
+          <input id="inpWatermark" type="hidden" value="" />
+          <input id="chkOtherPlatforms" type="checkbox" class="hidden" />
+
+          <div class="space-y-2.5 pt-2 border-t border-[#26262F]">
+            <label class="flex items-center justify-between text-xs text-zinc-300">
+              <span>Zoom tự nhiên theo nhịp cắt</span>
+              <input id="chkSubtleZoom" type="checkbox" checked class="rounded accent-cyan-400" />
+            </label>
+            <label class="flex items-center justify-between text-xs text-zinc-300">
+              <span>Tăng cường độ nét 1080×1920 (Lanczos)</span>
+              <input id="chkPreserveRes" type="checkbox" class="rounded accent-cyan-400" />
+            </label>
+          </div>
+        </div>
+
+        <!-- INSP 2: HOOK -->
+        <div id="itab-hook" class="insp-pane hidden space-y-3">
+          <label class="flex items-center justify-between text-xs font-medium text-zinc-200">
+            <span>Hiển thị Hook 3 giây đầu</span>
+            <input id="chkHookEnabled" type="checkbox" checked class="rounded accent-cyan-400" />
+          </label>
+          <div>
+            <label class="block text-xs font-medium text-zinc-300 mb-1">Nhãn pill trên (Eyebrow)</label>
+            <input id="inpHookEyebrow" type="text" class="w-full h-8 rounded-md border border-[#26262F] bg-[#18181E] px-2.5 text-xs text-zinc-100" />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-zinc-300 mb-1">Tiêu đề Hook chính</label>
+            <textarea id="inpHookTitle" rows="2" class="w-full rounded-md border border-[#26262F] bg-[#18181E] p-2 text-xs font-semibold text-zinc-100"></textarea>
+          </div>
+          <div class="grid grid-cols-3 gap-2">
+            <div>
+              <label class="block text-[11px] text-zinc-400 mb-1">Start frame</label>
+              <input id="inpHookStart" type="number" class="w-full h-7 rounded border border-[#26262F] bg-[#18181E] px-2 text-xs font-mono text-zinc-100" />
+            </div>
+            <div>
+              <label class="block text-[11px] text-zinc-400 mb-1">End frame</label>
+              <input id="inpHookEnd" type="number" class="w-full h-7 rounded border border-[#26262F] bg-[#18181E] px-2 text-xs font-mono text-zinc-100" />
+            </div>
+            <div>
+              <label class="block text-[11px] text-zinc-400 mb-1">Vị trí Top (px)</label>
+              <input id="inpHookTop" type="number" class="w-full h-7 rounded border border-[#26262F] bg-[#18181E] px-2 text-xs font-mono text-zinc-100" />
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-zinc-300 mb-1">Phong cách đồ họa (Style Preset)</label>
+            <select id="inpStylePreset" class="w-full h-8 rounded-md border border-[#26262F] bg-[#18181E] px-2 text-xs text-zinc-100">
+              <option value="editorial">Editorial (Không hộp · Ref mới)</option>
+              <option value="boxed">Boxed (Đóng khung tối cổ điển)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- INSP 3: SUB & MÀU CHỮ -->
+        <div id="itab-sub" class="insp-pane hidden space-y-3">
+          <div class="grid grid-cols-3 gap-2">
+            <div>
+              <label class="block text-[11px] text-zinc-400 mb-1">Màu Từ khóa</label>
+              <input id="inpAccentColor" type="color" value="#38BDF8" class="w-full h-8 rounded border border-[#26262F] bg-[#18181E] cursor-pointer" />
+            </div>
+            <div>
+              <label class="block text-[11px] text-zinc-400 mb-1">Màu Số liệu</label>
+              <input id="inpNumberColor" type="color" value="#22D3EE" class="w-full h-8 rounded border border-[#26262F] bg-[#18181E] cursor-pointer" />
+            </div>
+            <div>
+              <label class="block text-[11px] text-zinc-400 mb-1">Màu Chữ chính</label>
+              <input id="inpCaptionColor" type="color" value="#FFFFFF" class="w-full h-8 rounded border border-[#26262F] bg-[#18181E] cursor-pointer" />
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-[11px] text-zinc-400 mb-1">Cỡ chữ Sub (px)</label>
+              <input id="inpCaptionSize" type="number" min="32" max="72" class="w-full h-7 rounded border border-[#26262F] bg-[#18181E] px-2 text-xs font-mono text-zinc-100" />
+            </div>
+            <div>
+              <label class="block text-[11px] text-zinc-400 mb-1">Cách đáy (px)</label>
+              <input id="inpCaptionBottom" type="number" min="260" max="600" class="w-full h-7 rounded border border-[#26262F] bg-[#18181E] px-2 text-xs font-mono text-zinc-100" />
+            </div>
+          </div>
+          <div class="border-t border-[#26262F] pt-2">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-xs font-semibold text-zinc-300">Chỉnh cụm phụ đề (<span id="subCountLabel">0</span>)</span>
+              <span class="text-[10px] text-zinc-500">Ngăn keyword bằng dấu phẩy</span>
+            </div>
+            <div id="captionsEditorList" class="space-y-2 max-h-[260px] overflow-y-auto pr-1 custom-scroll"></div>
+          </div>
+        </div>
+
+        <!-- INSP 4: B-ROLL, CARDS, DARK SCENES & LOGO -->
+        <div id="itab-cards" class="insp-pane hidden space-y-4">
+          <div class="p-3 rounded-lg border border-cyan-500/30 bg-cyan-500/5 space-y-2">
+            <div class="flex items-center justify-between gap-2">
+              <div>
+                <div class="text-xs font-bold text-zinc-100">AI Auto B-Roll &amp; Thẻ thông tin</div>
+                <div class="text-[10px] text-zinc-400">Tự động dựng cảnh B-Roll cận cảnh &amp; thẻ từ khóa (Không tự chèn logo lạ)</div>
+              </div>
+              <input id="chkAutoBrollToggle" type="checkbox" class="w-4 h-4 accent-cyan-400 rounded cursor-pointer shrink-0" />
+            </div>
+            <button
+              id="btnAutoFillAll"
+              class="w-full h-8 rounded-md bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-zinc-950 text-xs font-bold shadow-sm transition-all"
+            >
+              Tự động dựng B-Roll &amp; Nhạc nền
+            </button>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-xs font-semibold text-zinc-200">Lớp B-Roll trên Timeline</span>
+              <button id="btnOpenPoolBroll" type="button" class="text-[11px] font-medium text-cyan-400 hover:underline">← Chọn B-Roll</button>
+            </div>
+            <div id="brollEditorList" class="space-y-2"></div>
+          </div>
+
+          <div class="border-t border-[#26262F] pt-3">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-xs font-semibold text-zinc-200">Thẻ thông tin (`InfoCards`)</span>
+              <button id="btnAddInfoCard" class="text-[11px] font-medium text-cyan-400 hover:underline">+ Thêm thẻ</button>
+            </div>
+            <div id="infoCardsList" class="space-y-2"></div>
+          </div>
+
+          <div class="border-t border-[#26262F] pt-3">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-xs font-semibold text-zinc-200">Cảnh tóm tắt kính mờ (`Frosted Scenes`)</span>
+              <button id="btnAddDarkScene" class="text-[11px] font-medium text-cyan-400 hover:underline">+ Thêm cảnh</button>
+            </div>
+            <div id="darkScenesList" class="space-y-2"></div>
+          </div>
+
+          <div class="border-t border-[#26262F] pt-3">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-xs font-semibold text-zinc-200">Logo minh họa tự động</span>
+              <button id="btnAddLogoBadge" class="text-[11px] font-medium text-cyan-400 hover:underline">+ Thêm logo</button>
+            </div>
+            <div id="logoBadgesList" class="space-y-2"></div>
+          </div>
+        </div>
+
+        <!-- INSP 5: ALL COLOR ADJUSTMENTS -->
+        <div id="itab-color" class="insp-pane hidden space-y-3">
+          <div class="p-2.5 rounded-lg border border-[#26262F] bg-[#18181E] flex items-center justify-between gap-2 text-[11px]">
+            <div class="min-w-0">
+              <div class="text-zinc-400">Phân tích ánh sáng Source</div>
+              <div id="colorTelemetryText" class="font-semibold text-zinc-100 mt-0.5 truncate">Đang đo...</div>
+            </div>
+            <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 font-mono text-[10px] shrink-0">Cached</span>
+          </div>
+
+          <div class="p-3 rounded-lg border border-[#26262F] bg-[#18181E] space-y-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <div>
+                <span class="text-xs font-bold text-zinc-100">AI Auto Color</span>
+                <p class="text-[10px] text-zinc-400">Tự động cân sáng, cân bằng trắng &amp; tôn da</p>
+              </div>
+              <button
+                id="btnToggleAutoColor"
+                class="h-7 px-3 rounded-md bg-cyan-500 hover:bg-cyan-400 text-zinc-950 text-xs font-bold transition-colors shrink-0"
+              >Bật Auto Color</button>
+            </div>
+            <div>
+              <div class="flex justify-between text-[11px] mb-1">
+                <span class="text-zinc-400">Cường độ Auto Color</span>
+                <span id="valAutoColorIntensity" class="font-mono text-cyan-400">80%</span>
+              </div>
+              <input id="inpAutoColorIntensity" type="range" min="0" max="100" step="5" value="80" class="w-full accent-cyan-400" />
+            </div>
+          </div>
+
+          <div class="p-2.5 rounded-lg border border-[#26262F] bg-[#18181E] space-y-2">
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-xs font-bold text-zinc-100">LUT đang áp dụng</span>
+              <span id="activeLutBadge" class="text-[11px] font-mono text-cyan-400 truncate">Mặc định (None)</span>
+            </div>
+            <div>
+              <div class="flex justify-between text-[11px] text-zinc-400 mb-1">
+                <span>Độ sáng (Exposure / Brightness)</span>
+                <span id="valColorBright" class="font-mono text-zinc-200">0.00</span>
+              </div>
+              <input id="inpColorBright" type="range" min="-0.25" max="0.25" step="0.01" value="0" class="w-full accent-cyan-400" />
+            </div>
+            <div>
+              <div class="flex justify-between text-[11px] text-zinc-400 mb-1">
+                <span>Tương phản (Contrast)</span>
+                <span id="valColorContrast" class="font-mono text-zinc-200">1.00</span>
+              </div>
+              <input id="inpColorContrast" type="range" min="0.80" max="1.35" step="0.01" value="1.0" class="w-full accent-cyan-400" />
+            </div>
+            <div>
+              <div class="flex justify-between text-[11px] text-zinc-400 mb-1">
+                <span>Độ bão hòa màu (Saturation)</span>
+                <span id="valColorSat" class="font-mono text-zinc-200">1.00</span>
+              </div>
+              <input id="inpColorSat" type="range" min="0.0" max="1.50" step="0.02" value="1.0" class="w-full accent-cyan-400" />
+            </div>
+          </div>
+
+          <div class="p-3 rounded-lg border border-[#26262F] bg-[#18181E] space-y-2">
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-xs font-semibold text-zinc-200">Adjustment Layer (Phủ toàn Timeline)</span>
+              <input id="chkAdjustmentLayer" type="checkbox" class="w-4 h-4 accent-cyan-400 rounded cursor-pointer shrink-0" />
+            </div>
+            <button
+              id="btnColorSyncAll"
+              class="w-full h-8 rounded-md border border-cyan-500/40 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 text-xs font-semibold transition-colors"
+            >
+              Đồng bộ màu sang tất cả Source (Apply to All)
+            </button>
+          </div>
+
+          <button
+            id="btnOpenPoolColor"
+            class="w-full h-8 rounded-md bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/30 text-cyan-300 text-xs font-semibold"
+          >
+            ← Chọn Preset LUT bên Media Pool
+          </button>
+        </div>
+
+        <!-- INSP 6: AUDIO & VOICE AI -->
+        <div id="itab-audio" class="insp-pane hidden space-y-3">
+          <div class="p-2.5 rounded-lg border border-[#26262F] bg-[#18181E] space-y-2">
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-xs font-semibold text-zinc-200">AI Voiceover (TTS) &amp; Clone</span>
+              <button id="btnExportSpeakerRef" class="text-[10px] font-medium text-cyan-400 hover:underline shrink-0">
+                Trích mẫu giọng 22s
+              </button>
+            </div>
+            <input
+              id="inpTtsText"
+              type="text"
+              placeholder="Nhập câu thuyết minh cần tạo Voice AI..."
+              class="w-full h-7 rounded border border-[#26262F] bg-[#111115] px-2 text-xs text-zinc-100 focus:outline-none focus:border-cyan-500"
+            />
+            <div class="flex items-center gap-1.5">
+              <select id="selTtsVoice" class="flex-1 min-w-0 h-7 rounded border border-[#26262F] bg-[#111115] px-1.5 text-[11px] text-zinc-200">
+                <option value="vi-VN-NamMinhNeural">Nam Minh (Nam · Thực chiến)</option>
+                <option value="vi-VN-HoaiMyNeural">Hoài My (Nữ · Tự nhiên)</option>
+              </select>
+              <button id="btnGenTtsVo" class="h-7 px-2.5 rounded bg-cyan-500 hover:bg-cyan-400 text-zinc-950 text-[11px] font-bold shrink-0">
+                Tạo Voice @ Playhead
+              </button>
+            </div>
+          </div>
+
+          <label class="flex items-center justify-between text-xs text-zinc-300">
+            <span>Lọc tạp âm giọng nói (`afftdn`)</span>
+            <input id="chkDenoiseSpeech" type="checkbox" checked class="rounded accent-cyan-400" />
+          </label>
+          <label class="flex items-center justify-between text-xs text-zinc-300">
+            <span>Chuẩn hóa âm lượng thoại `-14 LUFS`</span>
+            <input id="chkNormalizeSpeech" type="checkbox" checked class="rounded accent-cyan-400" />
+          </label>
+
+          <div class="pt-2 border-t border-[#26262F]">
+            <label class="block text-xs font-medium text-zinc-300 mb-1">Nhạc nền đang dùng</label>
+            <select id="inpMusicFile" class="w-full h-8 rounded-md border border-[#26262F] bg-[#18181E] px-2 text-xs font-mono text-zinc-100">
+              <option value="">-- Không nhạc nền --</option>
+            </select>
+          </div>
+          <div>
+            <div class="flex justify-between text-xs mb-1">
+              <span class="font-medium text-zinc-300">Âm lượng Nhạc nền</span>
+              <span id="valMusicDb" class="font-mono text-zinc-400">-22 dB</span>
+            </div>
+            <input id="inpMusicDb" type="range" min="-36" max="-10" step="1" value="-22" class="w-full accent-cyan-400" />
+          </div>
+
+          <div class="pt-2 border-t border-[#26262F] space-y-2">
+            <label class="flex items-center justify-between text-xs text-zinc-300">
+              <span>Tự gắn Sound Effect (Pop / Ding / Whoosh)</span>
+              <input id="chkEnableSfx" type="checkbox" checked class="rounded accent-cyan-400" />
+            </label>
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="font-medium text-zinc-300">Âm lượng SFX</span>
+                <span id="valSfxDb" class="font-mono text-zinc-400">-16 dB</span>
+              </div>
+              <input id="inpSfxDb" type="range" min="-28" max="-6" step="1" value="-16" class="w-full accent-cyan-400" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-2.5 border-t border-[#26262F] bg-[#141419] flex items-center justify-between gap-2 shrink-0">
+        <span class="text-[11px] text-zinc-400 truncate" id="layersDirtyHint">Tự động lưu thay đổi</span>
+        <button id="btnSaveLayers" class="hidden" type="button">Lưu</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- CAPCUT TIMELINE VERTICAL RESIZE BAR -->
+  <div id="splitterTimeline" class="timeline-splitter" title="Kéo lên / xuống để chỉnh kích thước Timeline (nhỏ gọn hoặc phóng to)"></div>
+
+  <!-- BOTTOM DOCK: CAPCUT PRO TOOLBAR + FREEFORM VIDEO/AUDIO TIMELINE -->
+  <footer id="paneTimeline" data-mpane="timeline" class="m-pane w-full bg-[#111115] flex-col shrink-0 z-20">
+    <!-- CAPCUT / RESOLVE VECTOR ACTION TOOLBAR -->
+    <div id="tlToolbar" class="h-9 border-b border-[#26262F] px-2.5 sm:px-3 flex items-center justify-between gap-2 bg-[#141419] shrink-0 relative">
+      <div id="tlLeftCluster" class="flex items-center gap-1.5 min-w-0 shrink-0">
+        <span id="tlPlayheadLabel" class="px-2 py-0.5 rounded bg-zinc-900 text-cyan-400 border border-[#26262F] font-mono text-[11px] shrink-0">00:00.00</span>
+
+        <span class="text-zinc-700">|</span>
+
+        <button id="btnUndo" title="Hoàn tác (Ctrl/Cmd + Z)" aria-label="Hoàn tác" class="h-6 px-2 rounded border border-[#26262F] bg-[#18181E] hover:bg-[#22222A] text-[11px] font-medium text-zinc-300 flex items-center gap-1 shrink-0">
+          <svg class="w-3 h-3 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>
+          <span class="hidden sm:inline">Undo</span>
+        </button>
+        <button id="btnRedo" title="Làm lại (Ctrl/Cmd + Y)" aria-label="Làm lại" class="h-6 px-2 rounded border border-[#26262F] bg-[#18181E] hover:bg-[#22222A] text-[11px] font-medium text-zinc-300 flex items-center shrink-0">
+          <svg class="w-3 h-3 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3l3 2.7"/></svg>
+        </button>
+
+        <button id="btnSplitAtPlayhead" title="Tách đôi đoạn Video hoặc Layer tại Playhead (Phím B)" class="h-6 px-2 sm:px-2.5 rounded border border-[#26262F] bg-[#18181E] hover:bg-[#22222A] text-[11px] font-semibold text-zinc-100 flex items-center gap-1 shrink-0">
+          <svg class="w-3 h-3 text-cyan-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+          <span>Tách (B)</span>
+        </button>
+
+        <button id="btnDeleteSelected" title="Xóa đoạn Video hoặc Layer đang chọn (Phím Delete)" class="h-6 px-2 sm:px-2.5 rounded border border-rose-500/30 bg-rose-500/10 hover:bg-rose-500/20 text-[11px] font-semibold text-rose-300 flex items-center gap-1 shrink-0">
+          <svg class="w-3 h-3 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          <span>Xóa</span>
+        </button>
+
+        <span data-tl-ov="4" class="text-zinc-700">|</span>
+
+        <button id="btnMarkIn" data-tl-ov="3" data-ov-label="[I] Điểm Đầu" title="Đặt điểm bắt đầu khoảng đánh dấu Trước (Phím I)" class="h-6 px-2 rounded border border-cyan-500/30 bg-cyan-500/10 hover:bg-cyan-500/20 text-[10px] font-mono font-bold text-cyan-300 whitespace-nowrap">[I] Đầu</button>
+        <button id="btnMarkOut" data-tl-ov="3" data-ov-label="[O] Điểm Cuối" title="Đặt điểm kết thúc khoảng đánh dấu Sau (Phím O)" class="h-6 px-2 rounded border border-cyan-500/30 bg-cyan-500/10 hover:bg-cyan-500/20 text-[10px] font-mono font-bold text-cyan-300 whitespace-nowrap">[O] Cuối</button>
+        <button id="btnOpenRangeModal" data-tl-ov="4" data-ov-label="Note / B-Roll [I–O]" title="Ghi Note / Chèn B-Roll / Cắt khoảng [In–Out] (Phím M)" class="h-6 px-2.5 rounded border border-cyan-500/40 bg-[#1B222C] hover:bg-[#232C38] text-cyan-300 text-[11px] font-semibold flex items-center gap-1 whitespace-nowrap">
+          <svg class="w-3 h-3 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          <span>Đánh dấu [I–O]</span>
+        </button>
+      </div>
+
+      <div id="tlRightCluster" class="flex items-center gap-1.5 shrink-0">
+        <span id="selectedLayerBadge" data-tl-ov="1" class="text-xs font-mono text-cyan-400 truncate max-w-[230px]">Kéo thả tự do trên Timeline hoặc kéo 2 đầu [ ]</span>
+
+        <!-- DaVinci Resolve Thumbnail Height Slider + CapCut Horizontal Zoom -->
+        <div id="tlZoomGroup" data-tl-ov="2" class="flex items-center gap-2 shrink-0">
+          <div class="hidden sm:flex items-center gap-1" title="Kéo chỉnh độ cao Thumbnail trên Timeline (kiểu DaVinci Resolve)">
+            <span class="text-[11px] text-zinc-400">Thumb</span>
+            <input id="tlThumbHeightRange" type="range" min="32" max="76" value="44" class="w-14 accent-cyan-400" />
+          </div>
+          <div class="flex items-center gap-1">
+            <button id="btnTlZoomOut" type="button" title="Thu nhỏ ngang Timeline" class="h-5 w-5 rounded border border-[#26262F] bg-[#18181E] hover:bg-[#22222A] text-zinc-300 text-xs leading-none flex items-center justify-center">−</button>
+            <input id="tlZoomRange" type="range" min="10" max="120" value="34" class="w-16 sm:w-20 accent-cyan-400" />
+            <button id="btnTlZoomIn" type="button" title="Phóng to ngang Timeline" class="h-5 w-5 rounded border border-[#26262F] bg-[#18181E] hover:bg-[#22222A] text-zinc-300 text-xs leading-none flex items-center justify-center">+</button>
+            <button id="btnTlZoomFit" type="button" title="Vừa trọn chiều rộng màn hình" class="h-5 px-1.5 rounded border border-[#26262F] bg-[#18181E] hover:bg-[#22222A] text-[11px] font-mono text-zinc-300">Fit</button>
+          </div>
+        </div>
+
+        <button
+          id="btnToggleBottomAiChat"
+          type="button"
+          title="Đổi thanh Timeline sang hộp Chat Trợ lý AI để nhắn sửa ngay"
+          class="h-6 px-3 rounded bg-cyan-400/15 hover:bg-cyan-400/25 border border-cyan-400/50 text-xs font-semibold text-cyan-300 flex items-center gap-1 transition-colors"
+        >Trợ lý AI</button>
+
+        <!-- CapCut Timeline Vertical Size Cycle (Nhỏ / Vừa / Cao) -->
+        <button
+          id="btnCycleTimelineSize"
+          data-tl-ov="5"
+          data-ov-label="Cỡ Timeline (Nhỏ/Vừa/Cao)"
+          type="button"
+          title="Đổi chiều cao Timeline: Nhỏ gọn / Vừa / Cao"
+          class="hidden md:inline-flex h-6 px-1.5 rounded border border-[#26262F] bg-[#18181E] hover:bg-[#22222A] text-[11px] font-mono text-zinc-300 items-center"
+        >↕ Vừa</button>
+
+        <!-- Timeline Overflow Trigger -->
+        <div class="relative hidden" id="tlOverflowWrap">
+          <button
+            id="btnTlOverflow"
+            type="button"
+            title="Thêm công cụ Timeline"
+            class="h-6 px-2 rounded border border-[#26262F] bg-[#18181E] hover:bg-[#22222A] text-zinc-200 text-xs font-bold"
+          >⋯</button>
+          <div
+            id="tlOverflowDropdown"
+            class="hidden absolute right-0 bottom-8 w-64 rounded-xl bg-[#141419] border border-[#26262F] shadow-2xl p-2.5 space-y-1.5 z-50"
+          ></div>
+        </div>
+
+        <button
+          id="btnToggleTimelineCollapse"
+          type="button"
+          title="Thu gọn / Mở rộng Timeline"
+          class="hidden md:inline-flex h-6 px-1.5 rounded border border-[#26262F] bg-[#18181E] hover:bg-[#22222A] text-zinc-300 text-xs items-center"
+        >▾</button>
+      </div>
+    </div>
+
+    <!-- MODE A: CAPCUT FREEFORM TIMELINE (Visual / Video Area Above + Audio Area Below, No Hardcoded V1/V2/V3) -->
+    <div id="tlTracksWrap" class="flex-1 min-h-0 flex overflow-y-auto overflow-x-hidden custom-scroll">
+      <!-- Track Zone Icons (CapCut magnetic track gutter — pure Video / Audio zones) -->
+      <div id="tlTrackHeaders" class="w-12 sm:w-14 shrink-0 border-r border-[#22242C] bg-[#121318] flex flex-col select-none">
+        <div class="h-6 border-b border-[#22242C] flex items-center justify-center text-[10px] font-mono text-zinc-500 shrink-0">
+          <span id="inOutHeaderBadge" class="text-[9px] text-cyan-400 font-bold truncate px-1"></span>
+        </div>
+        <!-- Upper Freeform Visual Zone (Overlays + Main Video Spine) -->
+        <div class="flex-1 min-h-[104px] border-b border-[#262934] flex flex-col items-center justify-between py-2 text-zinc-400">
+          <span class="text-[10px] font-medium text-zinc-500" title="Các lớp chữ, Hook & B-Roll phủ tự do">Lớp phủ</span>
+          <div id="tlHdrMainVideo" class="flex flex-col items-center justify-center gap-0.5 text-cyan-400" title="Trục Video chính">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="2" y1="9" x2="22" y2="9"/></svg>
+            <span class="text-[10px] font-semibold">Video</span>
+          </div>
+        </div>
+        <!-- Lower Audio Zone -->
+        <div class="tl-hdr-aud h-9 flex flex-col items-center justify-center text-zinc-400 shrink-0" title="Âm thanh & Nhạc nền">
+          <svg class="w-3.5 h-3.5 text-cyan-300/80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        </div>
+      </div>
+
+      <!-- Scrollable Tracks Canvas (Freeform Lanes) -->
+      <div id="tlViewport" class="flex-1 overflow-x-auto overflow-y-hidden relative custom-scroll bg-[#0D0E12] cursor-pointer">
+        <div id="tlCanvas" class="relative h-full min-w-full flex flex-col">
+          <div id="tlInOutRange" class="hidden absolute top-0 bottom-0 bg-cyan-500/12 border-x-2 border-cyan-400 pointer-events-none z-10"></div>
+          <div id="tlRuler" class="h-6 border-b border-[#22242C] relative bg-[#13151B] shrink-0"></div>
+          <!-- Freeform Upper Visual Canvas (Dynamic Overlay Lanes + Main Video Track) -->
+          <div class="flex-1 flex flex-col justify-end relative border-b border-[#262934] bg-[#0F1116]">
+            <div id="trackSubs" class="tl-row-sub h-7 relative"></div>
+            <div id="trackOverlays" class="tl-row-ov h-7 relative"></div>
+            <div id="trackVideo" class="tl-row-vid h-11 bg-[#14171F] border-t border-[#222530] relative"></div>
+          </div>
+          <!-- Lower Audio Canvas -->
+          <div id="trackAudio" class="tl-row-aud h-9 relative bg-[#0C0E12] shrink-0"></div>
+
+          <div id="tlPlayhead" class="absolute top-0 bottom-0 w-[2px] bg-cyan-400 z-30 cursor-ew-resize" style="left: 0px;">
+            <div id="tlPlayheadHead" class="w-3.5 h-3.5 -ml-[6px] bg-cyan-400 rotate-45 shadow cursor-ew-resize"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODE B: BOTTOM DOCK AI CHAT EDITOR (Replaces Timeline when "Trợ lý AI" is clicked) -->
+    <div id="tlAiChatBar" class="hidden flex-1 min-h-0 flex flex-col bg-[#101217] px-4 py-2.5 gap-2 overflow-hidden">
+      <div class="flex items-center justify-between gap-3 shrink-0">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="text-xs font-bold text-zinc-100 whitespace-nowrap">Trợ lý AI Dựng Video</span>
+          <div id="aiChatQuickChips" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+            <button type="button" data-chat-prompt="Rút gọn video súc tích khoảng 45 giây và giữ nhịp nhanh" class="ai-chip px-2.5 py-1 rounded-md border border-[#262932] bg-[#171A21] hover:border-cyan-400 text-xs font-medium text-zinc-300 whitespace-nowrap transition-colors">Rút gọn 45s</button>
+            <button type="button" data-chat-prompt="Lọc bỏ toàn bộ từ buôn bán, giá cả, chốt đơn có nguy cơ bóp traffic" class="ai-chip px-2.5 py-1 rounded-md border border-[#262932] bg-[#171A21] hover:border-cyan-400 text-xs font-medium text-zinc-300 whitespace-nowrap transition-colors">Lọc từ bóp traffic</button>
+            <button type="button" data-chat-prompt="Rà và sửa lỗi chính tả tiếng Việt trong toàn bộ phụ đề" class="ai-chip px-2.5 py-1 rounded-md border border-[#262932] bg-[#171A21] hover:border-cyan-400 text-xs font-medium text-zinc-300 whitespace-nowrap transition-colors">Sửa chính tả phụ đề</button>
+            <button type="button" data-chat-prompt="Chọn lại câu Hook 3 giây đầu ấn tượng nhất và viết tiêu đề đầy đủ" class="ai-chip px-2.5 py-1 rounded-md border border-[#262932] bg-[#171A21] hover:border-cyan-400 text-xs font-medium text-zinc-300 whitespace-nowrap transition-colors">Đổi Hook 3 giây</button>
+            <button type="button" data-chat-prompt="Tự chèn B-Roll cận cảnh và xóa mọi logo thừa không cần thiết" class="ai-chip px-2.5 py-1 rounded-md border border-[#262932] bg-[#171A21] hover:border-cyan-400 text-xs font-medium text-zinc-300 whitespace-nowrap transition-colors">Chèn B-Roll cận cảnh</button>
+          </div>
+        </div>
+        <div class="flex items-center gap-1.5 shrink-0">
+          <button id="btnClearAiChatView" type="button" class="h-6 px-2.5 rounded border border-[#282B35] bg-[#171A21] hover:bg-[#222630] text-xs text-zinc-300">Làm mới</button>
+          <button id="btnBackToTimelineFromChat" type="button" class="h-6 px-2.5 rounded bg-[#1E222B] hover:bg-[#282D38] text-xs font-semibold text-cyan-300">Đóng Chat · Về Timeline</button>
+        </div>
+      </div>
+
+      <div id="aiChatMessages" class="flex-1 min-h-0 overflow-y-auto rounded-lg border border-[#22252E] bg-[#0B0C0F] px-3 py-2 space-y-2 custom-scroll text-xs">
+        <div class="p-2 rounded-md bg-[#14171E] border border-[#232731] text-zinc-300 text-xs leading-relaxed">
+          Nhập yêu cầu chỉnh sửa bằng tiếng Việt: <b>"Cắt gọn còn 45s"</b>, <b>"Đảo cảnh số 3 lên đầu"</b>, <b>"Đổi tiêu đề Hook thành: MÁY ĐỌC SÁCH NHỎ NHẤT THẾ GIỚI"</b>, hoặc <b>"Lọc từ buôn bán giá cả"</b>.
+        </div>
+      </div>
+
+      <form id="formAiChat" class="flex items-center gap-2 shrink-0">
+        <input
+          id="inpAiChatMessage"
+          type="text"
+          placeholder="Nhập lệnh chỉnh sửa video trực tiếp (nhấn Enter để gửi)..."
+          class="flex-1 h-8 rounded-lg border border-[#262932] bg-[#161920] px-3 text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-cyan-400"
+        />
+        <button
+          id="btnSendAiChat"
+          type="submit"
+          class="h-8 px-4 rounded-lg bg-cyan-400 hover:bg-cyan-300 text-zinc-950 text-xs font-bold shrink-0 transition-colors"
+        >
+          Gửi lệnh
+        </button>
+      </form>
+    </div>
+  </footer>
+
+  <!-- MOBILE / VERY COMPACT BOTTOM WORKSPACE SWITCHER (< 768px) -->
+  <nav id="mobileNav" class="md:hidden h-12 bg-[#111115] border-t border-[#26262F] grid grid-cols-4 shrink-0 z-30">
+    <button data-mnav="stage" class="mnav-btn active flex flex-col items-center justify-center gap-0.5 text-[11px] font-semibold">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="6" y="2" width="12" height="20" rx="2"/></svg>
+      <span>Stage 9:16</span>
+    </button>
+    <button data-mnav="edl" class="mnav-btn flex flex-col items-center justify-center gap-0.5 text-[11px] font-medium">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      <span>Pool &amp; EDL</span>
+    </button>
+    <button data-mnav="inspector" class="mnav-btn flex flex-col items-center justify-center gap-0.5 text-[11px] font-medium">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/></svg>
+      <span>Điều chỉnh</span>
+    </button>
+    <button data-mnav="timeline" class="mnav-btn flex flex-col items-center justify-center gap-0.5 text-[11px] font-medium">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <span>Timeline</span>
+    </button>
+  </nav>
+
+  <!-- MODAL: CAPCUT DESKTOP EXPORT (2-COLUMN COVER PREVIEW + FORM + INTEGRATED AI MODE) -->
+  <div id="modalExport" class="hidden fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-[#18191D] rounded-2xl border border-[#2A2C34] shadow-2xl w-full max-w-[680px] max-h-[92dvh] flex flex-col overflow-hidden">
+      <!-- Top Title Bar -->
+      <div class="px-5 py-3.5 border-b border-[#25272F] flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2">
+          <h2 id="expModalTitle" class="text-sm font-semibold text-zinc-100">Export</h2>
+          <span id="expHeaderSub" class="text-xs text-zinc-500">1080P · 30fps · Rec.709</span>
+        </div>
+        <button id="btnCloseExport" class="h-7 w-7 rounded-md hover:bg-zinc-800 text-zinc-400 text-xs">✕</button>
+      </div>
+
+      <!-- VIEW 1: CAPCUT 2-COLUMN EXPORT CONFIG -->
+      <div id="exportConfigView" class="flex-1 min-h-0 flex flex-col">
+        <div class="p-5 grid grid-cols-1 sm:grid-cols-12 gap-5 overflow-y-auto custom-scroll">
+          <!-- Left Cover Preview -->
+          <div class="sm:col-span-5 flex flex-col items-center">
+            <div class="w-full max-w-[200px] aspect-[9/16] rounded-xl bg-[#0B0C0F] border border-[#282A32] overflow-hidden relative flex items-center justify-center shadow-inner">
+              <img id="expCoverThumbImg" src="/static/favicon.svg?v=4.0" alt="Cover" class="w-full h-full object-cover" />
+              <div class="absolute top-2.5 left-2.5 px-2 py-1 rounded-md bg-black/70 text-[11px] font-medium text-zinc-200">
+                Ảnh bìa 9:16
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Form Fields -->
+          <div class="sm:col-span-7 space-y-3 text-xs">
+            <div class="grid grid-cols-12 items-center gap-2">
+              <span class="col-span-4 text-zinc-400">Timeline xuất</span>
+              <span class="col-span-8 text-zinc-200 font-medium">Timeline 01</span>
+            </div>
+
+            <div class="grid grid-cols-12 items-center gap-2">
+              <label for="expInpTopic" class="col-span-4 text-zinc-400">Tên video</label>
+              <input id="expInpTopic" type="text" placeholder="Review máy đọc sách XTEINK" class="col-span-8 h-8 rounded-lg bg-[#23252C] border border-[#32353F] px-2.5 text-xs text-zinc-100 focus:outline-none focus:border-cyan-400" />
+            </div>
+
+            <div class="grid grid-cols-12 items-center gap-2">
+              <span class="col-span-4 text-zinc-400">Lưu tại</span>
+              <div class="col-span-8 flex items-center gap-1.5 min-w-0">
+                <div id="expFilenamePreview" class="flex-1 h-8 rounded-lg bg-[#23252C] border border-[#32353F] px-2.5 flex items-center text-xs font-mono text-zinc-300 truncate">Projects/Demo/05_output/Review máy đọc sách XTEINK.mp4</div>
+              </div>
+            </div>
+
+            <div class="pt-2 border-t border-[#262830] space-y-2.5">
+              <div class="flex items-center gap-2 text-xs font-semibold text-zinc-100">
+                <span class="w-3.5 h-3.5 rounded-sm bg-cyan-400 text-zinc-950 flex items-center justify-center text-[10px] font-bold">✓</span>
+                <span>Video</span>
+              </div>
+
+              <div class="grid grid-cols-12 items-center gap-2">
+                <span class="col-span-4 text-zinc-400">Độ phân giải</span>
+                <select class="col-span-8 h-8 rounded-lg bg-[#23252C] border border-[#32353F] px-2.5 text-xs text-zinc-200 focus:outline-none">
+                  <option value="1080p" selected>1080P (1080×1920)</option>
+                </select>
+              </div>
+
+              <div class="grid grid-cols-12 items-center gap-2">
+                <span class="col-span-4 text-zinc-400">Codec &amp; Định dạng</span>
+                <div class="col-span-8 grid grid-cols-2 gap-1.5">
+                  <div class="h-8 rounded-lg bg-[#23252C] border border-[#32353F] px-2.5 flex items-center text-xs text-zinc-200">H.264 / AVC</div>
+                  <div class="h-8 rounded-lg bg-[#23252C] border border-[#32353F] px-2.5 flex items-center text-xs text-zinc-200">mp4 · 30fps</div>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-12 items-center gap-2">
+                <span class="col-span-4 text-zinc-400">Không gian màu</span>
+                <span class="col-span-8 text-zinc-400">Rec. 709 SDR · Âm thanh -14 LUFS</span>
+              </div>
+
+              <label class="flex items-center justify-between pt-1 text-zinc-300 cursor-pointer">
+                <span>Ghi đè bản xuất cũ cùng tên</span>
+                <input id="expChkOverwrite" type="checkbox" checked class="rounded accent-cyan-400" />
+              </label>
+              <input id="expChkOtherPlatforms" type="checkbox" class="hidden" />
+            </div>
+
+            <!-- INTEGRATED AI MODE (Merged into Export Modal) -->
+            <div class="pt-2.5 border-t border-[#262830] space-y-2.5">
+              <label class="flex items-center justify-between cursor-pointer">
+                <span class="text-xs font-semibold text-zinc-100">Tự động hoàn thiện AI trước khi xuất (AI Mode)</span>
+                <input id="chkExportRunAiMode" type="checkbox" class="w-4 h-4 rounded accent-cyan-400" />
+              </label>
+
+              <div id="exportAiModeBody" class="hidden p-3 rounded-xl bg-[#13151B] border border-[#262934] space-y-2.5 text-xs">
+                <div class="grid grid-cols-12 items-center gap-2">
+                  <span class="col-span-5 text-zinc-400">Kiểu cắt nhịp</span>
+                  <select id="selAutoEditMode" class="col-span-7 h-7 rounded-md border border-[#2E323E] bg-[#1C1F28] px-2 text-xs text-zinc-100 focus:outline-none focus:border-cyan-400">
+                    <option value="retake_select">Theo Nội dung &amp; Brief</option>
+                    <option value="sync_broll">Khớp B-Roll / Demo sản phẩm</option>
+                    <option value="reorder_concise">Nhịp nhanh (&lt; 48s Hook Punch)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <div class="flex items-center justify-between mb-1">
+                    <span class="text-zinc-400">Số lượng Thẻ B-Roll</span>
+                    <span id="valAutoBrollCount" class="font-mono font-semibold text-cyan-400">3 thẻ</span>
+                  </div>
+                  <div class="grid grid-cols-6 gap-1" id="brollCountPills">
+                    <button type="button" data-bcount="0" class="bcount-btn h-6 rounded border border-[#262934] bg-[#1A1D24] text-[11px] font-medium text-zinc-300">Tắt</button>
+                    <button type="button" data-bcount="1" class="bcount-btn h-6 rounded border border-[#262934] bg-[#1A1D24] text-[11px] font-mono text-zinc-300">1</button>
+                    <button type="button" data-bcount="2" class="bcount-btn h-6 rounded border border-[#262934] bg-[#1A1D24] text-[11px] font-mono text-zinc-300">2</button>
+                    <button type="button" data-bcount="3" class="bcount-btn active h-6 rounded border border-cyan-500 bg-cyan-500 text-zinc-950 text-[11px] font-mono font-bold">3</button>
+                    <button type="button" data-bcount="4" class="bcount-btn h-6 rounded border border-[#262934] bg-[#1A1D24] text-[11px] font-mono text-zinc-300">4</button>
+                    <button type="button" data-bcount="5" class="bcount-btn h-6 rounded border border-[#262934] bg-[#1A1D24] text-[11px] font-mono text-zinc-300">5</button>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-1.5 pt-1">
+                  <label class="flex items-center gap-1.5 text-zinc-300 cursor-pointer">
+                    <input id="chkAutoDemoBroll" type="checkbox" checked class="rounded accent-cyan-400" />
+                    <span>B-Roll quay cận</span>
+                  </label>
+                  <label class="flex items-center gap-1.5 text-zinc-300 cursor-pointer">
+                    <input id="chkAutoDynamicZoom" type="checkbox" checked class="rounded accent-cyan-400" />
+                    <span>Đổi góc Zoom</span>
+                  </label>
+                  <label class="flex items-center gap-1.5 text-zinc-300 cursor-pointer">
+                    <input id="chkAutoAiColor" type="checkbox" checked class="rounded accent-cyan-400" />
+                    <span>Auto Color + LUT</span>
+                  </label>
+                  <label class="flex items-center gap-1.5 text-zinc-300 cursor-pointer">
+                    <input id="chkAutoMusic" type="checkbox" checked class="rounded accent-cyan-400" />
+                    <span>Nhạc nền &amp; SFX</span>
+                  </label>
+                </div>
+
+                <div class="pt-1 flex justify-end">
+                  <button id="btnAutoBuildOnly" type="button" class="h-7 px-3 rounded-md border border-[#323644] bg-[#1E222B] hover:bg-[#282D38] text-zinc-200 text-xs font-medium">
+                    Chỉ dựng lên Timeline trước
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Footer Bar (Duration | Size + Cancel / Export) -->
+        <div class="px-5 py-3 border-t border-[#25272F] bg-[#141519] flex items-center justify-between gap-3 shrink-0">
+          <div class="flex items-center gap-2 text-xs text-zinc-400">
+            <span>Thời lượng: <b id="expDurSummary" class="text-zinc-200 font-mono">0.0s</b></span>
+            <span>|</span>
+            <span id="expSegSummary">0 cảnh</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="btnCancelExport" type="button" class="h-8 px-5 rounded-lg bg-[#2A2D35] hover:bg-[#343842] text-zinc-200 text-xs font-semibold">Cancel</button>
+            <button id="btnStartExport" type="button" class="h-8 px-6 rounded-lg bg-[#22D3EE] hover:bg-[#06B6D4] text-zinc-950 text-xs font-bold shadow">
+              Export
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW 2: PROGRESS -->
+      <div id="exportProgressView" class="hidden p-5 space-y-4">
+        <div class="p-4 rounded-xl border border-[#282B35] bg-[#14161B] space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-zinc-100" id="expStepLabel">Đang chuẩn bị xuất...</span>
+            <div class="flex items-center gap-2 font-mono text-xs">
+              <span id="expElapsedText" class="text-zinc-400">0.0s</span>
+              <span id="expPctText" class="font-bold text-cyan-400">5%</span>
+            </div>
+          </div>
+          <div class="w-full h-2 rounded-full bg-zinc-900 border border-[#26262F] overflow-hidden">
+            <div id="expProgressBar" class="h-full rounded-full bg-cyan-400 transition-all duration-300" style="width: 5%;"></div>
+          </div>
+          <div class="grid grid-cols-5 gap-1.5 pt-1 text-center text-[11px] font-mono">
+            <div data-estep="1" class="exp-step-pill px-1 py-1 rounded bg-zinc-900 border border-zinc-800 text-zinc-400">1. Props</div>
+            <div data-estep="2" class="exp-step-pill px-1 py-1 rounded bg-zinc-900 border border-zinc-800 text-zinc-400">2. Cắt EDL</div>
+            <div data-estep="3" class="exp-step-pill px-1 py-1 rounded bg-zinc-900 border border-zinc-800 text-zinc-400">3. Audio</div>
+            <div data-estep="4" class="exp-step-pill px-1 py-1 rounded bg-zinc-900 border border-zinc-800 text-zinc-400">4. Render</div>
+            <div data-estep="5" class="exp-step-pill px-1 py-1 rounded bg-zinc-900 border border-zinc-800 text-zinc-400">5. QA</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="text-xs font-semibold text-zinc-400 mb-1">Nhật ký tiến trình</div>
+          <pre id="expLogBox" class="p-3 rounded-lg bg-[#0B0C0E] border border-[#252830] text-xs font-mono text-zinc-300 max-h-40 overflow-y-auto custom-scroll whitespace-pre-wrap"></pre>
+        </div>
+      </div>
+
+      <!-- VIEW 3: RESULT -->
+      <div id="exportResultView" class="hidden p-5 space-y-4">
+        <div id="expResultBanner" class="p-4 rounded-xl border border-emerald-500/40 bg-emerald-500/10 space-y-1.5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-emerald-300">Xuất video hoàn tất</span>
+            <span id="expResultQaBadge" class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono text-[11px] font-bold">QA PASS</span>
+          </div>
+          <div id="expResultFile" class="text-xs font-mono text-zinc-100 truncate"></div>
+          <div id="expResultMeta" class="text-xs text-zinc-300 font-mono"></div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2.5">
+          <button id="btnExpPlayNow" class="h-8 rounded-lg bg-cyan-400 hover:bg-cyan-300 text-zinc-950 text-xs font-bold">Phát xem ngay</button>
+          <button id="btnExpOpenFolder" class="h-8 rounded-lg border border-zinc-700 bg-[#22252D] hover:bg-[#2B2F39] text-zinc-200 text-xs font-semibold">Mở thư mục xuất</button>
+          <a id="btnExpDownload" href="#" download class="h-8 rounded-lg border border-cyan-500/40 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 text-xs font-semibold flex items-center justify-center">Tải MP4</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: NEW PROJECT WIZARD -->
+  <div id="modalNewProject" class="hidden fixed inset-0 bg-black/65 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-[#141419] rounded-xl border border-[#26262F] shadow-2xl w-full max-w-md max-h-[92dvh] flex flex-col overflow-hidden">
+      <div class="px-4 py-3 border-b border-[#26262F] flex items-center justify-between shrink-0">
+        <div>
+          <h2 class="text-sm font-bold text-zinc-100">Tạo Dự Án Video Mới</h2>
+          <p class="text-[11px] text-zinc-400">Không gian làm việc độc lập hoàn toàn, không dính trạng thái cũ.</p>
+        </div>
+        <button id="btnCloseNewProject" class="h-7 w-7 rounded-md hover:bg-zinc-800 text-zinc-400">✕</button>
+      </div>
+      <div class="p-4 space-y-3 overflow-y-auto custom-scroll">
+        <div>
+          <label class="block text-xs font-medium text-zinc-300 mb-1">Tên dự án (chữ thường không dấu, nối gạch ngang)</label>
+          <input id="inpNewProjName" type="text" placeholder="vd: setup-tiktokshop-v1" class="w-full h-8 rounded-md border border-[#26262F] bg-[#18181E] px-2.5 text-xs font-mono text-zinc-100 focus:outline-none focus:border-cyan-500" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-zinc-300 mb-1">Brief / Dàn ý ban đầu (tùy chọn)</label>
+          <textarea id="inpNewProjBrief" rows="3" placeholder="- Hook 3s đầu nêu nỗi đau&#10;- 3 bước xử lý thực chiến&#10;- Kêu gọi comment cuối video" class="w-full rounded-md border border-[#26262F] bg-[#18181E] p-2 text-xs text-zinc-100 focus:outline-none focus:border-cyan-500"></textarea>
+        </div>
+        <label class="flex items-center gap-2 text-xs text-zinc-300">
+          <input id="chkNewProjAutoBroll" type="checkbox" checked class="rounded accent-cyan-400" />
+          <span>Bật sẵn chế độ AI Auto B-Roll cho dự án này</span>
+        </label>
+        <div class="flex justify-end gap-2 pt-2">
+          <button id="btnCancelNewProject" class="h-8 px-3 rounded-md border border-zinc-700 bg-transparent text-zinc-300 text-xs font-medium">Hủy</button>
+          <button id="btnConfirmNewProject" class="h-8 px-4 rounded-md bg-cyan-500 hover:bg-cyan-400 text-zinc-950 text-xs font-bold">Tạo &amp; Mở Dự Án</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: RANGE MARKER [IN - OUT] -->
+  <div id="modalRangeMarker" class="hidden fixed inset-0 bg-black/65 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-[#141419] rounded-xl border border-[#26262F] shadow-2xl w-full max-w-md max-h-[92dvh] flex flex-col overflow-hidden">
+      <div class="px-4 py-3 border-b border-[#26262F] flex items-center justify-between shrink-0">
+        <div>
+          <h2 class="text-sm font-bold text-zinc-100">Đánh dấu khoảng Trước – Sau `[In → Out]`</h2>
+          <p id="rangeModalTimeLabel" class="text-[11px] font-mono text-cyan-400">00:00.0 → 00:03.0</p>
+        </div>
+        <button id="btnCloseRangeModal" class="h-7 w-7 rounded-md hover:bg-zinc-800 text-zinc-400">✕</button>
+      </div>
+      <div class="p-4 space-y-3 overflow-y-auto custom-scroll">
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-[11px] text-zinc-400 mb-1">Điểm Đầu In (giây)</label>
+            <input id="inpRangeIn" type="number" step="0.1" class="w-full h-8 rounded border border-[#26262F] bg-[#18181E] px-2 text-xs font-mono text-zinc-100" />
+          </div>
+          <div>
+            <label class="block text-[11px] text-zinc-400 mb-1">Điểm Cuối Out (giây)</label>
+            <input id="inpRangeOut" type="number" step="0.1" class="w-full h-8 rounded border border-[#26262F] bg-[#18181E] px-2 text-xs font-mono text-zinc-100" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-zinc-300 mb-1">Ghi chú / Nội dung B-Roll hoặc Thẻ cho khoảng này</label>
+          <input id="inpRangeNote" type="text" placeholder="vd: Chèn B-roll quay cận cảnh sản phẩm..." class="w-full h-8 rounded border border-[#26262F] bg-[#18181E] px-2.5 text-xs text-zinc-100" />
+        </div>
+        <div class="grid grid-cols-1 gap-2 pt-1">
+          <button id="btnSaveRangeNote" class="h-8 rounded-md bg-cyan-500 hover:bg-cyan-400 text-zinc-950 text-xs font-bold">
+            Lưu Note Đánh Dấu lên Timeline
+          </button>
+          <button id="btnCreateRangeBroll" class="h-8 rounded-md border border-cyan-500/40 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 text-xs font-bold">
+            Tạo Thẻ / B-Roll khớp đúng khoảng [In → Out]
+          </button>
+          <button id="btnCutOutRange" class="h-8 rounded-md border border-rose-500/40 bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 text-xs font-semibold">
+            Cắt bỏ khoảng Video [In → Out] khỏi EDL
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: CAPCUT DESKTOP SETTINGS (4 TABS: DRAFT / EDIT / PERFORMANCE / GENERAL) -->
+  <div id="modalBridge" class="hidden fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-[#18191D] rounded-2xl border border-[#2A2C34] shadow-2xl w-full max-w-[600px] max-h-[90dvh] flex flex-col overflow-hidden">
+      <!-- Title Bar -->
+      <div class="px-5 py-3.5 flex items-center justify-between shrink-0">
+        <h2 class="text-sm font-semibold text-zinc-100">Settings</h2>
+        <button id="btnCloseBridge" class="h-7 w-7 rounded-md hover:bg-zinc-800 text-zinc-400 text-xs">✕</button>
+      </div>
+
+      <!-- Segmented Tab Bar (Draft / Edit / Performance / General) -->
+      <div class="px-5 pb-3 shrink-0">
+        <div id="settingsTabBar" class="grid grid-cols-4 rounded-xl bg-[#111216] p-1 border border-[#24262E]">
+          <button type="button" data-stab="draft" class="stab-btn active h-8 rounded-lg bg-[#2A2D36] text-xs font-semibold text-zinc-100 transition-colors">Draft</button>
+          <button type="button" data-stab="edit" class="stab-btn h-8 rounded-lg text-xs font-medium text-zinc-400 hover:text-zinc-200 transition-colors">Edit</button>
+          <button type="button" data-stab="performance" class="stab-btn h-8 rounded-lg text-xs font-medium text-zinc-400 hover:text-zinc-200 transition-colors">Performance</button>
+          <button type="button" data-stab="general" class="stab-btn h-8 rounded-lg text-xs font-medium text-zinc-400 hover:text-zinc-200 transition-colors">General</button>
+        </div>
+      </div>
+
+      <!-- Tab Content Body -->
+      <div class="px-5 py-2 flex-1 min-h-0 overflow-y-auto custom-scroll">
+        <div class="p-4 rounded-xl bg-[#121317] border border-[#23252D]">
+
+          <!-- TAB 1: DRAFT (Paths & Cache like CapCut Settings screenshot) -->
+          <div id="stab-draft" class="stab-pane space-y-4 text-xs">
+            <div class="grid grid-cols-12 items-center gap-3">
+              <span class="col-span-4 text-zinc-400">Thư mục dự án</span>
+              <div class="col-span-8 flex items-center gap-1.5">
+                <input id="inpSettingsProjectsPath" type="text" readonly value="Projects/" class="flex-1 h-8 rounded-lg bg-[#23252C] border border-[#32353F] px-3 text-xs font-mono text-zinc-200" />
+                <button id="btnSettingsOpenProjectsDir" type="button" title="Mở thư mục" class="h-8 w-8 rounded-lg bg-[#2A2D35] hover:bg-[#343842] text-zinc-200 flex items-center justify-center shrink-0">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-12 items-center gap-3">
+              <span class="col-span-4 text-zinc-400">Mẫu phong cách</span>
+              <div class="col-span-8 flex items-center gap-1.5">
+                <input id="inpSettingsStyleRefsPath" type="text" readonly value="StyleRefs/" class="flex-1 h-8 rounded-lg bg-[#23252C] border border-[#32353F] px-3 text-xs font-mono text-zinc-200" />
+                <button id="btnSettingsOpenStyleRefsDir" type="button" title="Mở thư mục" class="h-8 w-8 rounded-lg bg-[#2A2D35] hover:bg-[#343842] text-zinc-200 flex items-center justify-center shrink-0">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-12 items-start gap-3 pt-2 border-t border-[#22242C]">
+              <span class="col-span-4 text-zinc-400 pt-1">Bộ nhớ đệm (Cache)</span>
+              <div class="col-span-8 space-y-2">
+                <label class="flex items-center gap-2 text-zinc-200 cursor-pointer">
+                  <input type="radio" name="cachePolicy" value="keep" class="accent-cyan-400" />
+                  <span>Không tự xóa cache</span>
+                </label>
+                <label class="flex items-center gap-2 text-zinc-200 cursor-pointer">
+                  <input type="radio" name="cachePolicy" value="auto" checked class="accent-cyan-400" />
+                  <span>Tự dọn file tạm sau</span>
+                  <select class="h-7 rounded-md bg-[#23252C] border border-[#32353F] px-2 text-xs text-zinc-200">
+                    <option value="15" selected>15</option>
+                    <option value="30">30</option>
+                  </select>
+                  <span>ngày</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-12 items-center gap-3">
+              <span class="col-span-4 text-zinc-400">Dung lượng Cache</span>
+              <div class="col-span-8 flex items-center gap-2.5">
+                <span id="lblCacheSizeMb" class="font-mono font-bold text-zinc-100">0.0 MB</span>
+                <button id="btnClearCacheNow" type="button" title="Dọn bộ nhớ đệm" class="h-7 px-2.5 rounded-lg bg-[#2A2D35] hover:bg-rose-500/20 hover:text-rose-300 text-zinc-300 text-xs font-medium transition-colors">
+                  Dọn sạch
+                </button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-12 items-center gap-3 pt-2 border-t border-[#22242C]">
+              <span class="col-span-4 text-zinc-400">Cửa sổ App độc lập</span>
+              <div class="col-span-8 flex items-center justify-between">
+                <label class="flex items-center gap-2 text-zinc-300 cursor-pointer">
+                  <input id="chkPreferNativeWindow" type="checkbox" checked class="rounded accent-cyan-400" />
+                  <span>Mở thẳng cửa sổ App khi khởi chạy</span>
+                </label>
+                <button id="btnLaunchNativeWindow" type="button" class="h-7 px-2.5 rounded-lg bg-[#2A2D35] hover:bg-[#343842] text-zinc-200 text-xs font-medium">
+                  Mở App
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 2: EDIT (Default Engine, Whisper, Auto Traffic Filter) -->
+          <div id="stab-edit" class="stab-pane hidden space-y-4 text-xs">
+            <div class="grid grid-cols-12 items-center gap-3">
+              <span class="col-span-4 text-zinc-400">Chế độ Render</span>
+              <div class="col-span-8 flex items-center gap-2">
+                <select id="selSettingsDefaultEngine" class="flex-1 h-8 rounded-lg bg-[#23252C] border border-[#32353F] px-2.5 text-xs text-zinc-100">
+                  <option value="remotion" selected>Remotion Full (Mặc định · Đầy đủ hiệu ứng Hook, Sub động, Thẻ)</option>
+                  <option value="fast_gpu">Nhanh GPU (~15s · Cắt ghép &amp; Phụ đề nhanh)</option>
+                </select>
+                <select id="selRenderEngine" class="hidden">
+                  <option value="remotion" selected>Remotion Full</option>
+                  <option value="fast_gpu">Nhanh GPU</option>
+                </select>
+                <button id="btnApplyEngineNow" type="button" class="hidden">Áp dụng</button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-12 items-center gap-3">
+              <span class="col-span-4 text-zinc-400">Tự động lưu (Auto-save)</span>
+              <div class="col-span-8 text-zinc-300">
+                Đang bật — Mọi thao tác cắt, đảo cảnh, đổi chữ và màu sắc trên Timeline đều tự động lưu tức thì.
+              </div>
+            </div>
+
+            <div class="grid grid-cols-12 items-center gap-3">
+              <span class="col-span-4 text-zinc-400">Tốc độ nói mặc định</span>
+              <div class="col-span-8 flex items-center gap-2">
+                <span class="font-mono text-cyan-400">1.08x</span>
+                <span class="text-zinc-500">· Chuẩn hóa âm lượng -14 LUFS</span>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-12 items-center gap-3 pt-2 border-t border-[#22242C]">
+              <span class="col-span-4 text-zinc-400">Chống bóp tương tác</span>
+              <div class="col-span-8 text-zinc-300">
+                Tự động lọc bỏ các từ buôn bán, giá cả, chốt đơn và không tự chèn logo lạ vào video.
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 3: PERFORMANCE (GPU, CPU, Power Mode) -->
+          <div id="stab-performance" class="stab-pane hidden space-y-4 text-xs">
+            <div id="modalHardware" class="space-y-3.5">
+              <div class="flex items-center justify-between">
+                <span class="text-zinc-400">Hệ điều hành</span>
+                <span id="hwOsBadge" class="font-mono text-zinc-200">macOS / Windows</span>
+                <button id="btnCloseHardware" class="hidden" type="button">✕</button>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <div class="p-2.5 rounded-lg bg-[#1A1C22] border border-[#282B34]">
+                  <div class="text-[11px] text-zinc-400">Vi xử lý &amp; RAM</div>
+                  <div id="hwCpuInfo" class="font-semibold text-zinc-100 mt-0.5">—</div>
+                </div>
+                <div class="p-2.5 rounded-lg bg-[#1A1C22] border border-[#282B34]">
+                  <div class="text-[11px] text-zinc-400">GPU &amp; Bộ mã hóa</div>
+                  <div id="hwGpuInfo" class="font-semibold text-cyan-400 mt-0.5">—</div>
+                </div>
+              </div>
+              <div class="grid grid-cols-12 items-center gap-3 pt-1">
+                <span class="col-span-4 text-zinc-400">Chế độ phần cứng</span>
+                <select id="selPowerMode" class="col-span-8 h-8 rounded-lg bg-[#23252C] border border-[#32353F] px-2.5 text-xs text-zinc-100">
+                  <option value="auto">Auto (Tự động tối ưu VideoToolbox / NVENC)</option>
+                  <option value="turbo_gpu">Turbo GPU (Tối đa luồng CPU + GPU)</option>
+                  <option value="quality_cpu">Max Quality CPU (libx264 CRF 14)</option>
+                  <option value="eco">Eco (Tiết kiệm pin)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 4: GENERAL (AI API Keys, LAN, Webhook, Bridge & QA/Logs) -->
+          <div id="stab-general" class="stab-pane hidden space-y-3.5 text-xs">
+            <div class="flex items-center justify-between">
+              <span class="font-semibold text-zinc-200">Trợ lý AI &amp; API Key (<code>_tools/.env</code>)</span>
+              <span id="modalApiStatusBadge" class="text-[11px] font-mono px-2 py-0.5 rounded bg-[#23252C] text-cyan-300">Smart Local</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <div>
+                <label class="block text-[11px] text-zinc-400 mb-1">Gemini API Key</label>
+                <input id="inpGeminiKey" type="password" placeholder="AIza..." class="w-full h-8 rounded-lg bg-[#23252C] border border-[#32353F] px-2.5 text-xs font-mono text-zinc-100" />
+              </div>
+              <div>
+                <label class="block text-[11px] text-zinc-400 mb-1">OpenAI-compatible Key</label>
+                <input id="inpOpenAiKey" type="password" placeholder="sk-..." class="w-full h-8 rounded-lg bg-[#23252C] border border-[#32353F] px-2.5 text-xs font-mono text-zinc-100" />
+              </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <div>
+                <label class="block text-[11px] text-zinc-400 mb-1">Model ưu tiên</label>
+                <input id="inpLlmModel" type="text" placeholder="gemini-2.5-flash" class="w-full h-8 rounded-lg bg-[#23252C] border border-[#32353F] px-2.5 text-xs font-mono text-zinc-100" />
+              </div>
+              <div>
+                <label class="block text-[11px] text-zinc-400 mb-1">Base URL (tùy chọn)</label>
+                <input id="inpLlmBaseUrl" type="text" placeholder="https://api.openai.com/v1" class="w-full h-8 rounded-lg bg-[#23252C] border border-[#32353F] px-2.5 text-xs font-mono text-zinc-100" />
+              </div>
+            </div>
+            <div class="flex items-center justify-between pt-1">
+              <button id="btnClearApiKey" type="button" class="h-7 px-2.5 rounded-lg border border-rose-500/30 text-rose-300 bg-rose-500/10 hover:bg-rose-500/20 text-xs">
+                Xóa Key (Dùng Smart Local)
+              </button>
+              <button id="btnSaveApiKey" type="button" class="h-7 px-3 rounded-lg bg-[#2A2D35] hover:bg-[#343842] text-zinc-100 text-xs font-semibold">
+                Lưu API Key
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2 border-t border-[#22242C]">
+              <div>
+                <label class="block text-[11px] text-zinc-400 mb-1">Địa chỉ kết nối nội bộ</label>
+                <div class="flex gap-1">
+                  <input id="inpLanUrl" type="text" readonly class="flex-1 h-8 rounded-lg bg-[#23252C] border border-[#32353F] px-2.5 text-xs font-mono text-zinc-300" />
+                  <button id="btnCopyLanUrl" type="button" class="h-8 px-2.5 rounded-lg bg-[#2A2D35] hover:bg-[#343842] text-xs text-zinc-200">Copy</button>
+                </div>
+              </div>
+              <div>
+                <label class="block text-[11px] text-zinc-400 mb-1">Webhook URL (HTTPS)</label>
+                <input id="inpWebhookUrl" type="text" placeholder="https://example.com/webhook" class="w-full h-8 rounded-lg bg-[#23252C] border border-[#32353F] px-2.5 text-xs font-mono text-zinc-100" />
+              </div>
+            </div>
+
+            <details class="pt-2 border-t border-[#22242C]">
+              <summary class="cursor-pointer text-zinc-300 hover:text-zinc-100 font-medium select-none">Nhật ký xử lý &amp; Báo cáo kỹ thuật (Logs &amp; QA)</summary>
+              <div class="mt-2 space-y-2">
+                <div>
+                  <div class="text-[11px] text-zinc-400 mb-1">Kiểm tra kỹ thuật bản xuất (`qa_report.json`)</div>
+                  <pre id="qaReportBox" class="p-2.5 rounded-lg bg-[#0B0C0F] border border-[#242730] text-cyan-300 text-[11px] font-mono max-h-28 overflow-auto">Chưa có báo cáo QA.</pre>
+                </div>
+                <div>
+                  <div class="text-[11px] text-zinc-400 mb-1">Nhật ký tiến trình (`pipeline.log`)</div>
+                  <pre id="jobLogBox" class="hidden"></pre>
+                  <pre id="pipelineLogBox" class="p-2.5 rounded-lg bg-[#0B0C0F] border border-[#242730] text-zinc-400 text-[11px] font-mono max-h-32 overflow-auto"></pre>
+                </div>
+              </div>
+            </details>
+
+            <details class="pt-2 border-t border-[#22242C]">
+              <summary class="cursor-pointer text-zinc-400 hover:text-zinc-200 select-none">Antigravity Bridge thủ công (Prompt / JSON)</summary>
+              <div class="mt-2 space-y-2">
+                <div class="flex gap-2">
+                  <select id="bridgePreset" class="flex-1 h-7 rounded bg-[#23252C] border border-[#32353F] px-2 text-xs text-zinc-100">
+                    <option value="retake_select">retake_select</option>
+                    <option value="hook_pick">hook_pick</option>
+                    <option value="reorder_concise">reorder_concise</option>
+                    <option value="claims_rewrite">claims_rewrite</option>
+                  </select>
+                  <button id="btnGenerateBridgePrompt" type="button" class="h-7 px-2.5 rounded bg-cyan-400 text-zinc-950 text-xs font-bold">Copy Prompt</button>
+                </div>
+                <textarea id="txtBridgePrompt" rows="2" readonly class="w-full rounded bg-[#181A20] border border-[#282B34] p-2 text-[11px] font-mono text-zinc-300"></textarea>
+                <textarea id="txtBridgeJson" rows="2" placeholder='{"selected_ids": ["R01"]}' class="w-full rounded bg-[#181A20] border border-[#282B34] p-2 text-[11px] font-mono text-zinc-100"></textarea>
+                <button id="btnApplyBridgeJson" type="button" class="h-7 px-3 rounded bg-zinc-200 text-zinc-950 text-xs font-bold">Áp dụng JSON</button>
+              </div>
+            </details>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Bottom Cancel / Save Footer (Exact CapCut Settings layout) -->
+      <div class="px-5 py-3.5 grid grid-cols-2 gap-3 shrink-0">
+        <button id="btnCancelSettingsModal" type="button" class="h-9 rounded-lg bg-[#2A2D35] hover:bg-[#343842] text-zinc-200 text-xs font-semibold transition-colors">
+          Cancel
+        </button>
+        <button id="btnSaveHardware" type="button" class="h-9 rounded-lg bg-[#22D3EE] hover:bg-[#06B6D4] text-zinc-950 text-xs font-bold shadow transition-colors">
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toastWrap" class="fixed bottom-14 md:bottom-4 right-4 z-[60] flex flex-col gap-2 pointer-events-none"></div>
+
+  <script src="/static/app.js?v=4.0"></script>
+</body>
+</html>

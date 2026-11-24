@@ -1,0 +1,53 @@
+#!/bin/bash
+# macOS Native App Bundle Entrypoint for WishEdit
+set -u
+export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
+
+APP_CONTENTS="$(cd "$(dirname "$0")/.." && pwd)"
+PARENT_WORKSPACE="$(cd "$APP_CONTENTS/../.." && pwd)"
+BUNDLE_STUDIO="$APP_CONTENTS/Resources/studio"
+
+if [ -f "$PARENT_WORKSPACE/_tools/desktop_app.py" ] && [ -w "$PARENT_WORKSPACE" ]; then
+    WORK_DIR="$PARENT_WORKSPACE"
+elif [ -f "$BUNDLE_STUDIO/_tools/desktop_app.py" ]; then
+    WORK_DIR="$HOME/WishEdit"
+    BUNDLE_VER="$(cat "$BUNDLE_STUDIO/.bundle_version" 2>/dev/null || echo 'dev')"
+    INSTALLED_VER="$(cat "$WORK_DIR/.bundle_version" 2>/dev/null || echo '')"
+    if [ ! -f "$WORK_DIR/_tools/desktop_app.py" ] || [ "$BUNDLE_VER" != "$INSTALLED_VER" ]; then
+        mkdir -p "$WORK_DIR/Projects" "$WORK_DIR/StyleRefs"
+        rsync -a --exclude='.venv' --exclude='node_modules' --exclude='.cache' --exclude='.env' --exclude='__pycache__' \
+            "$BUNDLE_STUDIO/_tools/" "$WORK_DIR/_tools/"
+        rsync -a "$BUNDLE_STUDIO/.agents/" "$WORK_DIR/.agents/"
+        rsync -a "$BUNDLE_STUDIO/Projects/Template/" "$WORK_DIR/Projects/Template/"
+        [ -d "$BUNDLE_STUDIO/StyleRefs" ] && rsync -a --ignore-existing "$BUNDLE_STUDIO/StyleRefs/" "$WORK_DIR/StyleRefs/"
+        cp -f "$BUNDLE_STUDIO/WishEdit.command" "$WORK_DIR/WishEdit.command"
+        [ -f "$BUNDLE_STUDIO/README.md" ] && cp -f "$BUNDLE_STUDIO/README.md" "$WORK_DIR/README.md"
+        chmod +x "$WORK_DIR/WishEdit.command"
+        echo "$BUNDLE_VER" > "$WORK_DIR/.bundle_version"
+    fi
+else
+    WORK_DIR="$PARENT_WORKSPACE"
+fi
+
+cd "$WORK_DIR" || exit 1
+CMD_FILE="$WORK_DIR/WishEdit.command"
+chmod +x "$CMD_FILE" 2>/dev/null || true
+
+NEEDS_SETUP=0
+command -v python3 >/dev/null 2>&1 || NEEDS_SETUP=1
+command -v ffmpeg >/dev/null 2>&1 || NEEDS_SETUP=1
+command -v ffprobe >/dev/null 2>&1 || NEEDS_SETUP=1
+command -v node >/dev/null 2>&1 || NEEDS_SETUP=1
+[ -f "$WORK_DIR/_tools/.venv/bin/python" ] || NEEDS_SETUP=1
+[ -d "$WORK_DIR/_tools/remotion/node_modules" ] || NEEDS_SETUP=1
+
+if [ "$NEEDS_SETUP" -eq 1 ] && [ ! -t 1 ] && command -v osascript >/dev/null 2>&1; then
+    ESCAPED_CMD="${CMD_FILE//\"/\\\"}"
+    osascript -e "tell application \"Terminal\"
+        activate
+        do script \"bash \\\"$ESCAPED_CMD\\\"\"
+    end tell"
+    exit 0
+fi
+
+exec /bin/bash "$CMD_FILE" "$@"

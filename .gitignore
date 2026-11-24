@@ -1,0 +1,23 @@
+# macOS & OS
+.DS_Store
+*.log
+
+# Python & Local Venv / Cache
+__pycache__/
+*.py[cod]
+_tools/.venv/
+_tools/.cache/
+
+# Node / Remotion
+_tools/remotion/node_modules/
+_tools/remotion/out/
+_tools/remotion/public/
+
+# Secrets & Environment
+.env
+.env.*
+
+# Heavy Media & User Projects (keep only Template skeleton)
+Projects/*
+!Projects/Template/
+StyleRefs/_frames/

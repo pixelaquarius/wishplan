@@ -1,0 +1,535 @@
+/* anthinh Studio Pro — Commercial Dark NLE Design System (Multi-Scale Responsive & CapCut-Grade) */
+
+:root {
+  --bg-canvas: #09090B;
+  --bg-panel: #111115;
+  --bg-elevated: #18181E;
+  --bg-hover: #22222A;
+  --bg-input: #141419;
+  --border-subtle: #26262F;
+  --border-focus: #06B6D4;
+  --text-primary: #F4F4F5;
+  --text-secondary: #A1A1AA;
+  --text-muted: #71717A;
+  --accent-primary: #06B6D4;
+  --accent-blue: #3B82F6;
+  --accent-amber: #F59E0B;
+  --accent-emerald: #10B981;
+  --accent-rose: #F43F5E;
+  --stage-scale: 1;
+}
+
+@layer base {
+  html, body {
+    height: 100dvh;
+    width: 100vw;
+    overflow: hidden;
+  }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--bg-canvas);
+    color: var(--text-primary);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-font-smoothing: antialiased;
+  }
+  code, .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+#liveOverlayLayer, #liveOverlayLayer * {
+  font-family: 'Be Vietnam Pro', 'Inter', sans-serif;
+}
+
+/* Overflow toolbar helper */
+.is-overflowed {
+  display: none !important;
+}
+
+header.compact-labels .hdr-long-label {
+  display: none;
+}
+header.compact-labels .hdr-short-label {
+  display: inline;
+}
+header:not(.compact-labels) .hdr-short-label {
+  display: none;
+}
+
+/* Navigation & Tab Pills */
+.left-tab, .pool-tab, .edl-filter, .insp-tab, .stage-mode-btn, .pool-x-btn, .pool-y-btn, .compact-wb-btn {
+  color: var(--text-secondary);
+  transition: color 120ms ease, background-color 120ms ease, border-color 120ms ease;
+}
+.left-tab:hover, .pool-tab:hover, .edl-filter:hover, .insp-tab:hover, .stage-mode-btn:hover, .pool-x-btn:hover, .pool-y-btn:hover, .compact-wb-btn:hover {
+  color: var(--text-primary);
+  background-color: var(--bg-hover);
+}
+.left-tab.active, .insp-tab.active, .compact-wb-btn.active {
+  background-color: rgba(6, 182, 212, 0.14);
+  color: #22D3EE;
+  border: 1px solid rgba(6, 182, 212, 0.35);
+}
+
+/* CapCut 2-Column X & Y Media Pool Navigation (Container-Query Adaptive!) */
+#paneLeft {
+  container-type: inline-size;
+  container-name: leftpane;
+}
+#paneStage {
+  container-type: inline-size;
+  container-name: stagepane;
+}
+#paneRight {
+  container-type: inline-size;
+  container-name: rightpane;
+}
+
+.pool-x-btn {
+  position: relative;
+  border-radius: 8px;
+}
+.pool-x-btn.active {
+  color: #22D3EE;
+  background-color: rgba(6, 182, 212, 0.12);
+}
+.pool-x-btn.active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 7px;
+  bottom: 7px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background-color: #06B6D4;
+}
+
+.pool-y-btn {
+  position: relative;
+  border-radius: 6px;
+  text-align: left;
+}
+.pool-y-btn.active {
+  color: #F4F4F5;
+  background-color: #1C1C24;
+  border: 1px solid rgba(6, 182, 212, 0.35);
+}
+
+/* When Media Pool pane is narrow (< 355px), switch Column Y from side rail to clean horizontal pill bar above assets */
+@container leftpane (max-width: 355px) {
+  #poolColX {
+    width: 48px !important;
+  }
+  #poolSubWrap {
+    flex-direction: column !important;
+  }
+  #poolColY {
+    width: 100% !important;
+    border-right: none !important;
+    border-bottom: 1px solid #26262F !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    padding: 5px 6px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    flex-shrink: 0 !important;
+    gap: 4px !important;
+  }
+  #poolSubcategoryList {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 4px !important;
+    width: auto !important;
+  }
+  #poolSubcategoryList .pool-y-btn {
+    width: auto !important;
+    white-space: nowrap !important;
+    padding: 4px 8px !important;
+  }
+  #btnColYAdjust {
+    margin-top: 0 !important;
+    width: auto !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+}
+
+/* Stage Header & Transport compact adaptation when center pane is narrow */
+@container stagepane (max-width: 360px) {
+  #stageTitleLabel {
+    display: none !important;
+  }
+  #stageSourceInfo {
+    display: none !important;
+  }
+  #stageHeaderBar {
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+}
+
+/* Right Inspector tabs clean wrap when narrow */
+@container rightpane (max-width: 340px) {
+  #inspectorTabs {
+    flex-wrap: wrap !important;
+    height: auto !important;
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+    gap: 3px !important;
+  }
+}
+
+.edl-filter.active, .stage-mode-btn.active {
+  background-color: var(--bg-elevated);
+  color: var(--text-primary);
+  border: 1px solid #3F3F46;
+}
+
+/* Responsive Asset Grid inside Media Pool */
+.pool-asset-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 8px;
+}
+
+/* Resizable Vertical Panel Splitters */
+.panel-splitter {
+  width: 5px;
+  flex-shrink: 0;
+  cursor: col-resize;
+  background-color: #16161C;
+  border-left: 1px solid #22222B;
+  border-right: 1px solid #22222B;
+  transition: background-color 120ms ease;
+  position: relative;
+  z-index: 10;
+}
+.panel-splitter:hover, .panel-splitter.dragging {
+  background-color: rgba(6, 182, 212, 0.45);
+}
+
+/* CapCut-Style Horizontal Timeline Resize Handle */
+.timeline-splitter {
+  height: 7px;
+  width: 100%;
+  flex-shrink: 0;
+  cursor: row-resize;
+  background-color: #111115;
+  border-top: 1px solid #26262F;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 120ms ease;
+  z-index: 25;
+}
+.timeline-splitter::after {
+  content: "";
+  width: 44px;
+  height: 3px;
+  border-radius: 999px;
+  background-color: #3F3F46;
+  transition: background-color 120ms ease, width 120ms ease;
+}
+.timeline-splitter:hover, .timeline-splitter.dragging {
+  background-color: rgba(6, 182, 212, 0.16);
+}
+.timeline-splitter:hover::after, .timeline-splitter.dragging::after {
+  background-color: #22D3EE;
+  width: 68px;
+}
+
+/* Storyboard EDL Cards */
+.edl-card {
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  background-color: var(--bg-elevated);
+  transition: border-color 120ms ease, background-color 120ms ease;
+}
+.edl-card:hover {
+  border-color: #3F3F46;
+}
+.edl-card.selected {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 1px rgba(6, 182, 212, 0.28);
+  background-color: rgba(6, 182, 212, 0.06);
+}
+.edl-card.dropped {
+  opacity: 0.45;
+  background-color: #121216;
+}
+
+/* Media Pool & LUT Cards */
+.asset-tile {
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  background-color: var(--bg-elevated);
+  transition: border-color 120ms ease, transform 120ms ease, background-color 120ms ease;
+}
+.asset-tile:hover {
+  border-color: #52525B;
+}
+.lut-card {
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  background-color: var(--bg-elevated);
+  cursor: pointer;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+.lut-card:hover {
+  border-color: #52525B;
+}
+.lut-card.active {
+  border-color: #22D3EE;
+  box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.35);
+  background-color: rgba(6, 182, 212, 0.08);
+}
+
+/* CapCut / Resolve Dark Multi-Track Timeline Blocks */
+.tl-block {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  border-radius: 5px;
+  font-size: 10px;
+  padding: 0 7px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+  transition: filter 100ms ease, box-shadow 100ms ease;
+}
+.tl-block:hover {
+  filter: brightness(1.12);
+}
+.tl-block:active {
+  cursor: grabbing;
+}
+.tl-block.selected {
+  box-shadow: 0 0 0 2px #22D3EE;
+  z-index: 15;
+}
+
+.tl-handle-l, .tl-handle-r {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 7px;
+  cursor: ew-resize;
+  background-color: rgba(255, 255, 255, 0.22);
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+.tl-block:hover .tl-handle-l,
+.tl-block:hover .tl-handle-r,
+.tl-block.selected .tl-handle-l,
+.tl-block.selected .tl-handle-r {
+  opacity: 1;
+}
+.tl-handle-l {
+  left: 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.5);
+}
+.tl-handle-r {
+  right: 0;
+  border-left: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Direct 9:16 Stage Canvas Draggable Overlays */
+.stage-draggable {
+  pointer-events: auto;
+  cursor: grab;
+  border: 1.5px dashed transparent;
+  border-radius: 8px;
+  transition: border-color 120ms ease;
+}
+.stage-draggable:hover {
+  border-color: rgba(34, 211, 238, 0.85);
+}
+.stage-draggable:active {
+  cursor: grabbing;
+  border-color: #22D3EE;
+}
+
+/* Dropzone active highlight */
+.dropzone-active {
+  border-color: #22D3EE !important;
+  background-color: rgba(6, 182, 212, 0.12) !important;
+}
+
+/* ==================== MULTI-SCALE & RESPONSIVE LAYOUT MODES ==================== */
+
+body[data-layout="wide"] .wide-only-btn {
+  display: inline-flex;
+}
+body:not([data-layout="wide"]) .wide-only-btn {
+  display: none !important;
+}
+
+body[data-layout="wide"] #paneLeft,
+body[data-layout="wide"] #paneStage,
+body[data-layout="wide"] #paneRight,
+body[data-layout="wide"] #paneTimeline {
+  display: flex;
+}
+body[data-layout="wide"] #paneLeft.panel-collapsed,
+body[data-layout="wide"] #paneRight.panel-collapsed,
+body[data-layout="wide"] #paneLeft.panel-collapsed + #splitterLeft,
+body[data-layout="wide"] #splitterRight.panel-collapsed {
+  display: none !important;
+}
+
+/* Compact 2-Column Mode (768px..1279px) */
+body[data-layout="compact"] #splitterLeft,
+body[data-layout="compact"] #splitterRight {
+  display: none !important;
+}
+body[data-layout="compact"] #paneStage,
+body[data-layout="compact"] #paneTimeline {
+  display: flex;
+}
+body[data-layout="compact"] #paneLeft,
+body[data-layout="compact"] #paneRight {
+  display: flex;
+  width: clamp(320px, 46%, 500px) !important;
+  max-width: 520px !important;
+  min-width: 290px !important;
+  border-left: 1px solid #26262F;
+  border-right: none;
+}
+body[data-layout="compact"] #paneLeft.compact-hidden,
+body[data-layout="compact"] #paneRight.compact-hidden {
+  display: none !important;
+}
+
+/* Mobile Mode (< 768px) */
+body[data-layout="mobile"] #splitterLeft,
+body[data-layout="mobile"] #splitterRight,
+body[data-layout="mobile"] #splitterTimeline {
+  display: none !important;
+}
+body[data-layout="mobile"] #paneLeft,
+body[data-layout="mobile"] #paneRight,
+body[data-layout="mobile"] #paneStage {
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  border-left: none;
+  border-right: none;
+}
+body[data-layout="mobile"] #paneTimeline.m-pane-active {
+  display: flex !important;
+  flex: 1 1 0% !important;
+  height: auto !important;
+  max-height: none !important;
+  min-height: 0 !important;
+}
+
+.mnav-btn {
+  color: var(--text-secondary);
+}
+.mnav-btn.active {
+  color: #22D3EE;
+  background-color: rgba(6, 182, 212, 0.1);
+  border-top: 2px solid #06B6D4;
+}
+
+/* ==================== TIMELINE SIZING (CAPCUT RESIZABLE) ==================== */
+#paneTimeline {
+  height: clamp(160px, 28dvh, 280px);
+}
+#paneTimeline.tl-collapsed {
+  height: 36px !important;
+  min-height: 36px !important;
+}
+#paneTimeline.tl-collapsed #tlTracksWrap {
+  display: none !important;
+}
+
+/* Mini Timeline mode when height < 175px (all 4 tracks fit cleanly!) */
+#paneTimeline.tl-mini #tlRuler,
+#paneTimeline.tl-mini #tlTrackHeaders > div:first-child {
+  height: 18px !important;
+  font-size: 10px !important;
+}
+#paneTimeline.tl-mini .tl-row-vid,
+#paneTimeline.tl-mini .tl-hdr-vid {
+  height: 28px !important;
+}
+#paneTimeline.tl-mini .tl-row-sub,
+#paneTimeline.tl-mini .tl-row-ov,
+#paneTimeline.tl-mini .tl-row-aud,
+#paneTimeline.tl-mini .tl-hdr-sub,
+#paneTimeline.tl-mini .tl-hdr-ov,
+#paneTimeline.tl-mini .tl-hdr-aud {
+  height: 22px !important;
+  font-size: 10px !important;
+}
+#paneTimeline.tl-mini .tl-block {
+  top: 2px;
+  bottom: 2px;
+  font-size: 10px;
+  padding: 0 5px;
+}
+
+/* Expanded Tall Timeline mode when height > 250px */
+#paneTimeline.tl-tall .tl-row-vid,
+#paneTimeline.tl-tall .tl-hdr-vid {
+  height: 54px;
+}
+#paneTimeline.tl-tall .tl-row-sub,
+#paneTimeline.tl-tall .tl-row-ov,
+#paneTimeline.tl-tall .tl-row-aud,
+#paneTimeline.tl-tall .tl-hdr-sub,
+#paneTimeline.tl-tall .tl-hdr-ov,
+#paneTimeline.tl-tall .tl-hdr-aud {
+  height: 40px;
+}
+
+/* Short Viewport Heights (125%-200% OS Scaling on Laptops / 720p / 768p) */
+@media (max-height: 760px) {
+  #topHeader {
+    height: 40px;
+  }
+  #paneLeft > div:first-child,
+  #paneRight > div:first-child,
+  #stageHeaderBar {
+    height: 34px;
+  }
+  #stageDropArea {
+    padding: 6px;
+  }
+  #stageTransportBar {
+    height: 36px;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}
+
+/* Custom Dark Scrollbars */
+.custom-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.custom-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: #27272A;
+  border-radius: 999px;
+}
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background: #3F3F46;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
