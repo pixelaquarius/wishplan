@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Chùa Vạn Phúc 3D 2027 — Đi Chùa Online &amp; Gieo Quẻ AR 3D</title>
+    <meta charset="UTF-8"><script src="../assets/clean-url.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tết WishPlan — Chùa Vạn Phúc 3D 2027 — Chế độ solo &amp; Gieo Quẻ AR 3D</title>
     <meta name="description" content="Thế giới Chùa Vạn Phúc 3D Tết Đinh Mùi 2027: Đồ họa 3D chân thực, sư thầy & 3 đồ đệ quét sân, tới gần bàn tự mở popup AR 3D lắc quẻ và xem Cổ Thư Giải Quẻ.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -717,19 +717,20 @@
     <!-- Top HUD -->
     <div class="hud-top">
         <div class="hud-group">
+            <a id="lab-context" class="hud-pill" href="../#lab" style="text-decoration:none;display:inline-flex;align-items:center;min-height:44px" title="Tết WishPlan là trải nghiệm giải trí solo">← WishPlan · Lab</a>
             <button id="openCustomBtn" class="hud-pill" type="button">👘 Nhân vật</button>
             <button id="openCareerBtn" class="hud-pill" type="button">⚖️ Bàn Sếp</button>
         </div>
 
         <div class="hud-countdown">
-            <div class="hud-cd-title">Nghỉ Tết 2027 (04/02)</div>
+            <div class="hud-cd-title" title="Mốc tự đặt cho trải nghiệm, không phải lịch nghỉ chính thức.">Mốc demo · 04/02/2027</div>
             <div class="hud-cd-time" id="hudCountdown">-- ngày --:--:--</div>
         </div>
 
         <div class="hud-group">
             <div class="hud-pill" id="onlineStatusPill">
                 <span class="online-dot"></span>
-                <span id="onlineCounter">Đang kết nối...</span>
+                <span id="onlineCounter">Chế độ solo • Không chia sẻ dữ liệu</span>
             </div>
             <button class="hud-pill merit-pill" id="meritPill" type="button" title="Mở Bảng Xếp Hạng Công Đức & Danh Sách Hành Thiện">🏆 Công Đức: 0</button>
             <button id="soundToggleBtn" class="hud-pill" type="button">🔊 Âm thanh</button>
@@ -1042,7 +1043,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+
     <script>
         // ==================== 1. COUNTDOWN (04/02/2027) ====================
         function updateHudCountdown() {
@@ -1064,10 +1065,22 @@
         const STATE_KEY = "vanphuc_temple_state_v1";
         function loadLocalState() {
             try {
-                const raw = localStorage.getItem(STATE_KEY);
-                if (raw) return JSON.parse(raw);
-                const old = localStorage.getItem("vanphuc_temple_profile");
-                return old ? JSON.parse(old) : {};
+                const raw = localStorage.getItem(STATE_KEY) || localStorage.getItem("vanphuc_temple_profile");
+                const value = raw ? JSON.parse(raw) : {};
+                if (!value || typeof value !== "object" || Array.isArray(value)) return {};
+                const state = { ...value };
+                for (const key of ["x", "z", "rotY", "camYaw", "camPitch", "camDist", "meritPoints", "leavesSwept", "sutraSeconds", "fishCount", "fishFedCount", "fishGrowth", "meritBuffUntil", "lastFortuneNum"]) {
+                    if (state[key] !== undefined && (typeof state[key] !== "number" || !Number.isFinite(state[key]))) delete state[key];
+                }
+                if (typeof state.name !== "string") delete state.name;
+                else state.name = state.name.slice(0, 18);
+                if (typeof state.color !== "string" || !/^#[0-9a-f]{6}$/i.test(state.color)) delete state.color;
+                if (!["male", "female"].includes(state.gender)) delete state.gender;
+                if (typeof state.outfit !== "string") delete state.outfit;
+                if (Array.isArray(state.unlockedOutfits)) state.unlockedOutfits = state.unlockedOutfits.filter(v => typeof v === "string").slice(0, 30);
+                state.fortuneHistory = Array.isArray(state.fortuneHistory) ? state.fortuneHistory.filter(h => h && Number.isInteger(h.number) && ["title", "level", "date", "time"].every(k => typeof h[k] === "string")).slice(0, 50) : [];
+                state.meritActivityLog = Array.isArray(state.meritActivityLog) ? state.meritActivityLog.filter(l => l && ["t", "who", "action"].every(k => typeof l[k] === "string") && Number.isFinite(l.pts)).slice(0, 40) : [];
+                return state;
             } catch (e) { return {}; }
         }
         const savedState = loadLocalState() || {};
@@ -2807,10 +2820,7 @@
         const seenEventIds = new Set();
 
         function publishEvent(evt) {
-            const payload = { ...evt, eid: myId + "_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6) };
-            seenEventIds.add(payload.eid);
-            try { if (bcChannel) bcChannel.postMessage(payload); } catch (e) {}
-            try { if (mqttClient && mqttClient.connected) mqttClient.publish(MQTT_TOPIC, JSON.stringify(payload)); } catch (e) {}
+            // Solo only: actions are applied locally by their callers.
         }
 
         function handleIncomingMsg(data) {
@@ -2864,37 +2874,11 @@
         }
 
         function publishMyStateNow() {
-            const payload = myStatePayload();
-            try { if (bcChannel) bcChannel.postMessage(payload); } catch (e) {}
-            try { if (mqttClient && mqttClient.connected) mqttClient.publish(MQTT_TOPIC, JSON.stringify(payload)); } catch (e) {}
+            // Intentionally no transport: local saves and NPCs still work.
         }
 
         function initMultiplayer() {
-            try {
-                bcChannel = new BroadcastChannel(MQTT_TOPIC);
-                bcChannel.onmessage = (e) => handleIncomingMsg(e.data);
-                setInterval(() => { bcChannel.postMessage(myStatePayload()); }, 220);
-            } catch (e) {}
-
-            if (typeof mqtt !== "undefined") {
-                try {
-                    mqttClient = mqtt.connect("wss://broker.emqx.io:8084/mqtt", { clientId: "vp_" + myId, clean: true, connectTimeout: 5000 });
-                    mqttClient.on("connect", () => { onlineConnected = true; mqttClient.subscribe(MQTT_TOPIC); });
-                    mqttClient.on("message", (_, payload) => { try { handleIncomingMsg(JSON.parse(payload.toString())); } catch (e) {} });
-                    setInterval(() => {
-                        if (mqttClient && mqttClient.connected) mqttClient.publish(MQTT_TOPIC, JSON.stringify(myStatePayload()));
-                    }, 240);
-                } catch (e) {}
-            }
-
-            setInterval(() => {
-                const now = Date.now();
-                for (const [k, rp] of remotePlayers.entries()) {
-                    if (now - rp.lastSeen > 6000) { wScene.remove(rp.mesh); rp.labelObj.el.remove(); remotePlayers.delete(k); }
-                }
-                const total = 1 + npcInstances.length + remotePlayers.size;
-                onlineCounter.textContent = `${total} tại Chùa${onlineConnected ? " (Online)" : ""}`;
-            }, 1000);
+            onlineCounter.textContent = `Chế độ solo • Bạn + ${npcInstances.length} NPC • Không chia sẻ dữ liệu`;
         }
 
         // ==================== 8. CONTROLS (JOYSTICK + PC D-PAD + KEYS) ====================
@@ -3887,7 +3871,7 @@
                 return;
             }
             box.innerHTML = fortuneHistory.map((h, i) =>
-                `<div class="hist-row" data-hidx="${i}"><span><strong>Đệ ${h.number} Quẻ</strong> • ${h.title} (${h.level})</span><span style="font-size:0.7rem;color:var(--ink-muted);">${h.date} ${h.time}</span></div>`
+                `<div class="hist-row" data-hidx="${i}"><span><strong>Đệ ${escapeHtml(h.number)} Quẻ</strong> • ${escapeHtml(h.title)} (${escapeHtml(h.level)})</span><span style="font-size:0.7rem;color:var(--ink-muted);">${escapeHtml(h.date)} ${escapeHtml(h.time)}</span></div>`
             ).join("");
             box.querySelectorAll(".hist-row").forEach(row => {
                 row.addEventListener("click", () => {
@@ -4263,7 +4247,7 @@
             publishMyStateNow();
             refreshMeritHud();
             if (!rankingModal.classList.contains("hidden")) renderRankingModal();
-            addMerit(0, `✅ Đã lưu & đồng bộ nhân vật: ${player.name}`);
+            addMerit(0, `✅ Đã lưu nhân vật trên máy: ${player.name}`);
             customModal.classList.remove("show"); setTimeout(() => customModal.classList.add("hidden"), 350);
         });
 
@@ -4336,6 +4320,10 @@
         const tabLeaderboardBtn = document.getElementById("tabLeaderboardBtn");
         const tabActivityLogBtn = document.getElementById("tabActivityLogBtn");
 
+        function escapeHtml(value) {
+            return String(value ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+        }
+
         function renderRankingModal() {
             const board = [{ name: player.name + " (Bạn)", pts: meritPoints, sub: `${leavesSwept} lá • ${Math.floor(sutraSeconds / 60)}p tụng kinh`, isMe: true }];
             remotePlayers.forEach(rp => {
@@ -4352,11 +4340,11 @@
                     <div style="display:flex;align-items:center;gap:10px;min-width:0;">
                         <span class="rank-pos ${badge}">${i + 1}</span>
                         <div style="min-width:0;">
-                            <div style="font-weight:700;font-size:0.84rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${r.name}</div>
-                            <div style="font-size:0.7rem;color:var(--ink-secondary);">${r.sub}</div>
+                            <div style="font-weight:700;font-size:0.84rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(r.name)}</div>
+                            <div style="font-size:0.7rem;color:var(--ink-secondary);">${escapeHtml(r.sub)}</div>
                         </div>
                     </div>
-                    <div class="log-pts">🪷 ${r.pts}</div>
+                    <div class="log-pts">🪷 ${escapeHtml(r.pts)}</div>
                 </div>`;
             }).join("");
 
@@ -4364,7 +4352,7 @@
                 rankingActivityView.innerHTML = `<div class="log-item"><span>Chưa có hoạt động thiện nghiệp nào hôm nay — hãy quét lá, ngồi đọc kinh hoặc cho cá ăn!</span></div>`;
             } else {
                 rankingActivityView.innerHTML = meritActivityLog.map(l =>
-                    `<div class="log-item"><span><strong>${l.t}</strong> • <strong>${l.who}</strong>: ${l.action}</span><span class="log-pts">${l.pts >= 0 ? '+' + l.pts : l.pts} 🪷</span></div>`
+                    `<div class="log-item"><span><strong>${escapeHtml(l.t)}</strong> • <strong>${escapeHtml(l.who)}</strong>: ${escapeHtml(l.action)}</span><span class="log-pts">${escapeHtml(l.pts >= 0 ? '+' + l.pts : l.pts)} 🪷</span></div>`
                 ).join("");
             }
         }

@@ -1,17 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8" /><script src="../assets/clean-url.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>KOL Compatibility & Performance Auditor — Enterprise Edition</title>
+  <title>Đánh giá KOL · WishPlan</title>
+  <link rel="stylesheet" href="../assets/wishplan.css" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
         extend: {
           fontFamily: {
-            sans: ['Inter', 'sans-serif'],
+            sans: ['Be Vietnam Pro', 'Segoe UI', 'sans-serif'],
             mono: ['JetBrains Mono', 'monospace'],
           },
           colors: {
@@ -35,11 +36,54 @@
   </script>
   <style>
     body {
-      background-color: #F8FAFC;
-      color: #0F172A;
-      font-family: 'Inter', sans-serif;
-      user-select: none;
+      background-color: var(--wp-bg, #f6f7f8);
+      color: var(--wp-ink, #192321);
+      font-family: var(--wp-font, 'Be Vietnam Pro', sans-serif);
+      user-select: text;
     }
+    .kol-tool * { box-sizing: border-box; }
+    .kol-tool :is(button, summary, input, select) { min-height: 44px; }
+    .kol-tool :is(a, button, summary, input, select, textarea):focus-visible { outline: 3px solid #1b604b; outline-offset: 3px; }
+    .kol-tool :is(main, section, .office-card, .grid, .grid > *, .space-y-6) { min-width: 0; max-width: 100%; }
+    .kol-tool .overflow-x-auto { max-width: 100%; overflow-x: auto; }
+    .kol-tool .overflow-x-auto table { min-width: 620px; }
+    .kol-tool :is(p, dd, pre, h2) { overflow-wrap: anywhere; }
+    .kol-tool summary { cursor: pointer; font-weight: 600; padding-block: 10px; }
+    .kol-tool details[open] > summary { margin-bottom: 16px; }
+    .kol-tool .wp-tool-header { display: block; padding: 8px 16px; }
+    .kol-tool .wp-tool-header > div { height: auto; min-height: 64px; padding: 0; }
+    .kol-tool .kol-header-brand { flex-shrink: 0; white-space: nowrap; }
+    .kol-tool .kol-header-actions { flex-wrap: wrap; min-width: 0; }
+    .kol-tool .kol-header-actions button { flex-shrink: 0; white-space: nowrap; }
+    .kol-tool .wp-tool-header nav { gap: 2px; min-width: 0; }
+    .kol-tool .wp-tool-header nav button { white-space: nowrap; }
+    .kol-tool .wp-tool-header nav button[aria-current="page"] { box-shadow: inset 0 -2px #1b604b; }
+    .kol-tool .kol-steps, .kol-source-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .kol-tool .kol-steps { list-style: none; padding: 18px 0; }
+    .kol-tool .kol-steps span { display: block; color: #52605b; font-size: 13px; margin-top: 6px; }
+    .kol-tool .kol-source-grid dt { font-size: 12px; color: #52605b; }
+    .kol-tool .kol-source-grid dd { margin: 4px 0; font-weight: 600; font-size: 14px; }
+    .kol-tool .wp-context-badge { display: inline-block; border-radius: 6px; padding: 5px 9px; background: #edf5f0; color: #1b604b; font-size: 12px; }
+    .kol-tool .bg-sky-600 { background-color: #1b604b; }
+    .kol-tool .text-sky-600, .kol-tool .text-sky-700 { color: #1b604b; }
+    .kol-tool .border-t-sky-600 { border-top-color: #1b604b; }
+    @media (max-width: 1280px) {
+      .kol-tool .wp-tool-header > div { flex-wrap: wrap; gap: 8px; }
+      .kol-tool .wp-tool-header nav { order: 3; flex-basis: 100%; width: 100%; overflow-x: auto; }
+      .kol-tool .kol-header-status { display: none; }
+      .kol-tool .wp-tool-header nav button { flex: 1; padding-inline: 8px; }
+      .kol-tool .wp-tool-header { position: static; }
+    }
+    @media (max-width: 560px) {
+      .kol-tool :is(#stageLanding, #stageDashboard, #stageHistory, #stageCompare) { padding: 20px 14px; }
+      .kol-tool .office-card { padding: 18px; }
+      .kol-tool .kol-steps, .kol-source-grid { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+      .kol-tool #kolAvatar { width: 44px; height: 44px; }
+      .kol-tool #kolAvatar + div { min-width: 0; }
+      .kol-tool #kolDebut, .kol-tool #kolDemographics { white-space: normal; }
+      .kol-tool #kolDebut { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) { .kol-tool * { animation: none !important; transition: none !important; } }
     .office-card {
       background: #FFFFFF;
       border: 1px solid #E2E8F0;
@@ -59,170 +103,118 @@
     ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
   </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="kol-tool min-h-screen flex flex-col">
+  <a class="wp-skip" href="#stageLanding">Bỏ qua điều hướng</a>
 
   <!-- TOP ENTERPRISE NAVBAR -->
-  <header class="bg-white border-b border-slate-200 sticky top-0 z-40">
+  <header class="wp-tool-header bg-white border-b border-slate-200 sticky top-0 z-40">
     <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-4">
-      <div class="flex items-center gap-3">
-        <a href="../index.html" class="hidden sm:inline-flex items-center px-2.5 py-1 rounded-lg border border-slate-200 hover:border-slate-400 text-[11px] font-semibold text-slate-600 hover:text-slate-900 transition" title="Quay về L.ASY Studio">← Studio</a>
+      <div class="kol-header-brand flex items-center gap-3">
+        <a href="../" class="inline-flex items-center px-2.5 py-1 rounded-lg border border-slate-200 hover:border-slate-400 text-[11px] font-semibold text-slate-600 hover:text-slate-900 transition" title="Về trang công cụ WishPlan">← WishPlan</a>
         <div class="flex items-center gap-3 cursor-pointer" onclick="switchNavTab('homepage')">
         <div class="w-9 h-9 rounded-lg bg-slate-900 flex items-center justify-center text-white font-bold font-mono text-sm shadow-sm">
           KA
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <span class="font-bold text-slate-900 tracking-tight text-base">KOL Performance Auditor</span>
-            <span class="hidden md:inline-block text-[11px] font-mono uppercase px-2 py-0.5 bg-sky-50 text-sky-700 border border-sky-200 rounded font-semibold">Beauty & Personal Care</span>
+            <span class="font-bold text-slate-900 tracking-tight text-base">Đánh giá KOL</span>
+            <span class="hidden md:inline-block text-[11px] font-mono uppercase px-2 py-0.5 bg-sky-50 text-sky-700 border border-sky-200 rounded font-semibold">L.ASY · Chăm sóc da</span>
           </div>
-          <p class="text-xs text-slate-500 hidden sm:block">Kalodata DOM Analytics, Dynamic Tracklist & History Comparison</p>
+          <p class="text-xs text-slate-500 hidden sm:block">Kiểm tra mức phù hợp từ dữ liệu bạn nhập</p>
         </div>
         </div>
       </div>
 
       <!-- NAVIGATION MENU TABS -->
-      <nav class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200">
+      <nav aria-label="Điều hướng đánh giá KOL" class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200">
         <button id="navTabHomepage" onclick="switchNavTab('homepage')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 cursor-pointer bg-white text-slate-900 shadow-sm">
           <svg class="w-3.5 h-3.5 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-          <span>Homepage</span>
+          <span>Nhập dữ liệu</span>
         </button>
         <button id="navTabTracking" onclick="switchNavTab('tracking')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 cursor-pointer text-slate-600 hover:text-slate-900">
           <svg class="w-3.5 h-3.5 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-          <span>Tracking</span>
+          <span>Kết quả</span>
         </button>
         <button id="navTabHistory" onclick="switchNavTab('history')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 cursor-pointer text-slate-600 hover:text-slate-900">
           <svg class="w-3.5 h-3.5 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          <span>History Tracking</span>
+          <span>Lịch sử</span>
           <span id="navHistoryCountBadge" class="px-1.5 py-0.2 bg-slate-200 text-slate-700 rounded-full text-[10px] font-mono">0</span>
         </button>
         <button id="navTabCompare" onclick="switchNavTab('compare')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 cursor-pointer text-slate-600 hover:text-slate-900">
           <svg class="w-3.5 h-3.5 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
-          <span>Compare Before / After</span>
+          <span>So sánh</span>
         </button>
       </nav>
 
-      <div class="flex items-center gap-3">
-        <div class="hidden xl:flex items-center gap-2 px-3 py-1.5 rounded-md bg-slate-100 border border-slate-200 text-xs text-slate-600 font-mono">
+      <div class="kol-header-actions flex items-center gap-3">
+        <div class="kol-header-status hidden xl:flex items-center gap-2 px-3 py-1.5 rounded-md bg-slate-100 border border-slate-200 text-xs text-slate-600 font-mono">
           <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-          <span>Vault Lock: Encrypted</span>
+          <span>Phân tích tại máy · Cloud tùy chọn</span>
         </div>
-        <button onclick="openAuthModal()" class="px-3 py-2 rounded-lg border border-slate-300 hover:bg-slate-50 text-xs font-semibold text-slate-700 flex items-center gap-1.5 cursor-pointer"><span>&#128100;</span><span id="navAccountLabel">Login</span></button>
+        <button onclick="openAuthModal()" class="px-3 py-2 rounded-lg border border-slate-300 hover:bg-slate-50 text-xs font-semibold text-slate-700 flex items-center gap-1.5 cursor-pointer"><span>&#128100;</span><span id="navAccountLabel">Google · Cloud tùy chọn</span></button>
         <button id="navUploadAnotherBtn" onclick="resetToLanding()" class="hidden px-3.5 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold transition flex items-center gap-1.5 shadow-sm cursor-pointer">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-          Upload HTML
+          Nhập tệp khác
         </button>
       </div>
     </div>
   </header>
 
   <!-- ==================== STAGE 1: LANDING & FILE UPLOAD ==================== -->
-  <main id="stageLanding" class="flex-1 flex items-center justify-center p-6">
+  <main id="stageLanding" class="wp-container flex-1 flex items-center justify-center p-6">
     <div class="max-w-3xl w-full space-y-6">
 
-      <!-- HERO CARD: 1-CLICK KALODATA AUTO-AUDITOR (BOOKMARKLET) -->
-      <div class="office-card p-7 border-t-4 border-t-sky-600 space-y-6">
-        <div class="flex flex-wrap items-start justify-between gap-4">
-          <div class="flex items-center gap-3.5">
-            <div class="w-11 h-11 rounded-xl bg-sky-50 border border-sky-200 text-sky-600 flex items-center justify-center shrink-0">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-            </div>
-            <div>
-              <div class="flex items-center gap-2.5 flex-wrap">
-                <h1 class="text-base font-bold text-slate-900">1-Click Kalodata Auto-Auditor</h1>
-                <span class="px-2 py-0.5 text-[10px] font-mono font-bold rounded bg-emerald-100 text-emerald-800 border border-emerald-200">ZERO TOKEN • 100% GITHUB PAGES</span>
-              </div>
-              <p class="text-xs text-slate-500 mt-1">
-                Drag the button below to your Bookmarks Bar. When you are on any Kalodata creator page, click it to automatically extract full 30D metrics and beam the report straight here!
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- ACTION BUTTON & INSTRUCTION BANNER -->
-        <div class="p-5 rounded-xl bg-gradient-to-r from-sky-50 to-slate-50 border border-sky-200/80 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div class="space-y-1 text-center sm:text-left">
-            <div class="text-xs font-bold text-slate-900">Drag this button to your Bookmarks Bar:</div>
-            <p class="text-[11px] text-slate-500">
-              Press <kbd class="px-1.5 py-0.5 rounded bg-white border border-slate-300 font-mono text-[10px] text-slate-700">Ctrl + Shift + B</kbd> if your browser Bookmarks Bar is hidden.
-            </p>
-          </div>
-          <div class="flex items-center gap-2.5 shrink-0 flex-wrap justify-center">
-            <a id="kalodataBookmarkletLink" href="#" onclick="event.preventDefault(); alert('Drag this blue button up to your browser Bookmarks Bar! Then click it whenever you are viewing a Kalodata creator page.');" class="inline-flex items-center gap-2 px-5 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs rounded-xl shadow-md transition cursor-grab border border-sky-500 active:cursor-grabbing">
-              <svg class="w-4 h-4 text-sky-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-              <span>⚡ Send to KOL Auditor</span>
-            </a>
-            <button onclick="copyKalodataConsoleScript()" class="px-3.5 py-2.5 bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 font-semibold text-xs rounded-xl cursor-pointer transition shadow-sm" title="Copy JavaScript snippet to run in browser F12 Console">
-              Copy Console Script
-            </button>
-          </div>
-        </div>
-
-        <!-- 3-STEP VISUAL WORKFLOW -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
-          <div class="p-3.5 rounded-lg bg-slate-50 border border-slate-200 text-left">
-            <div class="flex items-center gap-2 mb-1">
-              <span class="w-5 h-5 rounded-full bg-sky-600 text-white font-mono text-[11px] font-bold flex items-center justify-center">1</span>
-              <span class="text-xs font-bold text-slate-900">Drag to Bookmarks</span>
-            </div>
-            <p class="text-[11px] text-slate-500 leading-relaxed">
-              Drag the blue <strong class="text-slate-800">⚡ Send to KOL Auditor</strong> button to your browser toolbar once.
-            </p>
-          </div>
-          <div class="p-3.5 rounded-lg bg-slate-50 border border-slate-200 text-left">
-            <div class="flex items-center gap-2 mb-1">
-              <span class="w-5 h-5 rounded-full bg-sky-600 text-white font-mono text-[11px] font-bold flex items-center justify-center">2</span>
-              <span class="text-xs font-bold text-slate-900">Open Kalodata Tab</span>
-            </div>
-            <p class="text-[11px] text-slate-500 leading-relaxed">
-              Open any Kalodata Creator page (logged in as usual with your account).
-            </p>
-          </div>
-          <div class="p-3.5 rounded-lg bg-slate-50 border border-slate-200 text-left">
-            <div class="flex items-center gap-2 mb-1">
-              <span class="w-5 h-5 rounded-full bg-sky-600 text-white font-mono text-[11px] font-bold flex items-center justify-center">3</span>
-              <span class="text-xs font-bold text-slate-900">1-Click Auto Audit</span>
-            </div>
-            <p class="text-[11px] text-slate-500 leading-relaxed">
-              Click the bookmark! It extracts all 6 APIs and opens your audited report with 1-click Copy Summary.
-            </p>
-          </div>
-        </div>
+      <div class="space-y-3">
+        <p class="wp-context-badge">L.ASY · Đánh giá đối tác chăm sóc da</p>
+        <h1 class="text-3xl font-bold">Đánh giá KOL</h1>
+        <p>Xem mức phù hợp, dữ liệu còn thiếu và hướng hợp tác trước khi quyết định gửi mẫu hoặc booking.</p>
+        <ol class="kol-steps" aria-label="Ba bước đánh giá">
+          <li><strong>1. Chọn tệp HTML / JSON</strong><span>Nhập thủ công từ Kalodata.</span></li>
+          <li><strong>2. Kiểm tra nguồn &amp; độ đầy đủ</strong><span>Xem kết quả và bằng chứng còn thiếu.</span></li>
+          <li><strong>3. Lưu &amp; so sánh</strong><span>Lịch sử tại máy được lưu tự động; chọn hai lần để so sánh.</span></li>
+        </ol>
+        <p class="text-sm">Không cần đăng nhập để phân tích tại máy. Google chỉ dành cho cloud tùy chọn; không tự tải lịch sử lên.</p>
       </div>
 
       <!-- CARD 2: EXISTING DRAG & DROP KALODATA HTML FILE -->
       <div class="office-card p-7">
         <div class="text-center mb-5">
-          <h2 class="text-base font-bold text-slate-900">Or Import Saved Kalodata Creator HTML File</h2>
+          <h2 class="text-base font-bold text-slate-900">Bắt đầu từ tệp Kalodata của bạn</h2>
           <p class="text-xs text-slate-500 mt-0.5">
-            Drop your exported Kalodata <code class="font-mono bg-slate-100 px-1.5 py-0.5 rounded text-slate-700">.html</code> file (Ctrl+S on Kalodata) to run offline audit.
+            Chọn bản HTML đã lưu (Ctrl+S trên trang KOL) hoặc JSON xuất thủ công. Tối đa 10 MB.
           </p>
+          <p id="numberFormatHelp" class="text-xs text-slate-500 mt-2">Chuỗi số dùng định dạng Việt Nam: 1.234.567 là 1234567; 253.000 là 253000; dấu phẩy là phần thập phân. Số JSON giữ nguyên giá trị. Định dạng không rõ hoặc sai được để thiếu dữ liệu, không đoán số.</p>
         </div>
 
         <!-- DRAG & DROP ZONE -->
-        <div id="dropZone"
-             class="border-2 border-dashed border-slate-300 hover:border-sky-600 rounded-xl p-8 text-center transition cursor-pointer bg-slate-50/70"
+        <input type="file" id="fileInput" accept=".html,.htm,.json" class="hidden" aria-label="Chọn tệp Kalodata HTML hoặc JSON" onchange="handleFileSelect(event)" />
+        <button id="dropZone" type="button"
+             class="w-full border-2 border-dashed border-slate-300 hover:border-sky-600 rounded-xl p-8 text-center transition cursor-pointer bg-slate-50/70"
              onclick="document.getElementById('fileInput').click()">
-          <input type="file" id="fileInput" accept=".html,.htm" class="hidden" onchange="handleFileSelect(event)" />
           <svg class="w-9 h-9 text-slate-400 mx-auto mb-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
           </svg>
-          <p class="text-sm font-semibold text-slate-800">Drag & drop Kalodata HTML file here</p>
-          <p class="text-xs text-slate-500 mt-1">or <span class="text-sky-600 font-semibold underline">click to browse</span> from your computer</p>
-        </div>
+          <span class="block text-base font-semibold text-slate-800">Chọn tệp HTML / JSON</span>
+          <span class="block text-sm text-slate-500 mt-1">Hoặc kéo thả tệp vào đây</span>
+        </button>
 
         <!-- PASTE RAW HTML DRAWER -->
-        <div class="mt-4 pt-4 border-t border-slate-200">
-          <button onclick="toggleRawHtmlDrawer()" class="w-full flex items-center justify-between text-xs font-semibold text-slate-600 hover:text-slate-900 py-1 cursor-pointer">
-            <span>Or paste raw Kalodata HTML / JSON source code</span>
-            <svg id="drawerArrow" class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-          </button>
-          <div id="rawHtmlDrawer" class="hidden mt-3 space-y-3">
-            <textarea id="rawHtmlInput" rows="4" placeholder="Paste full <!DOCTYPE html> source or Kalodata JSON bundle..." class="w-full p-3 text-xs font-mono bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-600 text-slate-800"></textarea>
+        <details id="pasteSourceDetails" class="mt-4 pt-4 border-t border-slate-200">
+          <summary>Dán nội dung thay vì chọn tệp</summary>
+          <div id="rawHtmlDrawer" class="mt-3 space-y-3">
+            <span id="drawerArrow" hidden></span>
+            <label for="rawHtmlInput" class="block text-sm font-semibold">Nội dung HTML / JSON từ Kalodata</label>
+            <textarea id="rawHtmlInput" rows="4" placeholder="Dán toàn bộ nội dung HTML hoặc bản JSON xuất thủ công…" class="w-full p-3 text-xs font-mono bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-600 text-slate-800"></textarea>
             <button onclick="handleRawHtmlSubmit()" class="w-full py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-semibold text-xs rounded-lg transition shadow-sm cursor-pointer">
-              Parse Source & Run Audit
+              Phân tích nội dung
             </button>
           </div>
-        </div>
+        </details>
+        <p class="text-sm mt-4">Chỉ phân tích nội dung bạn cung cấp, không truy cập trực tiếp TikTok/Kalodata. Tệp lưu có thể thiếu bảng hoặc dữ liệu chưa tải; dữ liệu thiếu không phải điểm 0.</p>
+        <details class="mt-4"><summary>Giới hạn nhập dữ liệu &amp; bảo mật</summary>
+          <p class="text-sm mt-2">Nhập HTML / JSON thủ công, không chạy mã trong tệp. Không nhận dữ liệu từ cửa sổ khác. Bookmarklet và trích xuất bằng console đã tắt.</p>
+          <a id="kalodataBookmarkletLink" href="#" aria-disabled="true" onclick="event.preventDefault()">Bookmarklet disabled — use manual import</a>
+        </details>
       </div>
 
     </div>
@@ -250,6 +242,24 @@
 
   <!-- ==================== STAGE 3: ANALYTICAL DASHBOARD ==================== -->
   <section id="stageDashboard" class="hidden flex-1 max-w-7xl w-full mx-auto px-6 py-8 space-y-6">
+
+    <section id="primaryResult" class="office-card p-6 space-y-3" aria-labelledby="primaryVerdict">
+      <p class="text-sm font-semibold">Kết quả sơ bộ · L.ASY</p>
+      <h2 id="primaryVerdict" class="text-xl font-bold" aria-live="polite">Chưa có kết quả</h2>
+      <dl class="kol-source-grid">
+        <div><dt>Nguồn nhập thủ công</dt><dd id="sourceFileName">—</dd></div>
+        <div><dt>Độ đầy đủ theo tiêu chí</dt><dd id="sourceCoverage">—</dd></div>
+        <div><dt>Kỳ dữ liệu trong nguồn</dt><dd id="sourceDateRange">—</dd></div>
+      </dl>
+      <details id="missingEvidenceDetails">
+        <summary id="missingEvidenceSummary">Xem các tiêu chí thiếu bằng chứng</summary>
+        <p id="sourceMissing" class="text-sm"></p>
+      </details>
+      <p id="resultNextAction" class="text-sm font-semibold"></p>
+      <p class="text-sm text-slate-600">Không phải dữ liệu trực tiếp; bảng có thể chỉ là một phần. Thiếu bằng chứng thì chưa kết luận, không tự tính là đạt hoặc không đạt.</p>
+      <button type="button" onclick="switchNavTab('history')" class="px-4 py-2 rounded-lg bg-sky-600 text-white font-semibold">Xem lịch sử đã lưu &amp; so sánh</button>
+      <p class="text-xs text-slate-500">Nhập thành công được tự lưu tại trình duyệt, mỗi KOL một bản/ngày. Cloud chỉ tải lên khi bạn yêu cầu.</p>
+    </section>
 
     <!-- ROW 1: CREATOR OVERVIEW & COMPATIBILITY GAUGE -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -360,7 +370,7 @@
           <div class="my-5 flex items-baseline justify-between">
             <div>
               <div id="overallScoreValue" class="text-4xl font-extrabold text-slate-900 font-mono">0%</div>
-              <div id="overallChecksText" class="text-xs text-slate-500 mt-1">0 of 11 criteria passed</div>
+              <div id="overallChecksText" class="text-xs text-slate-500 mt-1">0 of 12 criteria passed</div>
             </div>
             <div class="text-right">
               <div class="text-[11px] font-mono text-slate-500">PRIMARY TRACK</div>
@@ -386,8 +396,9 @@
 
     <!-- ROW 2: DYNAMIC TRACKLIST & PRELIMINARY SCENARIO VERDICT -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <!-- Interactive 11-Point Tracklist -->
-      <div class="lg:col-span-2 office-card p-6">
+      <!-- Interactive 12-Point Tracklist -->
+      <details id="checklistDetails" class="lg:col-span-2 office-card p-6">
+        <summary>Tiêu chí chấm điểm &amp; điều chỉnh thủ công</summary>
         <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-4 mb-4">
           <div>
             <h3 class="text-base font-bold text-slate-900" id="checklistHeaderTitle">Dynamic KOL Evaluation Tracklist</h3>
@@ -401,12 +412,13 @@
         </div>
 
         <div id="checklistContainer" class="space-y-5"></div>
-      </div>
+      </details>
 
       <!-- Preliminary Scenario Evaluation & AI Research Column -->
       <div class="space-y-6">
         <!-- Quick Export Summary Message Card -->
-        <div class="office-card p-6 border-t-4 border-t-sky-600">
+        <details id="summaryDetails" class="office-card p-6">
+          <summary>Tóm tắt để sao chép / gửi đội ngũ</summary>
           <div class="flex items-center justify-between border-b border-slate-200 pb-3 mb-3">
             <div>
               <span class="text-xs font-bold uppercase tracking-wider text-slate-800">Quick Summary</span>
@@ -422,46 +434,50 @@
             <input id="customKolNameInput" type="text" placeholder="Enter creator display name..." oninput="updateMsSummaryPreview()" class="w-full px-2.5 py-1.5 text-xs font-mono bg-slate-50 border border-slate-300 rounded-md focus:outline-none focus:border-sky-600 text-slate-800" />
           </div>
           <pre id="msSummaryPreview" class="text-xs font-mono text-slate-800 bg-slate-50 border border-slate-200 rounded-lg p-3.5 whitespace-pre-wrap leading-relaxed select-all"></pre>
-        </div>
+        </details>
 
         <!-- Scenario Diagnostic Card -->
-        <div class="office-card p-6">
+        <details id="diagnosisDetails" class="office-card p-6">
+          <summary>Tóm tắt bằng chứng &amp; bước kiểm tra tiếp theo</summary>
           <div class="flex items-center justify-between border-b border-slate-200 pb-3 mb-3">
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Preliminary Scenario Diagnosis</span>
-            <span class="text-[11px] font-mono text-sky-700 font-semibold">Auto-Detected</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Tóm tắt bằng chứng trong nguồn</span>
+            <span class="text-[11px] font-mono text-sky-700 font-semibold">Không dự báo</span>
           </div>
           <div id="scenarioTitle" class="text-sm font-bold text-slate-900">--</div>
           <p id="scenarioDesc" class="text-xs text-slate-600 mt-2 leading-relaxed">--</p>
 
           <div class="mt-4 p-3 rounded-lg bg-slate-50 border border-slate-200">
-            <div class="text-[11px] font-bold uppercase text-slate-700 mb-1.5">Recommended Action Plan</div>
+            <div class="text-[11px] font-bold uppercase text-slate-700 mb-1.5">Bước kiểm tra có điều kiện</div>
             <ul id="scenarioActions" class="text-xs text-slate-600 space-y-1.5 list-disc pl-4"></ul>
           </div>
-        </div>
+        </details>
 
         <!-- AI Deep Case Research & TikTok Audit Card -->
-        <div class="office-card p-6 border-t-4 border-t-slate-900">
+        <details id="aiDetails" class="office-card p-6">
+          <summary>AI tùy chọn · không bắt buộc để đánh giá</summary>
           <div class="flex items-center justify-between mb-2">
             <div>
-              <h3 class="text-sm font-bold text-slate-900">AI Deep Case & TikTok Channel Audit</h3>
-              <p class="text-[11px] text-slate-500">Real-world diagnostic of this KOL's current sales velocity, store portfolio & risk profile</p>
+              <h3 class="text-sm font-bold text-slate-900">AI · phân tích dữ liệu đã nhập</h3>
+              <p class="text-[11px] text-slate-500">Không khảo sát TikTok trực tiếp. Chỉ dùng khi cloud/AI đã được cấu hình.</p>
             </div>
-            <span class="px-2 py-0.5 text-[10px] font-mono bg-slate-100 text-slate-700 rounded border border-slate-200">LOCKED API</span>
+            <span class="px-2 py-0.5 text-[10px] font-mono bg-slate-100 text-slate-700 rounded border border-slate-200">AI TÙY CHỌN</span>
           </div>
 
           <button id="runAiAuditBtn" onclick="runAiDeepCaseAnalysis()" class="w-full mt-3 py-2.5 px-4 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs rounded-lg transition flex items-center justify-center gap-2 shadow-sm cursor-pointer">
             <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-            <span>Run Deep Case Research on This KOL</span>
+            <span>Yêu cầu phân tích AI (nếu đã bật)</span>
           </button>
 
           <div id="aiAuditOutput" class="mt-4 text-xs text-slate-700 bg-slate-50 border border-slate-200 rounded-lg p-3.5 max-h-96 overflow-y-auto whitespace-pre-line leading-relaxed font-sans">
-            Click "Run Deep Case Research on This KOL" to synthesize a complete commercial audit from the extracted Kalodata tables, GMV/Follower ratios, SKU conversion depth, and Top 20 Vietnam Beauty Brand benchmarks.
+            AI chưa bật cho bản triển khai này. Phân tích tại máy vẫn hoạt động; không có yêu cầu AI tự động.
           </div>
-        </div>
+        </details>
       </div>
     </div>
 
     <!-- ROW 3: EXTRACTED STORE & PRODUCT TABLES WITH TOP 20 BRAND MATCHING -->
+    <details id="sourceTablesDetails" class="office-card p-6">
+      <summary>Bảng nguồn: cửa hàng, sản phẩm &amp; video</summary>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <!-- Top Cooperative Stores -->
       <div class="office-card p-6">
@@ -513,6 +529,7 @@
         </div>
       </div>
     </div>
+    </details>
 
   </section>
 
@@ -688,55 +705,9 @@
     </div>
   </section>
 
+  <script src="firebase-config.js"></script>
+  <script src="cloud.js"></script>
   <script>
-    // ============================================================================
-    // 1. SECURITY VAULT: OBFUSCATED API KEY & ANTI-INSPECTION LOCK
-    // ============================================================================
-    (function _initSecurityVault() {
-      // Prevent right-click context menu & common DevTools keybindings
-      document.addEventListener('contextmenu', e => e.preventDefault());
-      document.addEventListener('keydown', e => {
-        if (
-          e.key === 'F12' ||
-          (e.ctrlKey && e.shiftKey && ['I', 'J', 'C'].includes(e.key.toUpperCase())) ||
-          (e.ctrlKey && e.key.toUpperCase() === 'U')
-        ) {
-          e.preventDefault();
-        }
-      });
-
-      // XOR-obfuscated byte array inside a private closure so plain-text key never exists in source
-      const _salt = [75, 65, 76, 79, 95, 83, 89, 95, 50, 48, 50, 54];
-      const _cipher = [
-        10, 16, 98, 14, 61, 107, 11, 17, 6, 91, 94, 4,
-        0, 108, 127, 22, 14, 42, 0, 102, 4, 83, 66, 22,
-        59, 50, 29, 4, 8, 22, 63, 7, 90, 126, 20, 77,
-        5, 24, 15, 54, 106, 58, 17, 11, 67, 121, 91, 61,
-        8, 18, 63, 40
-      ];
-
-      Object.defineProperty(window, '__invokeVaultModel', {
-        configurable: false,
-        enumerable: false,
-        writable: false,
-        value: async function(promptText) {
-          const _k = _cipher.map((b, i) => String.fromCharCode(b ^ _salt[i % _salt.length])).join('');
-          const endpoint = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + encodeURIComponent(_k);
-          const resp = await fetch(endpoint, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: [{ parts: [{ text: promptText }] }],
-              generationConfig: { temperature: 0.35, maxOutputTokens: 1100 }
-            })
-          });
-          if (!resp.ok) throw new Error('API request fallback triggered');
-          const data = await resp.json();
-          return data?.candidates?.[0]?.content?.parts?.[0]?.text || null;
-        }
-      });
-    })();
-
     // ============================================================================
     // 2. TOP 20 VIETNAM BEAUTY & PERSONAL CARE BRANDS (FROM YOUR KALODATA EXCEL)
     // ============================================================================
@@ -789,28 +760,50 @@
     // 3. VIETNAMESE CURRENCY & NUMBER PARSER
     // ============================================================================
     function parseVnNumber(rawStr) {
-      if (!rawStr) return 0;
-      const str = String(rawStr).trim().toLowerCase();
-      const isNegative = str.includes('-');
-      const numMatch = str.match(/[\d.,]+/);
-      if (!numMatch) return 0;
-      let numPart = numMatch[0];
-      // In Kalodata vi-VN locale, comma is decimal separator (e.g., "734,41tr" or "13,51tỉ")
-      if (numPart.includes(',') && !numPart.includes('.')) {
-        numPart = numPart.replace(',', '.');
-      } else if (numPart.includes('.') && numPart.includes(',')) {
-        numPart = numPart.replace(/\./g, '').replace(',', '.');
-      }
-      let val = parseFloat(numPart);
-      if (isNaN(val)) return 0;
-      if (str.includes('tỉ') || str.includes('tỷ')) val *= 1e9;
-      else if (str.includes('tr')) val *= 1e6;
-      else if (str.includes('k')) val *= 1e3;
-      return isNegative ? -val : val;
+      // JSON numeric literals are already numbers: never reinterpret their dots
+      // or exponential notation as localized display text.
+      if (typeof rawStr === 'number') return Number.isFinite(rawStr) ? rawStr : null;
+      if (typeof rawStr !== 'string') return null;
+      // Text imports use vi-VN: dots group thousands and commas mark decimals.
+      // Require the whole value; malformed/mixed-locale text stays unknown.
+      const match = rawStr.trim().toLowerCase().match(/^(?:₫|đ|vnd)?\s*([+-]?[\d.,]+)\s*(tỉ|tỷ|tr|triệu|k|nghìn|ngàn)?\s*(?:₫|đ|vnd)?(?:\s*\/\s*(?:ngày|day))?$/);
+      if (!match) return null;
+      const [, numeric, unit] = match;
+      if (!/^[+-]?(?:\d+|\d{1,3}(?:\.\d{3})+)(?:,\d+)?$/.test(numeric)) return null;
+      const multiplier = /^(tỉ|tỷ)$/.test(unit) ? 1e9 : /^(tr|triệu)$/.test(unit) ? 1e6 : /^(k|nghìn|ngàn)$/.test(unit) ? 1e3 : 1;
+      const value = Number(numeric.replace(/\./g, '').replace(',', '.')) * multiplier;
+      return Number.isFinite(value) ? value : null;
     }
 
+    function escapeHtml(value) { return String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+    function validateHistoryRecord(item) {
+      if (!item || typeof item !== 'object' || typeof item.handle !== 'string' || !/^@?[\w.]{1,100}$/.test(item.handle) || typeof item.snapshotId !== 'string' || !/^[\w.@:-]{1,200}$/.test(item.snapshotId)) throw new Error('Invalid snapshot identity');
+      validateBundle(item);
+      // Backups contain parsed snapshots, not raw API strings. Missing legacy
+      // fields remain allowed, but present values must match the snapshot schema.
+      const numericFields = ['scorePct','followersCount','products30dCount','totalGmv','dailyGmv','liveGmv','videoGmv','showcaseGmv','aov','liveViews','videoViews','followerChange','videoCount30d','gmvPer1kFollowers','gmvPerVideo','viewsPerVideo','videoSharePct','liveSharePct','avgRoas','specialistSkincareStores','personalCareStores','apparelStores','skincareRevenue','personalCareRevenue','apparelRevenue','maxSkincareOrdersOnSingleStore','skincareSkuCount','personalCareSkuCount','apparelSkuCount'];
+      for (const key of numericFields) {
+        if (item[key] != null && (typeof item[key] !== 'number' || !Number.isFinite(item[key]))) throw new Error('Invalid snapshot numeric field: ' + key);
+      }
+      if (item.scorePct != null && (item.scorePct < 0 || item.scorePct > 100)) throw new Error('Invalid snapshot score');
+      for (const key of ['specialistSkincareStores','personalCareStores','apparelStores','skincareSkuCount','personalCareSkuCount','apparelSkuCount','products30dCount','videoCount30d']) {
+        if (item[key] != null && (!Number.isInteger(item[key]) || item[key] < 0)) throw new Error('Invalid snapshot count: ' + key);
+      }
+      for (const key of ['fileName','avatarUrl','mcnDisplay','firstPubDate','dateRangeWindow','dataTimeText','bioText','ageGroup','detectedIndustry','savedAtIso','savedAtFormatted']) {
+        if (item[key] != null && typeof item[key] !== 'string') throw new Error('Invalid snapshot text field: ' + key);
+      }
+      for (const key of ['isIndependent','isFemaleMajority','isCategoryAlignedWithSkincare']) {
+        if (item[key] != null && typeof item[key] !== 'boolean') throw new Error('Invalid snapshot boolean field: ' + key);
+      }
+      if (item.dominantTrack != null && !['VIDEO_TRACK','LIVE_TRACK'].includes(item.dominantTrack)) throw new Error('Invalid snapshot track');
+      if (item.top20MatchedBrands != null && (!Array.isArray(item.top20MatchedBrands) || item.top20MatchedBrands.some(v => typeof v !== 'string'))) throw new Error('Invalid snapshot brands');
+      return item;
+    }
+    function genderLabel(value) { return value === true ? 'Female Majority' : (value === false ? 'Male Majority' : 'Unknown'); }
+    function formatDecimal(val, digits = 1) { return Number.isFinite(val) ? val.toFixed(digits) : 'N/A'; }
+
     function formatVnCurrency(val) {
-      if (val === null || val === undefined || isNaN(val)) return '₫0';
+      if (val === null || val === undefined || !Number.isFinite(val)) return 'N/A';
       const abs = Math.abs(val);
       const sign = val < 0 ? '-' : '';
       if (abs >= 1e9) return sign + '₫' + (abs / 1e9).toFixed(2) + 'B';
@@ -820,7 +813,7 @@
     }
 
     function formatCompactNumber(val) {
-      if (!val || isNaN(val)) return '0';
+      if (val === null || val === undefined || !Number.isFinite(val)) return 'N/A';
       const abs = Math.abs(val);
       const sign = val < 0 ? '-' : '';
       if (abs >= 1e6) return sign + (abs / 1e6).toFixed(2) + 'M';
@@ -832,6 +825,7 @@
     // 4. KALODATA HTML DOM PARSER & INDUSTRY CLASSIFIER
     // ============================================================================
     function parseKalodataHtml(htmlString, fileName = 'Uploaded_Creator.html') {
+      if (typeof htmlString !== 'string' || htmlString.length > 10000000) throw new Error('Invalid HTML / 10MB source limit exceeded');
       const parser = new DOMParser();
       const doc = parser.parseFromString(htmlString, 'text/html');
 
@@ -843,6 +837,8 @@
         handle = hMatch ? hMatch[0] : '@unknown_creator';
       }
 
+      if (!/^@?[\w.]{1,100}$/.test(handle)) handle = '@unknown_creator';
+
       // 2. Avatar
       let avatarUrl = '';
       const avatarEl = doc.querySelector('.first_col .Component-Image');
@@ -853,9 +849,9 @@
       }
 
       // 3. MCN & First Published Date & Bio
-      const mcnRaw = doc.querySelector('.mcn')?.textContent?.trim() || 'Chưa ký';
-      const isIndependent = mcnRaw.toLowerCase().includes('chưa ký');
-      const mcnDisplay = isIndependent ? 'Independent (Unsigned)' : `Signed (${mcnRaw})`;
+      const mcnRaw = doc.querySelector('.mcn')?.textContent?.trim() || '';
+      const isIndependent = mcnRaw ? mcnRaw.toLowerCase().includes('chưa ký') : null;
+      const mcnDisplay = isIndependent === null ? 'Unknown' : (isIndependent ? 'Independent (Unsigned)' : `Signed (${mcnRaw})`);
 
       let firstPubDate = 'N/A';
       const bodyText = doc.body?.textContent || '';
@@ -863,7 +859,7 @@
       if (pubMatch) firstPubDate = pubMatch[1];
 
       // Extract Kalodata Date Range Window & Data Collection Date
-      let dateRangeWindow = '30 Days';
+      let dateRangeWindow = 'Unknown date range';
       const startInput = doc.querySelector('input[date-range="start"]')?.value || '';
       const endInput = doc.querySelector('input[date-range="end"]')?.value || '';
       if (startInput && endInput) {
@@ -882,13 +878,13 @@
       }
 
       // 4. Demographics (Gender, Age, Followers, 30d Products)
-      const isFemaleMajority = bodyText.includes('Nữ giới chiếm đa số');
-      let ageGroup = '25-34';
+      const isFemaleMajority = bodyText.includes('Nữ giới chiếm đa số') ? true : (bodyText.includes('Nam giới chiếm đa số') ? false : null);
+      let ageGroup = null;
       if (bodyText.includes('18-24')) ageGroup = '18-24';
       else if (bodyText.includes('25-34')) ageGroup = '25-34';
       else if (bodyText.includes('35-44')) ageGroup = '35-44';
 
-      let followersCount = 0;
+      let followersCount = null;
       let products30dCount = 0;
       const profileTableRows = doc.querySelectorAll('.first_col .table .table-row');
       if (profileTableRows.length >= 2) {
@@ -905,11 +901,11 @@
       // 5. Core Metrics Extraction
       const getCoreMetric = (cls) => {
         const labelEl = doc.querySelector(cls);
-        if (!labelEl) return { main: 0, daily: 0 };
+        if (!labelEl) return { main: null, daily: null };
         const itemEl = labelEl.closest('.item');
-        if (!itemEl) return { main: 0, daily: 0 };
-        const valText = itemEl.querySelector('.value')?.textContent?.trim() || '0';
-        const unitText = itemEl.querySelector('.unit')?.textContent?.trim() || '0';
+        if (!itemEl) return { main: null, daily: null };
+        const valText = itemEl.querySelector('.value')?.textContent?.trim() || '';
+        const unitText = itemEl.querySelector('.unit')?.textContent?.trim() || '';
         return {
           main: parseVnNumber(valText),
           daily: parseVnNumber(unitText)
@@ -926,7 +922,7 @@
       const followerChange = getCoreMetric('.labelFollower.Change');
 
       // 6. Total Video Count in 30d from Video Table Header
-      let videoCount30d = 0;
+      let videoCount30d = null;
       const videoHeaderSpan = doc.querySelector('.PageCreatorDetail-VideoTable span.text-base-999');
       if (videoHeaderSpan) {
         const m = videoHeaderSpan.textContent.match(/(\d+)/);
@@ -1053,8 +1049,8 @@
         }
       });
 
-      let detectedIndustry = 'Facial Skincare & Derma Beauty';
-      let isCategoryAlignedWithSkincare = true;
+      let detectedIndustry = specialistSkincareStores > 0 || skincareSkuCount > 0 ? 'Facial Skincare & Derma Beauty (keyword evidence, not verified majority)' : 'Unknown / insufficient category evidence';
+      let isCategoryAlignedWithSkincare = specialistSkincareStores > 0 || skincareSkuCount > 0 ? true : null;
       if (apparelSkuCount >= 4 || apparelStores >= 4) {
         detectedIndustry = 'Women Apparel, Lingerie & Feminine Care';
         isCategoryAlignedWithSkincare = false;
@@ -1064,19 +1060,19 @@
       }
 
       // 9. Derived Ratios (GMV/Follower, GMV/Video, Views/Video, Ad ROAS)
-      const gmvPer1kFollowers = followersCount > 0 ? (totalRevenue.main / (followersCount / 1000)) : 0;
-      const effectiveVideoCount = Math.max(videoCount30d, videos.length, 1);
-      const gmvPerVideo = videoRevenue.main / effectiveVideoCount;
-      const viewsPerVideo = videoViews.main / effectiveVideoCount;
+      const gmvPer1kFollowers = followersCount > 0 && totalRevenue.main !== null ? (totalRevenue.main / (followersCount / 1000)) : null;
+      const effectiveVideoCount = videoCount30d > 0 ? videoCount30d : null;
+      const gmvPerVideo = effectiveVideoCount && videoRevenue.main !== null ? videoRevenue.main / effectiveVideoCount : null;
+      const viewsPerVideo = effectiveVideoCount && videoViews.main !== null ? videoViews.main / effectiveVideoCount : null;
 
-      const videoSharePct = totalRevenue.main > 0 ? (videoRevenue.main / totalRevenue.main) * 100 : 0;
-      const liveSharePct = totalRevenue.main > 0 ? (liveRevenue.main / totalRevenue.main) * 100 : 0;
+      const videoSharePct = totalRevenue.main > 0 && videoRevenue.main !== null ? (videoRevenue.main / totalRevenue.main) * 100 : null;
+      const liveSharePct = totalRevenue.main > 0 && liveRevenue.main !== null ? (liveRevenue.main / totalRevenue.main) * 100 : null;
 
       // Dominant Track Mode: VIDEO vs LIVE
-      const dominantTrack = liveSharePct > videoSharePct ? 'LIVE_TRACK' : 'VIDEO_TRACK';
+      const dominantTrack = liveSharePct === null || videoSharePct === null ? null : (liveSharePct > videoSharePct ? 'LIVE_TRACK' : 'VIDEO_TRACK');
 
       const roasList = videos.filter(v => v.roas > 0).map(v => v.roas);
-      const avgRoas = roasList.length > 0 ? (roasList.reduce((a, b) => a + b, 0) / roasList.length) : 0;
+      const avgRoas = roasList.length > 0 ? (roasList.reduce((a, b) => a + b, 0) / roasList.length) : null;
 
       return {
         fileName,
@@ -1152,7 +1148,7 @@
           id: 'c1_gender',
           category: '1. Audience & Actual Category Fit (25%)',
           weight: 7,
-          label: 'Female Majority Audience (≥ 70% Female)',
+          label: 'Female Majority Audience (qualitative majority; percentage not supplied)',
           actual: d.isFemaleMajority ? 'Female Majority Verified' : 'Male / Mixed Audience',
           threshold: 'Pass: Female Majority',
           passed: d.isFemaleMajority,
@@ -1164,7 +1160,7 @@
           weight: 10,
           label: 'Actual Store & Product Table Category Alignment (No Bio Guesswork)',
           actual: `${d.detectedIndustry} (${d.skincareSkuCount} Skincare SKUs | ${d.specialistSkincareStores} Skincare Stores)`,
-          threshold: 'Pass: Majority of top stores/SKUs are Facial Skincare',
+          threshold: 'Pass: Skincare keyword evidence and ≥ 2 skincare stores (not verified majority)',
           passed: d.isCategoryAlignedWithSkincare && d.specialistSkincareStores >= 2,
           note: d.isCategoryAlignedWithSkincare
             ? 'Verified directly from .table_seller and .table_product: channel actively converts facial skincare.'
@@ -1193,12 +1189,12 @@
             : '2. Livestream Mega-Seller Efficiency (35%)',
           weight: 9,
           label: isVideoTrack
-            ? 'Short-Video Revenue Dominance (≥ 60% GMV from Video)'
-            : 'Livestream Revenue Dominance (≥ 60% GMV from Live Sessions)',
+            ? 'Short-Video Revenue Dominance (≥ 60% and ≥ ₫100M Video GMV)'
+            : 'Livestream Revenue Dominance (≥ 60% and ≥ ₫500M Live GMV)',
           actual: isVideoTrack
-            ? `Video: ${d.videoSharePct.toFixed(1)}% (${formatVnCurrency(d.videoGmv)})`
-            : `Live: ${d.liveSharePct.toFixed(1)}% (${formatVnCurrency(d.liveGmv)})`,
-          threshold: isVideoTrack ? 'Pass: Video GMV ≥ 60%' : 'Pass: Live GMV ≥ 60%',
+            ? `Video: ${formatDecimal(d.videoSharePct, 1)}% (${formatVnCurrency(d.videoGmv)})`
+            : `Live: ${formatDecimal(d.liveSharePct, 1)}% (${formatVnCurrency(d.liveGmv)})`,
+          threshold: isVideoTrack ? 'Pass: Video GMV ≥ 60% and ≥ ₫100M' : 'Pass: Live GMV ≥ 60% and ≥ ₫500M',
           passed: isVideoTrack ? (d.videoSharePct >= 60 && d.videoGmv >= 100e6) : (d.liveSharePct >= 60 && d.liveGmv >= 500e6),
           note: isVideoTrack
             ? 'Evaluated under the Short-Video Conversion Track.'
@@ -1225,13 +1221,13 @@
             : '2. Livestream Mega-Seller Efficiency (35%)',
           weight: 7,
           label: isVideoTrack
-            ? 'GMV per Video & Average Video Views (≥ ₫4M/video & ≥ 25K views/video)'
+            ? 'GMV per Video & Output (≥ ₫4M/video & ≥ 15 Active Videos)'
             : '30-Day Livestream Traffic & Session Scale (≥ 500K Live Views)',
           actual: isVideoTrack
             ? `${formatVnCurrency(d.gmvPerVideo)}/video | ${formatCompactNumber(d.viewsPerVideo)} views/video (${d.videoCount30d} videos)`
             : `${formatCompactNumber(d.liveViews)} Live Views | Video supplement: ${formatVnCurrency(d.videoGmv)}`,
           threshold: isVideoTrack
-            ? 'Pass: ≥ ₫4.00M GMV/video & ≥ 20 Active Videos'
+            ? 'Pass: ≥ ₫4.00M GMV/video & ≥ 15 Active Videos'
             : 'Pass: ≥ 500K Live Views in 30 days',
           passed: isVideoTrack
             ? (d.gmvPerVideo >= 4e6 && d.videoCount30d >= 15)
@@ -1262,7 +1258,7 @@
           weight: 9,
           label: 'Proven Sales with Kalodata Top 20 Beauty Brands & Derma Stores',
           actual: `${d.specialistSkincareStores} Skincare Stores | Top 20 Matched: ${d.top20MatchedBrands.length > 0 ? d.top20MatchedBrands.join(', ') : 'None'}`,
-          threshold: 'Pass: ≥ 2 Skincare Brands with > ₫20M revenue',
+          threshold: 'Pass: ≥ 2 Skincare Stores and ≥ ₫30M combined skincare revenue',
           passed: d.specialistSkincareStores >= 2 && d.skincareRevenue >= 30e6,
           note: 'Cross-referenced against your Kalodata Top 20 Beauty Brands Excel list + specialist derma brands.'
         },
@@ -1285,7 +1281,7 @@
           category: '4. Operational Feasibility & Account Health (15%)',
           weight: 8,
           label: '30-Day Net Follower Momentum & Paid Ad ROAS Health',
-          actual: `Net Follower Change: ${d.followerChange >= 0 ? '+' : ''}${formatCompactNumber(d.followerChange)} | Avg Video ROAS: ${d.avgRoas > 0 ? d.avgRoas.toFixed(2) + 'x' : 'Organic / No Ad Data'}`,
+          actual: `Net Follower Change: ${d.followerChange >= 0 ? '+' : ''}${formatCompactNumber(d.followerChange)} | Avg Video ROAS: ${d.avgRoas > 0 ? formatDecimal(d.avgRoas, 2) + 'x' : 'No Ad Data'}`,
           threshold: 'Pass: Net Follower Change ≥ 0 (No Audience Churn)',
           passed: d.followerChange >= 0,
           note: d.followerChange >= 0
@@ -1296,86 +1292,49 @@
           id: 'c4_mcn',
           category: '4. Operational Feasibility & Account Health (15%)',
           weight: 7,
-          label: 'MCN Independence & Channel Tenure (Direct Booking Flexibility)',
+          label: 'MCN Independence or Commercial Scale (tenure not evaluated)',
           actual: `${d.mcnDisplay} | First Published: ${d.firstPubDate}`,
-          threshold: 'Pass: Independent or Open-Affiliate MCN with ≥ 6M tenure',
+          threshold: 'Pass: Independent or ≥ ₫300M total GMV (no tenure check)',
           passed: d.isIndependent || d.totalGmv >= 300e6,
           note: d.isIndependent
             ? 'Independent creator: fast direct seeding, flexible 15–20% affiliate commission, no agency markup.'
             : `Managed by ${d.mcnDisplay}: requires agency rate-card negotiation unless high GMV justifies fixed booking.`
         }
-      ];
+      ].map(item => {
+        const requirements = {
+          c1_age: ['ageGroup'], c1_gender: ['isFemaleMajority'],
+          c1_industry: ['isCategoryAlignedWithSkincare'], c2_scale: ['totalGmv'],
+          c2_engine: ['videoSharePct','liveSharePct','videoGmv','liveGmv'],
+          c2_gmv_follower: ['gmvPer1kFollowers'],
+          c2_unit_output: isVideoTrack ? ['gmvPerVideo','videoCount30d'] : ['liveViews','liveSharePct','videoSharePct'],
+          c3_aov: ['aov'], c3_top20: ['isCategoryAlignedWithSkincare'],
+          c3_sku_depth: ['isCategoryAlignedWithSkincare'], c4_growth: ['followerChange'], c4_mcn: ['isIndependent']
+        };
+        item.available = requirements[item.id].every(k => d[k] !== null && d[k] !== undefined);
+        if (item.id === 'c3_top20') item.available = item.available && d.stores.length > 0 && d.stores.every(s => Number.isFinite(s.rev));
+        if (item.id === 'c3_sku_depth') item.available = item.available && d.stores.length > 0 && d.stores.every(s => Number.isFinite(s.orders));
+        if (!item.available) { item.passed = null; item.actual = 'Missing source data'; item.note = 'Not evaluated. Missing evidence is not a pass or failure.'; }
+        return item;
+      });
     }
 
     // ============================================================================
-    // 6. SCENARIO DIAGNOSTIC ENGINE (5 REAL-WORLD KALODATA ARCHETYPES)
+    // 6. SOURCE EVIDENCE SUMMARY (NO CAMPAIGN OUTCOME PREDICTIONS)
     // ============================================================================
-    function evaluateScenario(d, totalScore, passedCount) {
-      // Scenario 1: Tier-A Short-Video Skincare Conversion Gem (e.g., @lita.living)
-      if (d.dominantTrack === 'VIDEO_TRACK' && d.isCategoryAlignedWithSkincare && d.totalGmv >= 250e6 && d.maxSkincareOrdersOnSingleStore >= 50) {
-        return {
-          code: 'SCENARIO 1 • TIER-A SHORT-VIDEO SKINCARE GEM',
-          title: 'High-Trust Short-Video Skincare Converter (Evergreen ROI)',
-          desc: `${d.handle} generates ${formatVnCurrency(d.totalGmv)} (${d.videoSharePct.toFixed(1)}% from short videos) with an exceptional ${formatVnCurrency(d.gmvPer1kFollowers)} GMV per 1K followers and proven deep conversion across ${d.specialistSkincareStores} facial skincare stores (max ${formatCompactNumber(d.maxSkincareOrdersOnSingleStore)} orders/brand). Audience (${d.ageGroup}, Female) aligns directly with mid-to-premium skincare (${formatVnCurrency(d.aov)} AOV).`,
-          actions: [
-            'Priority Tier-A Outreach: Send full-size hero SKU immediately + set 18%–22% open affiliate commission.',
-            'Request 1 dedicated problem-solving routine video (texture close-up + ingredient breakdown).',
-            `Whitelist Spark Ads on videos achieving > 2.5x ROAS (Creator current avg ROAS: ${d.avgRoas > 0 ? d.avgRoas.toFixed(2) + 'x' : 'Organic'}).`
-          ]
-        };
-      }
-
-      // Scenario 2: Livestream Mega-Seller / Derma Powerhouse (e.g., @pu50can)
-      if (d.dominantTrack === 'LIVE_TRACK' && d.isCategoryAlignedWithSkincare && d.totalGmv >= 500e6) {
-        return {
-          code: 'SCENARIO 2 • LIVESTREAM MEGA-SELLER TRACK',
-          title: 'High-Volume Livestream Closer & Bundle Powerhouse',
-          desc: `${d.handle} operates on a Livestream-dominant revenue engine (${d.liveSharePct.toFixed(1)}% Live GMV = ${formatVnCurrency(d.liveGmv)}, supplemented by ${formatVnCurrency(d.videoGmv)} in short videos). With an AOV of ${formatVnCurrency(d.aov)} and strong Top 20 brand history (${d.top20MatchedBrands.join(', ') || 'Clinical Skincare'}), this creator moves massive volume via live flash deals and multi-item routines.`,
-          actions: [
-            'Do NOT pitch single-item organic video seeding alone — book a dedicated Livestream slot + pre-heat short video.',
-            `Structure a high-AOV Twin-Pack or Full Routine Bundle (target ${formatVnCurrency(Math.max(d.aov, 380e3))}) with exclusive live vouchers.`,
-            'Provide live-room flashcards, clinical before/after proof, and gift-with-purchase (GWP) stock for live spikes.'
-          ]
-        };
-      }
-
-      // Scenario 3: Hybrid / Mid-Tier Video Skincare Creator (e.g., @thanhtuhouse97)
-      if (d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6) {
-        return {
-          code: 'SCENARIO 3 • SCALABLE HYBRID BEAUTY CREATOR',
-          title: 'Consistent Multi-Brand Beauty Affiliate (Volume Seeding + Ads)',
-          desc: `${d.handle} maintains solid 30-day revenue (${formatVnCurrency(d.totalGmv)}) across ${d.videoCount30d} videos (${formatVnCurrency(d.gmvPerVideo)}/video) with ${d.specialistSkincareStores} skincare brands in top stores. While audience or AOV (${formatVnCurrency(d.aov)}) may skew slightly broader (${d.ageGroup}), high publishing frequency and paid ad synergy (${d.avgRoas.toFixed(2)}x ROAS) make them reliable for scaling SKU volume.`,
-          actions: [
-            'Approve for Tier-B Seeding + Affiliate (15%–18% commission) with an introductory bundle price under ₫300K.',
-            'Provide a clear 3-second hook script focusing on instant texture/finish and price-to-value ratio.',
-            'Monitor first 48-hour organic CTR before boosting with Spark Ads.'
-          ]
-        };
-      }
-
-      // Scenario 4: Category Drift / Low-AOV Personal Care & Follower Churn (e.g., @tizine.official)
-      if (!d.isCategoryAlignedWithSkincare && d.personalCareStores > 0 && d.apparelStores < 4) {
-        return {
-          code: 'SCENARIO 4 • CATEGORY DRIFT & SHALLOW SKINCARE DEPTH',
-          title: 'Personal Care / Low-Ticket Hygiene Skew (High Seeding Risk)',
-          desc: `Although ${d.handle} has ${formatCompactNumber(d.followersCount)} followers and ${formatVnCurrency(d.totalGmv)} total GMV, deep table inspection reveals ${d.personalCareStores} top stores are Personal Care/Feminine Hygiene (AOV ${formatVnCurrency(d.aov)}) while facial skincare stores only generated a maximum of ${d.maxSkincareOrdersOnSingleStore} orders. Combined with ${d.followerChange < 0 ? 'negative follower growth (' + formatCompactNumber(d.followerChange) + ')' : 'low GMV/follower efficiency'}, facial skincare conversion is weak.`,
-          actions: [
-            'Hold Fixed-Fee Booking: Do NOT pay fixed slot fees for facial skincare on this channel.',
-            'Affiliate-Only Trial: Only proceed if creator accepts 100% performance affiliate link with zero upfront fee.',
-            'If testing, position product around daily body/hygiene or entry-level student pricing (< ₫199K).'
-          ]
-        };
-      }
-
-      // Scenario 5: Non-Beauty / Apparel / Lingerie Mismatch (e.g., @chutieuhan10012001)
+    function evaluateScenario(d) {
+      const checklist = buildDynamicChecklist(d);
+      const observed = checklist.filter(item => item.available);
+      const notMet = observed.filter(item => item.passed !== true);
+      const missing = checklist.length - observed.length;
       return {
-        code: 'SCENARIO 5 • INDUSTRY MISMATCH / REJECT',
-        title: 'Off-Niche Commercial Traffic (Apparel / Lingerie / Low Ticket)',
-        desc: `${d.handle}'s revenue (${formatVnCurrency(d.totalGmv)}, AOV ${formatVnCurrency(d.aov)}) is driven by ${d.detectedIndustry} (${d.apparelStores} apparel/lingerie stores, ${d.personalCareStores} hygiene stores, ${d.specialistSkincareStores} facial skincare stores). Audience buying behavior on this channel is conditioned to ₫80K–₫160K fashion/intimate items rather than active facial skincare.`,
-        actions: [
-          'Reject for Facial Skincare Campaigns: High probability of < 10 orders despite high video views.',
-          'Reallocate sample budget and outreach bandwidth to Tier-A Short-Video or Livestream skincare specialists.'
-        ]
+        code: missing ? 'INSUFFICIENT DATA' : 'SOURCE EVIDENCE',
+        title: 'Recorded checks only — no automatic booking verdict',
+        desc: `${d.handle}: ${genderLabel(d.isFemaleMajority)}, age ${d.ageGroup || 'Unknown'}, AOV ${formatVnCurrency(d.aov)}, total GMV ${formatVnCurrency(d.totalGmv)}. ${observed.length}/${checklist.length} criteria have evidence; ${notMet.length} recorded thresholds not met; ${missing} missing. ` +
+          (notMet.length ? 'Thresholds not met: ' + notMet.map(item => item.label).join('; ') + '. ' : '') +
+          'Source data is not independently verified. These checks do not predict campaign orders, profit, ROI or audience response.',
+        actions: [missing
+          ? 'If continuing the review, obtain the missing source fields and confirm the creator and reporting period first.'
+          : 'If considering a collaboration, verify the source, audience and price fit against the campaign brief, then review costs and terms before deciding whether a limited test is appropriate.']
       };
     }
 
@@ -1388,19 +1347,16 @@
 
       // 1. Header & Profile Info
       const avatarEl = document.getElementById('kolAvatar');
-      if (d.avatarUrl) {
-        avatarEl.style.backgroundImage = `url('${d.avatarUrl}')`;
-        avatarEl.textContent = '';
-      } else {
-        avatarEl.style.backgroundImage = 'none';
-        avatarEl.textContent = d.handle.replace('@', '').slice(0, 2).toUpperCase();
-      }
+      // Imported URLs are untrusted and can track file viewers. Render initials
+      // for every source, including history; never auto-fetch an external avatar.
+      avatarEl.style.backgroundImage = 'none';
+      avatarEl.textContent = d.handle.replace('@', '').slice(0, 2).toUpperCase();
 
       document.getElementById('kolHandle').textContent = d.handle;
       document.getElementById('kolBio').textContent = d.bioText || 'No bio text listed on Kalodata';
       document.getElementById('kolDebut').textContent = `First Published: ${d.firstPubDate}`;
-      document.getElementById('kolDemographics').textContent = `Audience: ${d.isFemaleMajority ? 'Female Majority' : 'Mixed'} (${d.ageGroup})`;
-      document.getElementById('kolDateRange').textContent = `Window: ${d.dateRangeWindow || '30 Days'}`;
+      document.getElementById('kolDemographics').textContent = `Audience: ${genderLabel(d.isFemaleMajority)} (${d.ageGroup || 'Unknown age'})`;
+      document.getElementById('kolDateRange').textContent = `Window: ${d.dateRangeWindow || 'Unknown date range'}`;
       document.getElementById('mcnBadge').textContent = `MCN: ${d.mcnDisplay}`;
       document.getElementById('tiktokProfileLink').href = `https://www.tiktok.com/${d.handle}`;
 
@@ -1412,14 +1368,16 @@
       const modePill = document.getElementById('checklistModePill');
       const primaryTrackLabel = document.getElementById('primaryTrackLabel');
 
-      if (isVideoTrack) {
-        trackBadge.textContent = `Short-Video Track (${d.videoSharePct.toFixed(0)}% Video)`;
+      if (d.dominantTrack == null) {
+        trackBadge.textContent = 'Unknown revenue track'; modePill.textContent = 'TRACK UNKNOWN'; primaryTrackLabel.textContent = 'Unknown';
+      } else if (isVideoTrack) {
+        trackBadge.textContent = `Short-Video Track (${formatDecimal(d.videoSharePct, 0)}% Video)`;
         trackBadge.className = 'px-2.5 py-0.5 text-xs font-semibold rounded-full bg-sky-50 text-sky-700 border border-sky-200';
         modePill.textContent = 'SHORT-VIDEO CONVERSION CRITERIA';
         modePill.className = 'px-3 py-1 rounded-md bg-slate-900 text-white text-xs font-mono font-semibold';
         primaryTrackLabel.textContent = 'Short-Video Conversion';
       } else {
-        trackBadge.textContent = `Livestream Track (${d.liveSharePct.toFixed(0)}% Live)`;
+        trackBadge.textContent = `Livestream Track (${formatDecimal(d.liveSharePct, 0)}% Live)`;
         trackBadge.className = 'px-2.5 py-0.5 text-xs font-semibold rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200';
         modePill.textContent = 'LIVESTREAM MEGA-SELLER CRITERIA';
         modePill.className = 'px-3 py-1 rounded-md bg-indigo-900 text-white text-xs font-mono font-semibold';
@@ -1430,15 +1388,15 @@
       document.getElementById('metricTotalGmv').textContent = formatVnCurrency(d.totalGmv);
       document.getElementById('metricDailyGmv').textContent = `${formatVnCurrency(d.dailyGmv)} / day`;
       document.getElementById('metricChannelSplit').textContent = isVideoTrack
-        ? `${d.videoSharePct.toFixed(1)}% Video`
-        : `${d.liveSharePct.toFixed(1)}% Live`;
+        ? `${formatDecimal(d.videoSharePct, 1)}% Video`
+        : `${formatDecimal(d.liveSharePct, 1)}% Live`;
       document.getElementById('metricChannelSub').textContent = `V: ${formatVnCurrency(d.videoGmv)} | L: ${formatVnCurrency(d.liveGmv)}`;
       document.getElementById('metricGmvPer1k').textContent = formatVnCurrency(d.gmvPer1kFollowers);
       document.getElementById('metricFollowers').textContent = `${formatCompactNumber(d.followersCount)} followers`;
       document.getElementById('metricGmvPerVideo').textContent = formatVnCurrency(d.gmvPerVideo);
-      document.getElementById('metricVideoCount').textContent = `${d.videoCount30d || d.videos.length} active videos (30d)`;
+      document.getElementById('metricVideoCount').textContent = `${d.videoCount30d == null ? 'Unknown count' : d.videoCount30d} active videos (30d)`;
       document.getElementById('metricAov').textContent = formatVnCurrency(d.aov);
-      document.getElementById('metricAovFit').textContent = (d.aov >= 200e3 && d.aov <= 480e3)
+      document.getElementById('metricAovFit').textContent = d.aov == null ? 'N/A — missing AOV' : (d.aov >= 200e3 && d.aov <= 480e3)
         ? '✓ Matches ₫200k–480k Skincare'
         : (d.aov < 200e3 ? '⚠ Below ₫200k Skincare Target' : '★ High-Ticket Bundle Tier');
       document.getElementById('metricVideoViews').textContent = formatCompactNumber(d.videoViews);
@@ -1467,13 +1425,13 @@
         const tr = document.createElement('tr');
         tr.className = isLasy ? 'bg-sky-50/80 font-semibold' : 'hover:bg-slate-50';
         tr.innerHTML = `
-          <td class="py-2.5 pr-2 font-mono text-slate-400">${s.rank}</td>
+          <td class="py-2.5 pr-2 font-mono text-slate-400">${escapeHtml(s.rank)}</td>
           <td class="py-2.5 px-2 text-slate-900 font-medium">
-            ${s.storeName}
+            ${escapeHtml(s.storeName)}
             ${isLasy ? '<span class="ml-1.5 px-1.5 py-0.5 text-[10px] font-mono bg-sky-600 text-white rounded">YOUR BRAND</span>' : ''}
           </td>
           <td class="py-2.5 px-2">
-            <span class="px-2 py-0.5 text-[10px] font-mono rounded border ${badgeColor}">${s.categoryTag || s.storeType}</span>
+            <span class="px-2 py-0.5 text-[10px] font-mono rounded border ${badgeColor}">${escapeHtml(s.categoryTag || s.storeType)}</span>
           </td>
           <td class="py-2.5 px-2 text-right font-mono text-slate-900">${formatVnCurrency(s.rev)}</td>
           <td class="py-2.5 pl-2 text-right font-mono text-slate-600">${formatCompactNumber(s.orders)}</td>
@@ -1497,7 +1455,7 @@
             title: v.title,
             rev: formatVnCurrency(v.rev),
             sub: `${formatCompactNumber(v.views)} views`,
-            meta: v.roas > 0 ? `ROAS ${v.roas.toFixed(2)}x` : 'Organic'
+            meta: v.roas > 0 ? `ROAS ${formatDecimal(v.roas, 2)}x` : 'No ad data'
           }));
 
       document.getElementById('productCountBadge').textContent = `${displayItems.length} top items`;
@@ -1505,8 +1463,8 @@
         const tr = document.createElement('tr');
         tr.className = 'hover:bg-slate-50';
         tr.innerHTML = `
-          <td class="py-2.5 pr-2 font-mono text-slate-400">${item.rank}</td>
-          <td class="py-2.5 px-2 text-slate-800 max-w-xs truncate" title="${item.title.replace(/"/g, '&quot;')}">${item.title}</td>
+          <td class="py-2.5 pr-2 font-mono text-slate-400">${escapeHtml(item.rank)}</td>
+          <td class="py-2.5 px-2 text-slate-800 max-w-xs truncate" title="${escapeHtml(item.title)}">${escapeHtml(item.title)}</td>
           <td class="py-2.5 px-2 text-right font-mono text-slate-900">${item.rev}</td>
           <td class="py-2.5 px-2 text-right font-mono text-slate-600">${item.sub}</td>
           <td class="py-2.5 pl-2 text-right font-mono text-sky-700">${item.meta}</td>
@@ -1514,9 +1472,11 @@
         prodBody.appendChild(tr);
       });
 
-      // Reset AI Output box to ready state for this creator
-      document.getElementById('aiAuditOutput').textContent =
-        `Ready to generate Deep Case Research for ${d.handle} (${d.detectedIndustry} | 30D GMV: ${formatVnCurrency(d.totalGmv)}). Click the button above to run the commercial diagnostic & outreach strategy.`;
+      // Configuration is not proof that a backend or live authentication works.
+      const aiConfigured = window.WISHPLAN_KOL_AI_ENABLED === true && Boolean(window.WISHPLAN_FIREBASE_APPCHECK_SITE_KEY);
+      document.getElementById('aiAuditOutput').textContent = aiConfigured
+        ? 'AI tùy chọn cần đăng nhập và dịch vụ được triển khai; chưa xác minh khả dụng. Chỉ phân tích dữ liệu đã nhập, không khảo sát TikTok trực tiếp.'
+        : 'AI chưa bật cho bản triển khai này. Bạn vẫn có thể đánh giá tại máy; không có yêu cầu AI nào được gửi.';
 
       // 6. Initialize Quick Summary Message for Ms
       const defaultName = d.handle.replace(/^@/, '');
@@ -1532,10 +1492,10 @@
       const handleId = d.handle.startsWith('@') ? d.handle : `@${d.handle}`;
       const channelLink = `https://www.tiktok.com/${handleId}`;
 
-      const gmvVideoStr = `${formatVnCurrency(d.videoGmv)} (${d.videoSharePct.toFixed(1)}%)`;
-      const gmvLiveStr = `${formatVnCurrency(d.liveGmv)} (${d.liveSharePct.toFixed(1)}%)`;
+      const gmvVideoStr = `${formatVnCurrency(d.videoGmv)} (${formatDecimal(d.videoSharePct, 1)}%)`;
+      const gmvLiveStr = `${formatVnCurrency(d.liveGmv)} (${formatDecimal(d.liveSharePct, 1)}%)`;
       const aovStr = formatVnCurrency(d.aov);
-      const genderStr = d.isFemaleMajority ? 'Female Majority' : 'Mixed / Male Majority';
+      const genderStr = genderLabel(d.isFemaleMajority);
       const ageStr = d.ageGroup;
       const skuDepthStr = `${d.specialistSkincareStores} Skincare Stores | ${d.skincareSkuCount} Skincare SKUs`;
 
@@ -1611,7 +1571,7 @@ Check list 30days:
         const header = document.createElement('div');
         header.className = 'bg-slate-100/80 px-4 py-2.5 border-b border-slate-200 flex items-center justify-between';
         header.innerHTML = `
-          <span class="text-xs font-bold text-slate-800 uppercase tracking-wide">${catName}</span>
+          <span class="text-xs font-bold text-slate-800 uppercase tracking-wide">${escapeHtml(catName)}</span>
           <span class="text-[11px] font-mono text-slate-500">${grouped[catName].filter(i => i.passed).length}/${grouped[catName].length} Passed</span>
         `;
         section.appendChild(header);
@@ -1625,25 +1585,25 @@ Check list 30days:
           row.innerHTML = `
             <input type="checkbox"
                    class="mt-1 w-4 h-4 rounded border-slate-300 text-sky-600 focus:ring-sky-500 cursor-pointer"
-                   ${item.passed ? 'checked' : ''}
+                   ${!item.available ? 'disabled' : ''} ${item.passed ? 'checked' : ''}
                    onchange="toggleCriterion(${item.index}, this.checked)" />
             <div class="flex-1 min-w-0">
               <div class="flex flex-wrap items-center justify-between gap-2">
-                <span class="text-xs font-bold text-slate-900">${item.label}</span>
+                <span class="text-xs font-bold text-slate-900">${escapeHtml(item.label)}</span>
                 <span class="px-2 py-0.5 text-[10px] font-mono font-semibold rounded ${
                   item.passed
                     ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                     : 'bg-amber-50 text-amber-700 border border-amber-200'
                 }">
-                  ${item.passed ? 'PASS' : 'FLAGGED'} • ${item.weight} pts
+                  ${!item.available ? 'MISSING' : (item.passed ? 'PASS' : 'FLAGGED')} • ${item.weight} pts
                 </span>
               </div>
               <div class="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] font-mono">
-                <span class="text-slate-800 font-semibold">Extracted: ${item.actual}</span>
+                <span class="text-slate-800 font-semibold">Extracted: ${escapeHtml(item.actual)}</span>
                 <span class="text-slate-400">|</span>
-                <span class="text-slate-500">${item.threshold}</span>
+                <span class="text-slate-500">${escapeHtml(item.threshold)}</span>
               </div>
-              <p class="mt-1 text-[11px] text-slate-500 leading-relaxed">${item.note}</p>
+              <p class="mt-1 text-[11px] text-slate-500 leading-relaxed">${escapeHtml(item.note)}</p>
             </div>
           `;
           list.appendChild(row);
@@ -1655,7 +1615,7 @@ Check list 30days:
     }
 
     function toggleCriterion(index, isChecked) {
-      if (!currentChecklistState[index]) return;
+      if (!currentChecklistState[index]?.available) return;
       currentChecklistState[index].passed = isChecked;
       renderChecklistItems();
       updateScoreAndScenarioUI();
@@ -1688,8 +1648,20 @@ Check list 30days:
       });
 
       const pct = totalWeight > 0 ? Math.round((earnedWeight / totalWeight) * 100) : 0;
-      document.getElementById('overallScoreValue').textContent = `${pct}%`;
-      document.getElementById('overallChecksText').textContent = `${passedCount} of ${currentChecklistState.length} criteria passed (${earnedWeight}/${totalWeight} pts)`;
+      const observed = currentChecklistState.filter(i => i.available).length;
+      const complete = observed === currentChecklistState.length;
+      document.getElementById('primaryVerdict').textContent = !complete ? 'Chưa đủ dữ liệu để kết luận'
+        : pct >= 82 ? 'Mức phù hợp cao · ưu tiên xem xét hợp tác'
+        : pct >= 62 ? 'Phù hợp có điều kiện · cần kiểm tra thêm' : 'Mức phù hợp thấp · cân nhắc rủi ro';
+      document.getElementById('sourceFileName').textContent = currentAuditData.fileName || 'Không rõ tên nguồn';
+      document.getElementById('sourceCoverage').textContent = `${observed}/${currentChecklistState.length} tiêu chí có bằng chứng`;
+      document.getElementById('sourceDateRange').textContent = currentAuditData.dateRangeWindow || 'Không rõ kỳ dữ liệu';
+      const missing = currentChecklistState.filter(i => !i.available).map(i => i.label);
+      document.getElementById('missingEvidenceSummary').textContent = missing.length ? `Xem ${missing.length} tiêu chí thiếu bằng chứng` : 'Xem trạng thái bằng chứng · không còn tiêu chí thiếu';
+      document.getElementById('sourceMissing').textContent = missing.length ? 'Còn thiếu bằng chứng: ' + missing.join('; ') : 'Đủ trường dữ liệu cho bộ tiêu chí; chưa xác minh tính chính xác của nguồn.';
+      document.getElementById('resultNextAction').textContent = !complete ? 'Bổ sung dữ liệu còn thiếu rồi nhập lại trước khi quyết định booking.' : 'Đối chiếu nguồn, xem kịch bản chi tiết rồi so sánh với lần đánh giá trước khi liên hệ.';
+      document.getElementById('overallScoreValue').textContent = complete ? `${pct}%` : 'N/A';
+      document.getElementById('overallChecksText').textContent = `${passedCount} of ${currentChecklistState.length} criteria passed; coverage ${observed}/${currentChecklistState.length} (${earnedWeight}/${totalWeight} evidenced pts)`;
 
       const mainBar = document.getElementById('overallProgressBar');
       mainBar.style.width = `${pct}%`;
@@ -1698,7 +1670,7 @@ Check list 30days:
       }`;
 
       const tierBadge = document.getElementById('tierBadge');
-      if (pct >= 82) {
+      if (!complete) { tierBadge.textContent = 'INSUFFICIENT DATA'; } else if (pct >= 82) {
         tierBadge.textContent = 'TIER A • PRIORITY PARTNER';
         tierBadge.className = 'px-2.5 py-0.5 text-xs font-bold rounded bg-emerald-600 text-white font-mono';
       } else if (pct >= 62) {
@@ -1730,7 +1702,7 @@ Check list 30days:
       });
 
       // Update Scenario Diagnostic Card
-      const scenario = evaluateScenario(currentAuditData, pct, passedCount);
+      const scenario = evaluateScenario(currentAuditData);
       document.getElementById('scenarioTitle').textContent = `${scenario.code}: ${scenario.title}`;
       document.getElementById('scenarioDesc').textContent = scenario.desc;
       const actionsList = document.getElementById('scenarioActions');
@@ -1745,95 +1717,10 @@ Check list 30days:
     // ============================================================================
     // 8. AI DEEP CASE RESEARCH & OUTREACH BRIEF GENERATOR
     // ============================================================================
-    async function runAiDeepCaseAnalysis() {
-      if (!currentAuditData) return;
-      const d = currentAuditData;
-      const outEl = document.getElementById('aiAuditOutput');
-      const btn = document.getElementById('runAiAuditBtn');
-
-      btn.disabled = true;
-      btn.classList.add('opacity-60');
-      outEl.textContent = `Synthesizing deep commercial case study for ${d.handle} (analyzing ${d.stores.length} cooperative stores, ${d.videoCount30d} videos, and Top 20 Vietnam Beauty Brand benchmarks)...`;
-
-      const topStoresSummary = d.stores
-        .slice(0, 7)
-        .map(s => `${s.storeName} (${formatVnCurrency(s.rev)}, ${formatCompactNumber(s.orders)} orders, ${s.categoryTag})`)
-        .join('; ');
-
-      const topProductsSummary = (d.products.length > 0 ? d.products : d.videos)
-        .slice(0, 5)
-        .map(p => `${p.name || p.title} (${formatVnCurrency(p.rev)})`)
-        .join('; ');
-
-      const prompt = `You are a Senior Vietnam TikTok Shop Beauty & Skincare Commercial Strategist auditing a creator from Kalodata HTML data for our skincare brand L.ASY (hero SKU: L.ASY Galacto Cleansing Balm ~253,000 VND).
-
-CREATOR DATA:
-- Handle: ${d.handle}
-- Bio: ${d.bioText}
-- Followers: ${formatCompactNumber(d.followersCount)} (30d Net Follower Change: ${d.followerChange})
-- MCN Status: ${d.mcnDisplay} | First Published: ${d.firstPubDate}
-- Audience: ${d.isFemaleMajority ? 'Female Majority' : 'Mixed'}, Dominant Age: ${d.ageGroup}
-- 30D Total GMV: ${formatVnCurrency(d.totalGmv)} (Video GMV: ${formatVnCurrency(d.videoGmv)} [${d.videoSharePct.toFixed(1)}%], Live GMV: ${formatVnCurrency(d.liveGmv)} [${d.liveSharePct.toFixed(1)}%])
-- GMV per 1K Followers: ${formatVnCurrency(d.gmvPer1kFollowers)} | GMV per Video: ${formatVnCurrency(d.gmvPerVideo)} (${d.videoCount30d} videos in 30d)
-- Average Unit Price (AOV): ${formatVnCurrency(d.aov)} | Avg Ad ROAS: ${d.avgRoas.toFixed(2)}x
-- Detected Industry from Tables: ${d.detectedIndustry}
-- Top 20 Vietnam Beauty Brands Matched: ${d.top20MatchedBrands.join(', ') || 'None'}
-- Top Stores (.table_seller): ${topStoresSummary}
-- Top Products/Videos: ${topProductsSummary}
-
-Write a concise, executive English audit in 4 sections:
-1. COMMERCIAL VERDICT & REAL NICHE POSITIONING (Explain whether their real revenue comes from facial skincare, personal care/hygiene, or apparel, and whether they fit Short-Video Seeding or Livestream Booking).
-2. CONVERSION DEPTH & RISK ANALYSIS (Analyze their GMV/1K followers, AOV fit vs. 253k VND, max orders on skincare stores, and follower trend).
-3. RECOMMENDED COLLABORATION MODEL & COMMISSION / FEE STRUCTURE (Exact deal terms, e.g., 18% affiliate vs. live slot bundle vs. reject).
-4. CUSTOM OUTREACH MESSAGE / CREATIVE ANGLE (A ready-to-send Vietnamese outreach hook + 60s video or live angle tailored to their actual top-selling items).`;
-
-      try {
-        const aiText = await window.__invokeVaultModel(prompt);
-        if (aiText) {
-          outEl.textContent = aiText.trim();
-        } else {
-          throw new Error('Empty AI response');
-        }
-      } catch (err) {
-        // Deterministic local fallback case analysis if offline or quota reached
-        outEl.textContent = buildLocalDeepCaseFallback(d);
-      } finally {
-        btn.disabled = false;
-        btn.classList.remove('opacity-60');
-      }
-    }
-
-    function buildLocalDeepCaseFallback(d) {
-      const topStoresList = d.stores.slice(0, 5).map(s => `${s.storeName} (${formatVnCurrency(s.rev)} / ${formatCompactNumber(s.orders)} orders)`).join(', ');
-      return `[DEEP COMMERCIAL CASE AUDIT — ${d.handle.toUpperCase()}]
-
-1. COMMERCIAL VERDICT & REAL NICHE POSITIONING
-• Primary Revenue Track: ${d.dominantTrack === 'VIDEO_TRACK' ? 'Short-Video Conversion Engine' : 'Livestream Mega-Seller Engine'} (Video: ${d.videoSharePct.toFixed(1)}% | Live: ${d.liveSharePct.toFixed(1)}%).
-• Real Table-Verified Category: ${d.detectedIndustry}.
-• Store Portfolio Proof: ${topStoresList || 'No store data'}.
-• Top 20 Vietnam Beauty Brand Overlap: ${d.top20MatchedBrands.length > 0 ? d.top20MatchedBrands.join(', ') : 'None detected in Top 10 stores'}.
-
-2. CONVERSION DEPTH & RISK DIAGNOSTIC
-• Monetization Efficiency: ${formatVnCurrency(d.gmvPer1kFollowers)} per 1,000 followers across ${formatCompactNumber(d.followersCount)} followers.
-• Per-Video Yield: ${formatVnCurrency(d.gmvPerVideo)}/video across ${d.videoCount30d || d.videos.length} active videos (Avg ROAS: ${d.avgRoas > 0 ? d.avgRoas.toFixed(2) + 'x' : 'Organic'}).
-• Price Point (AOV) Alignment: Creator AOV is ${formatVnCurrency(d.aov)} vs. L.ASY target benchmark (₫250K–₫350K).
-• Account Health: 30-day net follower change is ${d.followerChange >= 0 ? '+' : ''}${formatCompactNumber(d.followerChange)} (${d.followerChange >= 0 ? 'Healthy retention' : 'Warning: Audience churn detected'}).
-
-3. COLLABORATION & DEAL STRUCTURE RECOMMENDATION
-${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
-  ? (d.dominantTrack === 'VIDEO_TRACK'
-      ? '• Approved for Priority Short-Video Seeding + 18%–20% Open Affiliate + Spark Ads whitelisting on videos exceeding 2.5x ROAS.'
-      : '• Approved for Livestream Slot Co-Promotion + Pre-Heat Short Video. Bundle 2 units or add GWP to match their higher live AOV.')
-  : '• CAUTION / HOLD FIXED BOOKING: Channel revenue is skewed toward ' + d.detectedIndustry + ' with shallow facial skincare order depth (max ' + d.maxSkincareOrdersOnSingleStore + ' orders). Only offer performance-based affiliate link (15%–20%) with zero fixed fee.'}
-
-4. OUTREACH HOOK (VIETNAMESE)
-"Chào ${d.handle}, team L.ASY Việt Nam rất ấn tượng với hiệu suất chuyển đổi thực tế của kênh (${formatVnCurrency(d.totalGmv)}/30 ngày). Bên mình muốn gửi tặng mẫu Fullsize Sáp Tẩy Trang L.ASY Galacto kèm mức hoa hồng Affiliate ưu đãi 20% và ngân sách vít Ads riêng cho video của bạn..."`;
-    }
-
     // ============================================================================
     // 9. STAGE NAVIGATION, HISTORY TRACKING & BEFORE/AFTER COMPARISON
     // ============================================================================
-    const HISTORY_STORAGE_KEY = 'KALODATA_KOL_AUDIT_HISTORY_V1';
+
     let selectedComparisonIds = [];
     let currentPreviousSnapshotForBanner = null;
 
@@ -1869,14 +1756,15 @@ ${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
 
     function getSavedHistory() {
       try {
-        const raw = localStorage.getItem(HISTORY_STORAGE_KEY);
+        const raw = localStorage.getItem(historyStorageKey());
         if (!raw) return [];
         const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) parsed.forEach(validateHistoryRecord);
         if (!Array.isArray(parsed)) return [];
-        const deduped = deduplicateHistoryByDay(parsed);
+        const deduped = deduplicateHistoryByDay(parsed).filter(item => !deletedIds().has(item.snapshotId));
         if (deduped.length !== parsed.length) {
           // Auto-clean any existing duplicate same-day entries in localStorage
-          localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(deduped));
+          localStorage.setItem(historyStorageKey(), JSON.stringify(deduped));
         }
         return deduped;
       } catch (e) {
@@ -1885,13 +1773,15 @@ ${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
     }
 
     function saveHistoryArray(arr) {
-      const cleanArr = deduplicateHistoryByDay(arr);
+      if (!Array.isArray(arr) || arr.length > 200) throw new Error('Invalid history list limit');
+      arr.forEach(validateHistoryRecord);
+      const cleanArr = deduplicateHistoryByDay(arr).filter(item => !deletedIds().has(item.snapshotId));
       try {
-        localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(cleanArr));
+        localStorage.setItem(historyStorageKey(), JSON.stringify(cleanArr));
       } catch (e) {
         console.warn('LocalStorage quota reached, trimming oldest entries');
         if (cleanArr.length > 15) {
-          localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(cleanArr.slice(0, 15)));
+          localStorage.setItem(historyStorageKey(), JSON.stringify(cleanArr.slice(0, 15)));
         }
       }
       updateHistoryCountBadge();
@@ -1905,6 +1795,7 @@ ${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
 
     function computeOverallScorePct(d) {
       const list = buildDynamicChecklist(d);
+      if (list.some(i => !i.available)) return null;
       let earned = 0;
       let total = 0;
       list.forEach(item => {
@@ -1951,8 +1842,8 @@ ${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
         snapshotId,
         savedAtIso: nowIso,
         savedAtFormatted: nowFormatted,
-        scorePct,
-        ...d
+        ...d,
+        scorePct
       };
 
       d.snapshotId = snapshotId;
@@ -2019,6 +1910,7 @@ ${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
       Object.entries(navButtons).forEach(([key, btnId]) => {
         const btn = document.getElementById(btnId);
         if (!btn) return;
+        btn.ariaCurrent = key === tabName ? 'page' : 'false';
         if (key === tabName) {
           btn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 cursor-pointer bg-white text-slate-900 shadow-sm';
         } else {
@@ -2123,7 +2015,7 @@ ${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
         // Tier score filter
         if (tier === 'TIER1' && !(item.scorePct >= 82)) return false;
         if (tier === 'TIER2' && !(item.scorePct >= 62 && item.scorePct < 82)) return false;
-        if (tier === 'TIER3' && !(item.scorePct < 62)) return false;
+        if (tier === 'TIER3' && !(Number.isFinite(item.scorePct) && item.scorePct < 62)) return false;
 
         // Category / Skincare filter
         if (cat === 'TOP20' && !(item.top20MatchedBrands && item.top20MatchedBrands.length > 0)) return false;
@@ -2167,7 +2059,7 @@ ${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
       if (pillsContainer) {
         pillsContainer.innerHTML = '';
         if (q) {
-          pillsContainer.innerHTML += `<span class="px-2 py-0.5 rounded bg-sky-100 text-sky-800 font-mono text-[10px]">Query: "${q}"</span>`;
+          pillsContainer.innerHTML += `<span class="px-2 py-0.5 rounded bg-sky-100 text-sky-800 font-mono text-[10px]">Query: "${escapeHtml(q)}"</span>`;
         }
         if (track !== 'ALL') {
           pillsContainer.innerHTML += `<span class="px-2 py-0.5 rounded bg-slate-200 text-slate-800 font-mono text-[10px]">${track === 'VIDEO_TRACK' ? 'Video Track' : 'Live Track'}</span>`;
@@ -2190,12 +2082,12 @@ ${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
       const handleId = d.handle.startsWith('@') ? d.handle : '@' + d.handle;
       const name = d.handle.replace(/^@/, '');
       const link = 'https://www.tiktok.com/' + handleId;
-      const gender = d.isFemaleMajority ? 'Female Majority' : 'Mixed / Male Majority';
+      const gender = genderLabel(d.isFemaleMajority);
       const sku = `${d.specialistSkincareStores} Skincare Stores | ${d.skincareSkuCount} Skincare SKUs`;
       if (mode === 'CHECKLIST') {
-        return `Name: ${name}\nHandle ID: ${handleId}\nLink channel: ${link}\n\nCheck list 30days:\n1. GMV Video: ${formatVnCurrency(d.videoGmv)} (${d.videoSharePct.toFixed(1)}%)\n2. GMV Livestream: ${formatVnCurrency(d.liveGmv)} (${d.liveSharePct.toFixed(1)}%)\n3. AOV: ${formatVnCurrency(d.aov)}\n4. Audience Gender: ${gender}\n5. Core Age Group: ${d.ageGroup}\n6. Skincare SKU Depth: ${sku}`;
+        return `Name: ${name}\nHandle ID: ${handleId}\nLink channel: ${link}\n\nCheck list 30days:\n1. GMV Video: ${formatVnCurrency(d.videoGmv)} (${formatDecimal(d.videoSharePct, 1)}%)\n2. GMV Livestream: ${formatVnCurrency(d.liveGmv)} (${formatDecimal(d.liveSharePct, 1)}%)\n3. AOV: ${formatVnCurrency(d.aov)}\n4. Audience Gender: ${gender}\n5. Core Age Group: ${d.ageGroup}\n6. Skincare SKU Depth: ${sku}`;
       }
-      return `Name: ${name}\nHandle ID: ${handleId}\nLink channel: ${link}\nBio: ${d.bioText || 'N/A'}\nGMV Video: ${formatVnCurrency(d.videoGmv)} (${d.videoSharePct.toFixed(1)}%) | GMV Live: ${formatVnCurrency(d.liveGmv)} (${d.liveSharePct.toFixed(1)}%)\nAOV: ${formatVnCurrency(d.aov)} | ${gender} | Age ${d.ageGroup}\nSkincare: ${sku}`;
+      return `Name: ${name}\nHandle ID: ${handleId}\nLink channel: ${link}\nBio: ${d.bioText || 'N/A'}\nGMV Video: ${formatVnCurrency(d.videoGmv)} (${formatDecimal(d.videoSharePct, 1)}%) | GMV Live: ${formatVnCurrency(d.liveGmv)} (${formatDecimal(d.liveSharePct, 1)}%)\nAOV: ${formatVnCurrency(d.aov)} | ${gender} | Age ${d.ageGroup}\nSkincare: ${sku}`;
     }
 
     function getExportItems() {
@@ -2231,9 +2123,16 @@ ${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
       if (!items.length) return;
       let content, mime;
       if (kind === 'csv') {
-        const q = v => '"' + String(v ?? '').replace(/"/g, '""').replace(/\s+/g, ' ') + '"';
+        const q = value => {
+          // CSV quoting alone does not prevent spreadsheet formula execution.
+          // Normalize invisible/control prefixes before inspecting text cells;
+          // actual numbers (including negative ones) retain their numeric value.
+          let text = String(value ?? '').replace(/[\u0000-\u001f\u007f-\u009f\u200b-\u200f\u202a-\u202e\u2060-\u206f]/g, ' ').replace(/\s+/g, ' ');
+          if (typeof value !== 'number' && /^[\s\uFEFF]*[=+\-@]/.test(text)) text = "'" + text;
+          return '"' + text.replace(/"/g, '""') + '"';
+        };
         const rows = [['Name','Handle','Link','Bio','GMV Video','GMV Live','AOV','Gender','Age','Skincare Stores','Skincare SKUs','Score','Saved']];
-        items.forEach(d => rows.push([d.handle.replace(/^@/, ''), d.handle, 'https://www.tiktok.com/' + d.handle, d.bioText, formatVnCurrency(d.videoGmv), formatVnCurrency(d.liveGmv), formatVnCurrency(d.aov), d.isFemaleMajority ? 'Female Majority' : 'Mixed', d.ageGroup, d.specialistSkincareStores, d.skincareSkuCount, (d.scorePct||0)+'%', d.savedAtFormatted]));
+        items.forEach(d => rows.push([d.handle.replace(/^@/, ''), d.handle, 'https://www.tiktok.com/' + d.handle, d.bioText, formatVnCurrency(d.videoGmv), formatVnCurrency(d.liveGmv), formatVnCurrency(d.aov), genderLabel(d.isFemaleMajority), d.ageGroup, d.specialistSkincareStores, d.skincareSkuCount, d.scorePct == null ? 'N/A' : d.scorePct+'%', d.savedAtFormatted]));
         content = '\uFEFF' + rows.map(r => r.map(q).join(',')).join('\n'); mime = 'text/csv;charset=utf-8';
       } else {
         content = items.map(i => buildItemText(i, getExportMode())).join('\n\n----------\n\n'); mime = 'text/plain;charset=utf-8';
@@ -2271,7 +2170,7 @@ ${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
         tbody.innerHTML = `
           <tr>
             <td colspan="11" class="py-10 text-center text-slate-400 font-mono text-xs">
-              No saved KOL audits yet. Drag the ⚡ Bookmarklet on Homepage or upload a Kalodata .html file to archive it here.
+              No saved KOL audits yet. Upload a Kalodata .html file or manually import JSON.
             </td>
           </tr>
         `;
@@ -2300,7 +2199,7 @@ ${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
 
         const trackBadge = item.dominantTrack === 'VIDEO_TRACK'
           ? '<span class="px-1.5 py-0.5 rounded bg-sky-50 text-sky-700 text-[10px] font-mono border border-sky-200 font-semibold">Video</span>'
-          : '<span class="px-1.5 py-0.5 rounded bg-purple-50 text-purple-700 text-[10px] font-mono border border-purple-200 font-semibold">Live</span>';
+          : item.dominantTrack == null ? '<span>Unknown track</span>' : '<span class="px-1.5 py-0.5 rounded bg-purple-50 text-purple-700 text-[10px] font-mono border border-purple-200 font-semibold">Live</span>';
 
         const isExpSel = selectedExportIds.has(item.snapshotId);
         tr.innerHTML = `
@@ -2314,24 +2213,24 @@ ${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
                    ${isChecked ? 'checked' : ''}
                    onchange="toggleHistoryCompareCheckbox('${item.snapshotId}', this.checked)" />
           </td>
-          <td class="py-3 px-3 font-mono text-slate-700 whitespace-nowrap">${item.savedAtFormatted || '--'}</td>
+          <td class="py-3 px-3 font-mono text-slate-700 whitespace-nowrap">${escapeHtml(item.savedAtFormatted || '--')}</td>
           <td class="py-3 px-3">
             <div class="flex items-center gap-1.5">
-              <span class="font-bold text-slate-900 font-mono">${item.handle}</span>
+              <span class="font-bold text-slate-900 font-mono">${escapeHtml(item.handle)}</span>
               ${trackBadge}
             </div>
-            <div class="text-[11px] text-slate-500 font-mono">Window: ${item.dateRangeWindow || '30 Days'}</div>
+            <div class="text-[11px] text-slate-500 font-mono">Window: ${escapeHtml(item.dateRangeWindow || 'Unknown')}</div>
           </td>
           <td class="py-3 px-3 text-right font-mono font-bold text-slate-900">${formatVnCurrency(item.totalGmv)}</td>
-          <td class="py-3 px-3 text-right font-mono text-slate-700">${formatVnCurrency(item.videoGmv)} <span class="text-[10px] text-slate-400">(${item.videoSharePct.toFixed(0)}%)</span></td>
-          <td class="py-3 px-3 text-right font-mono text-slate-700">${formatVnCurrency(item.liveGmv)} <span class="text-[10px] text-slate-400">(${item.liveSharePct.toFixed(0)}%)</span></td>
+          <td class="py-3 px-3 text-right font-mono text-slate-700">${formatVnCurrency(item.videoGmv)} <span class="text-[10px] text-slate-400">(${formatDecimal(item.videoSharePct, 0)}%)</span></td>
+          <td class="py-3 px-3 text-right font-mono text-slate-700">${formatVnCurrency(item.liveGmv)} <span class="text-[10px] text-slate-400">(${formatDecimal(item.liveSharePct, 0)}%)</span></td>
           <td class="py-3 px-3 text-right font-mono text-slate-800">${formatVnCurrency(item.aov)}</td>
           <td class="py-3 px-3 font-mono text-[11px] text-slate-600">
-            <div>${item.specialistSkincareStores} Stores | ${item.skincareSkuCount} SKUs</div>
-            ${item.top20MatchedBrands && item.top20MatchedBrands.length > 0 ? `<div class="text-[10px] text-sky-700 truncate max-w-[150px]" title="${item.top20MatchedBrands.join(', ')}">Top 20: ${item.top20MatchedBrands.join(', ')}</div>` : ''}
+            <div>${escapeHtml(item.specialistSkincareStores)} Stores | ${escapeHtml(item.skincareSkuCount)} SKUs</div>
+            ${item.top20MatchedBrands && item.top20MatchedBrands.length > 0 ? `<div class="text-[10px] text-sky-700 truncate max-w-[150px]" title="${escapeHtml(item.top20MatchedBrands.join(', '))}">Top 20: ${escapeHtml(item.top20MatchedBrands.join(', '))}</div>` : ''}
           </td>
           <td class="py-3 px-3 text-center">
-            <span class="px-2 py-0.5 text-[11px] font-mono font-bold rounded border ${scoreBadgeClass}">${item.scorePct || 0}%</span>
+            <span class="px-2 py-0.5 text-[11px] font-mono font-bold rounded border ${scoreBadgeClass}">${escapeHtml(item.scorePct == null ? 'N/A' : item.scorePct + '%')}</span>
           </td>
           <td class="py-3 px-3 text-right whitespace-nowrap space-x-1.5">
             <button onclick="openSnapshotInTracking('${item.snapshotId}')" class="px-2.5 py-1 rounded bg-slate-900 hover:bg-slate-800 text-white text-[11px] font-semibold cursor-pointer">
@@ -2387,6 +2286,7 @@ ${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
     }
 
     function deleteSnapshotFromHistory(snapshotId) {
+      cloudDeleteSnapshots([snapshotId]);
       const history = getSavedHistory().filter(h => h.snapshotId !== snapshotId);
       selectedComparisonIds = selectedComparisonIds.filter(id => id !== snapshotId);
       saveHistoryArray(history);
@@ -2395,6 +2295,8 @@ ${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
 
     function clearAllHistory() {
       if (!confirm('Are you sure you want to clear all saved KOL history snapshots?')) return;
+      const ids = getSavedHistory().map(item => item.snapshotId);
+      cloudDeleteSnapshots(ids);
       selectedComparisonIds = [];
       saveHistoryArray([]);
       renderHistoryTable();
@@ -2414,11 +2316,15 @@ ${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
     function importHistoryJson(event) {
       const file = event.target.files?.[0];
       if (!file) return;
+      if (file.size > 10000000) return alert('Import exceeds 10MB limit.');
+      const owner = captureImportOwner();
       const reader = new FileReader();
       reader.onload = (e) => {
+        if (!importOwnerStill(owner)) return;
         try {
           const imported = JSON.parse(e.target?.result || '[]');
           if (Array.isArray(imported)) {
+            imported.forEach(validateHistoryRecord);
             const existing = getSavedHistory();
             const combined = [...imported, ...existing];
             const clean = deduplicateHistoryByDay(combined).slice(0, 50);
@@ -2480,7 +2386,8 @@ ${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
     }
 
     function formatDeltaBadge(oldVal, newVal, isCurrency = false, isPercentPoint = false) {
-      const diff = (newVal || 0) - (oldVal || 0);
+      if (!Number.isFinite(oldVal) || !Number.isFinite(newVal)) return '<span>N/A — missing comparison data</span>';
+      const diff = newVal - oldVal;
       if (Math.abs(diff) < 0.001) {
         return `<span class="px-2 py-0.5 rounded bg-slate-100 text-slate-500 font-mono text-[11px]">No Change (0)</span>`;
       }
@@ -2518,6 +2425,12 @@ ${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
       const idB = document.getElementById('compareSelectB')?.value;
       const snapA = history.find(h => h.snapshotId === idA) || history[0];
       const snapB = history.find(h => h.snapshotId === idB) || history[0];
+      const periodA = snapA.dateRangeWindow || 'Unknown date range';
+      const periodB = snapB.dateRangeWindow || 'Unknown date range';
+      const contextWarnings = [];
+      if (snapA.handle.replace(/^@/, '').toLowerCase() !== snapB.handle.replace(/^@/, '').toLowerCase()) contextWarnings.push('Different creators — not a before/after result for one creator.');
+      if ([periodA, periodB].some(period => /unknown|không rõ|^N\/A$/i.test(period))) contextWarnings.push('Unknown source period — reporting windows cannot be checked.');
+      else if (periodA !== periodB) contextWarnings.push('Different source periods — duration, overlap and reporting scope may differ.');
 
       const rows = [
         {
@@ -2528,14 +2441,14 @@ ${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
         },
         {
           label: '1. GMV Video (Short-Video Revenue)',
-          valA: `${formatVnCurrency(snapA.videoGmv)} (${snapA.videoSharePct.toFixed(1)}%)`,
-          valB: `${formatVnCurrency(snapB.videoGmv)} (${snapB.videoSharePct.toFixed(1)}%)`,
+          valA: `${formatVnCurrency(snapA.videoGmv)} (${formatDecimal(snapA.videoSharePct, 1)}%)`,
+          valB: `${formatVnCurrency(snapB.videoGmv)} (${formatDecimal(snapB.videoSharePct, 1)}%)`,
           delta: formatDeltaBadge(snapA.videoGmv, snapB.videoGmv, true, false)
         },
         {
           label: '2. GMV Livestream (Live Revenue)',
-          valA: `${formatVnCurrency(snapA.liveGmv)} (${snapA.liveSharePct.toFixed(1)}%)`,
-          valB: `${formatVnCurrency(snapB.liveGmv)} (${snapB.liveSharePct.toFixed(1)}%)`,
+          valA: `${formatVnCurrency(snapA.liveGmv)} (${formatDecimal(snapA.liveSharePct, 1)}%)`,
+          valB: `${formatVnCurrency(snapB.liveGmv)} (${formatDecimal(snapB.liveSharePct, 1)}%)`,
           delta: formatDeltaBadge(snapA.liveGmv, snapB.liveGmv, true, false)
         },
         {
@@ -2564,35 +2477,41 @@ ${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
         },
         {
           label: '4 & 5. Audience Gender & Core Age Group',
-          valA: `${snapA.isFemaleMajority ? 'Female Majority' : 'Mixed'} | Age: ${snapA.ageGroup}`,
-          valB: `${snapB.isFemaleMajority ? 'Female Majority' : 'Mixed'} | Age: ${snapB.ageGroup}`,
+          valA: `${genderLabel(snapA.isFemaleMajority)} | Age: ${escapeHtml(snapA.ageGroup)}`,
+          valB: `${genderLabel(snapB.isFemaleMajority)} | Age: ${escapeHtml(snapB.ageGroup)}`,
           delta: snapA.ageGroup === snapB.ageGroup
-            ? `<span class="px-2 py-0.5 rounded bg-slate-100 text-slate-600 font-mono text-[11px]">Unchanged (${snapB.ageGroup})</span>`
-            : `<span class="px-2 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200 font-mono text-[11px]">Shifted: ${snapA.ageGroup} → ${snapB.ageGroup}</span>`
+            ? `<span class="px-2 py-0.5 rounded bg-slate-100 text-slate-600 font-mono text-[11px]">Unchanged (${escapeHtml(snapB.ageGroup)})</span>`
+            : `<span class="px-2 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200 font-mono text-[11px]">Shifted: ${escapeHtml(snapA.ageGroup)} → ${escapeHtml(snapB.ageGroup)}</span>`
         },
         {
           label: '6. Skincare SKU Depth (Stores | SKUs)',
-          valA: `${snapA.specialistSkincareStores} Skincare Stores | ${snapA.skincareSkuCount} Skincare SKUs`,
-          valB: `${snapB.specialistSkincareStores} Skincare Stores | ${snapB.skincareSkuCount} Skincare SKUs`,
+          valA: `${escapeHtml(snapA.specialistSkincareStores)} Skincare Stores | ${escapeHtml(snapA.skincareSkuCount)} Skincare SKUs`,
+          valB: `${escapeHtml(snapB.specialistSkincareStores)} Skincare Stores | ${escapeHtml(snapB.skincareSkuCount)} Skincare SKUs`,
           delta: formatDeltaBadge(snapA.skincareSkuCount, snapB.skincareSkuCount, false, false)
         },
         {
           label: 'Compatibility Score (%)',
-          valA: `${snapA.scorePct || 0}%`,
-          valB: `${snapB.scorePct || 0}%`,
-          delta: formatDeltaBadge(snapA.scorePct || 0, snapB.scorePct || 0, false, true)
+          valA: snapA.scorePct == null ? 'N/A' : `${escapeHtml(snapA.scorePct)}%`,
+          valB: snapB.scorePct == null ? 'N/A' : `${escapeHtml(snapB.scorePct)}%`,
+          delta: formatDeltaBadge(snapA.scorePct, snapB.scorePct, false, true)
         }
       ];
 
       container.innerHTML = `
+        <div id="comparisonContext" role="status" class="mb-4 p-3 rounded-lg bg-slate-50 text-sm">
+          <p>Source period A: ${escapeHtml(periodA)}</p>
+          <p>Source period B: ${escapeHtml(periodB)}</p>
+          ${contextWarnings.map(warning => `<p class="font-semibold">${escapeHtml(warning)}</p>`).join('')}
+          <p>Differences are descriptive only; not evidence of campaign impact or a forecast. Check source scope, duration and completeness before interpreting metrics.</p>
+        </div>
         <div class="overflow-x-auto border border-slate-200 rounded-xl">
           <table class="w-full text-left border-collapse text-xs">
             <thead>
               <tr class="bg-slate-100 border-b border-slate-200 font-mono text-[11px] text-slate-600">
                 <th class="py-3 px-4">Metric / Indicator</th>
-                <th class="py-3 px-4">Snapshot A: ${snapA.handle} (${snapA.savedAtFormatted})</th>
-                <th class="py-3 px-4 bg-sky-50/80 text-sky-900">Snapshot B: ${snapB.handle} (${snapB.savedAtFormatted})</th>
-                <th class="py-3 px-4 text-right">Before → After Delta</th>
+                <th class="py-3 px-4">Snapshot A: ${escapeHtml(snapA.handle)} (${escapeHtml(snapA.savedAtFormatted)})</th>
+                <th class="py-3 px-4 bg-sky-50/80 text-sky-900">Snapshot B: ${escapeHtml(snapB.handle)} (${escapeHtml(snapB.savedAtFormatted)})</th>
+                <th class="py-3 px-4 text-right">Metric difference (B − A)</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-100">
@@ -2611,10 +2530,8 @@ ${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
     }
 
     function toggleRawHtmlDrawer() {
-      const drawer = document.getElementById('rawHtmlDrawer');
-      const arrow = document.getElementById('drawerArrow');
-      drawer.classList.toggle('hidden');
-      arrow.classList.toggle('rotate-180');
+      const details = document.getElementById('pasteSourceDetails');
+      details.open = !details.open;
     }
 
     function resetToLanding() {
@@ -2622,7 +2539,8 @@ ${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
       switchNavTab('homepage');
     }
 
-    function runStageTransitionAndAudit(htmlString, fileName) {
+    function runStageTransitionAndAudit(htmlString, fileName, owner = captureImportOwner()) {
+      if (!importOwnerStill(owner)) return;
       const stages = ['stageLanding', 'stageDashboard', 'stageHistory', 'stageCompare'];
       stages.forEach(id => document.getElementById(id)?.classList.add('hidden'));
       const loadingSec = document.getElementById('stageLoading');
@@ -2644,6 +2562,7 @@ ${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
       const delays = [180, 420, 680, 920];
       delays.forEach((ms, i) => {
         setTimeout(() => {
+          if (!importOwnerStill(owner)) return;
           bar.style.width = `${(i + 1) * 25}%`;
           const el = document.getElementById(steps[i]);
           el.classList.remove('opacity-40');
@@ -2652,6 +2571,7 @@ ${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
       });
 
       setTimeout(() => {
+        if (!importOwnerStill(owner)) return;
         loadingSec.classList.add('hidden');
         renderDashboard(parsedData);
         switchNavTab('tracking');
@@ -2665,11 +2585,24 @@ ${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
     }
 
     function readAndAuditFile(file) {
+      if (file.size > 10000000) return alert('Tệp vượt giới hạn 10 MB.');
+      const owner = captureImportOwner();
       const reader = new FileReader();
       reader.onload = (e) => {
+        if (!importOwnerStill(owner)) return;
         const content = e.target?.result;
         if (typeof content === 'string') {
-          runStageTransitionAndAudit(content, file.name);
+          if (/\.json$/i.test(file.name) || /^[\s]*[\[{]/.test(content)) {
+            try {
+              const parsedData = parseKalodataApiBundle(JSON.parse(content));
+              parsedData.fileName = file.name;
+              saveAuditSnapshotToHistory(parsedData);
+              renderDashboard(parsedData);
+              switchNavTab('tracking');
+            } catch (err) { alert('JSON không hợp lệ: ' + err.message); }
+            return;
+          }
+          runStageTransitionAndAudit(content, file.name, owner);
         }
       };
       reader.readAsText(file, 'UTF-8');
@@ -2682,7 +2615,7 @@ ${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
         return;
       }
       // Support pasting Kalodata JSON bundle directly!
-      if (raw.startsWith('{') && raw.includes('"creatorDetail"')) {
+      if (raw.startsWith('{') || raw.startsWith('[')) {
         try {
           const jsonBundle = JSON.parse(raw);
           const parsedData = parseKalodataApiBundle(jsonBundle);
@@ -2691,7 +2624,8 @@ ${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
           switchNavTab('tracking');
           return;
         } catch (err) {
-          console.warn('JSON parse failed, falling back to HTML parser:', err);
+          alert('JSON import rejected: ' + err.message);
+          return;
         }
       }
       runStageTransitionAndAudit(raw, 'Pasted_Kalodata_Source.html');
@@ -2740,7 +2674,26 @@ ${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
       }
     }
 
+    function validateBundle(bundle) {
+      if (!bundle || typeof bundle !== 'object' || Array.isArray(bundle)) throw new Error('Invalid bundle');
+      let nodes = 0;
+      function check(value, depth) {
+        if (++nodes > 20000 || depth > 12) throw new Error('Bundle limit exceeded');
+        if (typeof value === 'string' && value.length > 10000) throw new Error('Bundle text limit exceeded');
+        if (typeof value === 'number' && !Number.isFinite(value)) throw new Error('Invalid numeric data');
+        if (value && typeof value === 'object') {
+          if (Array.isArray(value) && value.length > 100) throw new Error('Bundle list limit exceeded');
+          for (const [k,v] of Object.entries(value)) { if (['__proto__','constructor','prototype'].includes(k)) throw new Error('Invalid field'); check(v,depth+1); }
+        }
+      }
+      check(bundle,0);
+      for (const k of ['creatorDetail','coreMetrics','meta']) if (bundle[k] != null && (typeof bundle[k] !== 'object' || Array.isArray(bundle[k]))) throw new Error('Invalid '+k);
+      for (const k of ['shops','products','videos']) if (bundle[k] != null && (!Array.isArray(bundle[k]) || bundle[k].some(v => !v || typeof v !== 'object' || Array.isArray(v)))) throw new Error('Invalid '+k);
+      for (const k of ['handle','unique_id']) if (bundle.creatorDetail?.[k] != null && (typeof bundle.creatorDetail[k] !== 'string' || !/^@?[\w.]{1,100}$/.test(bundle.creatorDetail[k]))) throw new Error('Invalid handle');
+      return bundle;
+    }
     function parseKalodataApiBundle(bundle) {
+      validateBundle(bundle);
       const detail = bundle.creatorDetail || {};
       const total = bundle.coreMetrics || {};
       const shopsRaw = Array.isArray(bundle.shops) ? bundle.shops : [];
@@ -2753,8 +2706,8 @@ ${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
       const creatorId = detail.id || meta.id || '';
       const avatarUrl = detail.avatar || (creatorId ? `https://img.kalocdn.com/tiktok.creator/${creatorId}/avatar_medium.png` : '');
 
-      const isIndependent = !(detail.has_mcn === 1 || (detail.mcn_name && detail.mcn_name !== 'Not Signed' && !String(detail.mcn_name).toLowerCase().includes('chưa ký')));
-      const mcnDisplay = isIndependent ? 'Independent (Unsigned)' : `Signed (${detail.mcn_name || 'MCN'})`;
+      const isIndependent = detail.has_mcn == null && !detail.mcn_name ? null : !(detail.has_mcn === 1 || (detail.mcn_name && detail.mcn_name !== 'Not Signed' && !String(detail.mcn_name).toLowerCase().includes('chưa ký')));
+      const mcnDisplay = isIndependent === null ? 'Unknown' : (isIndependent ? 'Independent (Unsigned)' : `Signed (${detail.mcn_name || 'MCN'})`);
 
       let firstPubDate = detail.creatorDebut || 'N/A';
       if (typeof firstPubDate === 'number' && firstPubDate > 1000000000) {
@@ -2764,15 +2717,15 @@ ${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
 
       const dateRangeWindow = (meta.startDate && meta.endDate)
         ? `${meta.startDate} ~ ${meta.endDate}`
-        : '30 Days';
-      const dataTimeText = detail.collect_day ? `Data Date: ${detail.collect_day}` : 'Fetched via Live Kalodata API';
+        : 'Unknown date range';
+      const dataTimeText = detail.collect_day ? `Data Date: ${detail.collect_day}` : 'Nhập JSON thủ công; chưa rõ ngày thu thập';
       const bioText = (detail.signature || 'No bio text provided').replace(/\s+/g, ' ').trim();
 
       const sexStr = String(detail.followerSex || '').toLowerCase();
-      const isFemaleMajority = sexStr ? (sexStr.includes('female') || sexStr.includes('nữ')) : true;
-      const ageGroup = detail.followerAgeMax || '25-34';
+      const isFemaleMajority = /^(female|nữ)( majority)?$/i.test(sexStr) ? true : (/^(male|nam)( majority)?$/i.test(sexStr) ? false : null);
+      const ageGroup = detail.followerAgeMax || null;
 
-      const followersCount = parseVnNumber(detail.follower_count || total.followers || 0);
+      const followersCount = parseVnNumber(detail.follower_count);
       const products30dCount = parseInt(detail.product_count || bundle.productCount || productsRaw.length, 10) || 0;
 
       const totalGmv = parseVnNumber(total.revenue);
@@ -2784,7 +2737,7 @@ ${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
       const liveViews = parseVnNumber(total.live_views);
       const videoViews = parseVnNumber(total.video_views);
       const followerChange = parseVnNumber(total.followers);
-      const videoCount30d = parseInt(bundle.videoCount || total.video || videosRaw.length, 10) || 0;
+      const videoCount30d = parseVnNumber(bundle.videoCount ?? total.video);
 
       const stores = shopsRaw.map((s, idx) => ({
         rank: String(idx + 1),
@@ -2792,7 +2745,7 @@ ${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
         storeType: String(s.seller_type || '').toUpperCase().includes('RETAIL') ? 'Retailer' : 'Brand',
         rev: parseVnNumber(s.revenue),
         prodCount: parseInt(s.product_count || s.video || 0, 10) || 0,
-        orders: parseVnNumber(s.sale || 0)
+        orders: parseVnNumber(s.sale)
       }));
 
       const videos = videosRaw.map((v, idx) => ({
@@ -2871,8 +2824,8 @@ ${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
         }
       });
 
-      let detectedIndustry = 'Facial Skincare & Derma Beauty';
-      let isCategoryAlignedWithSkincare = true;
+      let detectedIndustry = specialistSkincareStores > 0 || skincareSkuCount > 0 ? 'Facial Skincare & Derma Beauty (keyword evidence, not verified majority)' : 'Unknown / insufficient category evidence';
+      let isCategoryAlignedWithSkincare = specialistSkincareStores > 0 || skincareSkuCount > 0 ? true : null;
       if (apparelSkuCount >= 4 || apparelStores >= 4) {
         detectedIndustry = 'Women Apparel, Lingerie & Feminine Care';
         isCategoryAlignedWithSkincare = false;
@@ -2881,17 +2834,17 @@ ${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
         isCategoryAlignedWithSkincare = false;
       }
 
-      const gmvPer1kFollowers = followersCount > 0 ? (totalGmv / (followersCount / 1000)) : 0;
-      const effectiveVideoCount = Math.max(videoCount30d, videos.length, 1);
-      const gmvPerVideo = videoGmv / effectiveVideoCount;
-      const viewsPerVideo = videoViews / effectiveVideoCount;
+      const gmvPer1kFollowers = followersCount > 0 && totalGmv !== null ? (totalGmv / (followersCount / 1000)) : null;
+      const effectiveVideoCount = videoCount30d > 0 ? videoCount30d : null;
+      const gmvPerVideo = effectiveVideoCount && videoGmv !== null ? videoGmv / effectiveVideoCount : null;
+      const viewsPerVideo = effectiveVideoCount && videoViews !== null ? videoViews / effectiveVideoCount : null;
 
-      const videoSharePct = totalGmv > 0 ? (videoGmv / totalGmv) * 100 : 0;
-      const liveSharePct = totalGmv > 0 ? (liveGmv / totalGmv) * 100 : 0;
-      const dominantTrack = liveSharePct > videoSharePct ? 'LIVE_TRACK' : 'VIDEO_TRACK';
+      const videoSharePct = totalGmv > 0 && videoGmv !== null ? (videoGmv / totalGmv) * 100 : null;
+      const liveSharePct = totalGmv > 0 && liveGmv !== null ? (liveGmv / totalGmv) * 100 : null;
+      const dominantTrack = liveSharePct === null || videoSharePct === null ? null : (liveSharePct > videoSharePct ? 'LIVE_TRACK' : 'VIDEO_TRACK');
 
       const roasList = videos.filter(v => v.roas > 0).map(v => v.roas);
-      const avgRoas = roasList.length > 0 ? (roasList.reduce((a, b) => a + b, 0) / roasList.length) : 0;
+      const avgRoas = roasList.length > 0 ? (roasList.reduce((a, b) => a + b, 0) / roasList.length) : null;
 
       return {
         fileName: `Kalodata_API_${handle.replace('@', '')}.json`,
@@ -2946,129 +2899,15 @@ ${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
     // ============================================================================
     // 11. KALODATA 1-CLICK BOOKMARKLET & AUTO-AUDIT ENGINE
     // ============================================================================
-    function buildKalodataInPageExtractorCode(auditorTargetOrigin) {
-      return `(async function(){
-  try {
-    if (!location.hostname.includes('kalodata.com')) {
-      alert('⚡ Please run this bookmarklet on a Kalodata.com Creator Detail page (while logged in)!');
-      return;
-    }
-    const toast = document.createElement('div');
-    toast.id = '__kol_audit_toast__';
-    toast.style.cssText = 'position:fixed;top:24px;right:24px;z-index:9999999;background:#0284c7;color:#fff;padding:14px 22px;border-radius:12px;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;font-size:13px;font-weight:600;box-shadow:0 12px 30px rgba(0,0,0,0.25);display:flex;align-items:center;gap:10px;';
-    toast.innerHTML = '<span style="font-size:16px;">⚡</span> Extracting Creator Data (6 APIs)...';
-    document.body.appendChild(toast);
-
-    const u = new URL(location.href);
-    let id = u.searchParams.get('id');
-    if (!id) {
-      const pasted = prompt('Please enter Kalodata Creator Detail URL or ID:');
-      if (!pasted) { toast.remove(); return; }
-      try { id = new URL(pasted).searchParams.get('id') || pasted.trim(); } catch { id = pasted.trim(); }
-    }
-    const language = u.searchParams.get('language') || localStorage.getItem('language') || 'vi-VN';
-    const currency = u.searchParams.get('currency') || localStorage.getItem('currency') || 'VND';
-    const country = u.searchParams.get('region') || 'VN';
-    let startDate = '', endDate = '';
-    try {
-      const dr = JSON.parse(u.searchParams.get('dateRange') || '[]');
-      if (dr.length >= 2) { startDate = dr[0]; endDate = dr[1]; }
-    } catch {}
-    if (!startDate || !endDate) {
-      const e = new Date(); e.setDate(e.getDate() - 1);
-      const s = new Date(e); s.setDate(s.getDate() - 29);
-      startDate = s.toISOString().slice(0, 10);
-      endDate = e.toISOString().slice(0, 10);
-    }
-    const headers = { 'Content-Type': 'application/json', language, currency, country };
-    const post = async (path, body) => {
-      try {
-        let r = await fetch(path, { method: 'POST', credentials: 'include', headers, body: JSON.stringify(body) });
-        if (r.status === 404) {
-          r = await fetch('/api' + path, { method: 'POST', credentials: 'include', headers, body: JSON.stringify(body) });
-        }
-        const j = await r.json();
-        return (j && j.data !== undefined) ? j.data : j;
-      } catch (err) {
-        console.warn('API fetch warning on ' + path, err);
-        return null;
-      }
-    };
-    const baseReq = { id: String(id), startDate, endDate, cateIds: [], sellerId: '' };
-    try { await post('/creator/detail/access', baseReq); } catch {}
-    const [creatorDetail, coreMetrics, shops, products, videos, videoCount] = await Promise.all([
-      post('/creator/detail', baseReq),
-      post('/creator/detail/total', baseReq),
-      post('/creator/detail/searchCooperativeShops', { ...baseReq, pageNo: 1, pageSize: 10, sort: [{ field: 'revenue', type: 'DESC' }] }),
-      post('/creator/detail/searchProducts', { ...baseReq, pageNo: 1, pageSize: 10, sort: [{ field: 'revenue', type: 'DESC' }] }),
-      post('/creator/detail/video/queryList', { ...baseReq, pageNo: 1, pageSize: 10, sort: [{ field: 'revenue', type: 'DESC' }] }),
-      post('/creator/detail/video/count', baseReq)
-    ]);
-    const payload = { creatorDetail, coreMetrics, shops, products, videos, videoCount, meta: { id, startDate, endDate, language, currency, country } };
-    toast.style.background = '#059669';
-    toast.innerHTML = '<span style="font-size:16px;">✓</span> Audited @' + (creatorDetail?.handle || id) + '! Opening KOL Auditor...';
-    setTimeout(() => toast.remove(), 2500);
-
-    const targetUrl = '${auditorTargetOrigin}';
-    const win = window.open(targetUrl, 'kalodata_auditor_tab');
-    let attempts = 0;
-    const timer = setInterval(() => {
-      attempts++;
-      if (win && !win.closed) {
-        win.postMessage({ type: 'KALODATA_AUTO_AUDIT_BUNDLE', payload }, '*');
-      }
-      if (attempts >= 15) clearInterval(timer);
-    }, 500);
-    window.addEventListener('message', function onAck(e) {
-      if (e.data && e.data.type === 'KALODATA_AUTO_AUDIT_ACK') {
-        clearInterval(timer);
-        window.removeEventListener('message', onAck);
-      }
-    });
-  } catch (err) {
-    alert('Kalodata Auto-Fetch Error: ' + err.message);
-    const t = document.getElementById('__kol_audit_toast__');
-    if (t) t.remove();
-  }
-})();`;
-    }
-
+    // Cross-window extraction is disabled: no postMessage receiver or sender is
+    // installed. Manual HTML/JSON import is the only supported import path until
+    // an exact-origin/source, nonce-handshaken, bounded bridge is implemented.
+    function buildKalodataInPageExtractorCode() { throw new Error('Bookmarklet disabled for security. Use manual HTML/JSON import.'); }
     function initBookmarkletHref() {
       const link = document.getElementById('kalodataBookmarkletLink');
-      if (!link) return;
-      const currentUrl = window.location.href.split('#')[0];
-      const code = buildKalodataInPageExtractorCode(currentUrl).replace(/\s+/g, ' ');
-      link.href = `javascript:${encodeURIComponent(code)}`;
+      if (link) { link.href = '#'; link.textContent = 'Bookmarklet disabled — use manual import'; link.setAttribute('aria-disabled', 'true'); }
     }
-
-    async function copyKalodataConsoleScript() {
-      const currentUrl = window.location.href.split('#')[0];
-      const code = buildKalodataInPageExtractorCode(currentUrl);
-      try {
-        await navigator.clipboard.writeText(code);
-        alert('Copied Kalodata Console Script!\n\nOpen any Kalodata Creator page -> Press F12 -> Console -> Paste & Press Enter.');
-      } catch {
-        prompt('Copy this script and run it in Kalodata F12 Console:', code);
-      }
-    }
-
-    // Listen for postMessage from the 1-Click Kalodata Bookmarklet / Console Script
-    window.addEventListener('message', (event) => {
-      const data = event.data;
-      if (data && data.type === 'KALODATA_AUTO_AUDIT_BUNDLE' && data.payload) {
-        try {
-          const parsedData = parseKalodataApiBundle(data.payload);
-          saveAuditSnapshotToHistory(parsedData);
-          renderDashboard(parsedData);
-          switchNavTab('tracking');
-          if (event.source && typeof event.source.postMessage === 'function') {
-            event.source.postMessage({ type: 'KALODATA_AUTO_AUDIT_ACK' }, '*');
-          }
-        } catch (err) {
-          console.error('Failed to process incoming Kalodata postMessage bundle:', err);
-        }
-      }
-    });
+    function copyKalodataConsoleScript() { alert('Console extraction disabled for security. Save Kalodata HTML or manually paste a JSON export instead.'); }
 
     // Initialize Drag & Drop Listeners, Bookmarklet & History Counter on Startup
     (function _initDropZone() {
@@ -3095,207 +2934,21 @@ ${d.isCategoryAlignedWithSkincare && d.totalGmv >= 150e6
         if (file) readAndAuditFile(file);
       });
     })();
-      // ============================================================================
-    // 12. ACCOUNT + CLOUD SYNC (Firebase Firestore, custom phone/password auth)
-    // ============================================================================
-    const FB_CONFIG_KEY = 'KOL_FIREBASE_CONFIG_V1';
-    const DEFAULT_FB_CONFIG = {
-      apiKey: 'AIzaSyC9tqS9HzB42KdJuncOAbxen9-Oomv8e3E',
-      authDomain: 'luutrukol-tracking.firebaseapp.com',
-      projectId: 'luutrukol-tracking',
-      storageBucket: 'luutrukol-tracking.firebasestorage.app',
-      messagingSenderId: '404739400004',
-      appId: '1:404739400004:web:f2ef96dcd9acd4782d3711'
-    };
-    if (!localStorage.getItem(FB_CONFIG_KEY)) localStorage.setItem(FB_CONFIG_KEY, JSON.stringify(DEFAULT_FB_CONFIG));
-    const SESSION_KEY = 'KOL_SESSION_V1';
-    let fbDb = null;
-    let authMode = 'login';
-
-    function loadScriptOnce(src) {
-      return new Promise((res, rej) => {
-        if (document.querySelector(`script[src="${src}"]`)) return res();
-        const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = rej; document.head.appendChild(s);
-      });
-    }
-
-    async function getDb() {
-      if (fbDb) return fbDb;
-      const raw = localStorage.getItem(FB_CONFIG_KEY);
-      if (!raw) throw new Error('Firebase config missing. Open "Cloud setup" and paste it.');
-      await loadScriptOnce('https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js');
-      await loadScriptOnce('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js');
-      if (!firebase.apps.length) firebase.initializeApp(JSON.parse(raw));
-      fbDb = firebase.firestore();
-      return fbDb;
-    }
-
-    function saveFirebaseConfig() {
-      let txt = document.getElementById('fbConfigInput').value.trim();
-      try {
-        txt = txt.replace(/^[^{]*/, '').replace(/;?\s*$/, '');
-        const obj = Function('return (' + txt + ')')();
-        if (!obj.projectId) throw new Error('projectId missing');
-        localStorage.setItem(FB_CONFIG_KEY, JSON.stringify(obj));
-        fbDb = null;
-        setAuthMsg('✓ Config saved.', true);
-      } catch (e) { setAuthMsg('Invalid config: ' + e.message, false); }
-    }
-
-    async function hashPassword(pass, salt) {
-      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(salt + ':' + pass));
-      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
-    }
-
-    function normPhone(p) { return String(p || '').replace(/[^\d+]/g, ''); }
-    function getSession() { try { return JSON.parse(localStorage.getItem(SESSION_KEY)); } catch { return null; } }
-    function setAuthMsg(t, ok) {
-      const el = document.getElementById('authMsg'); if (!el) return;
-      el.textContent = t; el.className = 'text-[11px] font-mono ' + (ok ? 'text-emerald-700' : 'text-rose-600');
-    }
-
-    function openAuthModal() {
-      document.getElementById('authModal').classList.remove('hidden');
-      const cfg = localStorage.getItem(FB_CONFIG_KEY);
-      if (cfg) document.getElementById('fbConfigInput').value = cfg;
-      refreshAuthUI();
-    }
-    function closeAuthModal() { document.getElementById('authModal').classList.add('hidden'); }
-
-    function authSwitch(mode) {
-      authMode = mode;
-      const act = 'flex-1 py-1.5 rounded-md cursor-pointer bg-white shadow-sm text-slate-900';
-      const off = 'flex-1 py-1.5 rounded-md cursor-pointer text-slate-500';
-      document.getElementById('authTabLogin').className = mode === 'login' ? act : off;
-      document.getElementById('authTabRegister').className = mode === 'register' ? act : off;
-      document.getElementById('authTabForgot').className = mode === 'forgot' ? act : off;
-      document.getElementById('authName').classList.toggle('hidden', mode !== 'register');
-      document.getElementById('authPass').placeholder = mode === 'forgot' ? 'New password (min 6 chars)' : 'Password (min 6 chars)';
-      document.getElementById('authSubmitBtn').textContent = { login: 'Login', register: 'Create account', forgot: 'Reset password' }[mode];
-      setAuthMsg('', true);
-    }
-
-    function refreshAuthUI() {
-      const s = getSession();
-      document.getElementById('authLoggedIn').classList.toggle('hidden', !s);
-      document.getElementById('authForms').classList.toggle('hidden', !!s);
-      if (s) document.getElementById('authWhoami').textContent = `${s.name || ''} (${s.phone})`;
-      else authSwitch(authMode);
-      const lbl = document.getElementById('navAccountLabel');
-      if (lbl) lbl.textContent = s ? (s.name || s.phone) : 'Login';
-    }
-
-    async function authSubmit() {
-      const phone = normPhone(document.getElementById('authPhone').value);
-      const pass = document.getElementById('authPass').value;
-      const name = document.getElementById('authName').value.trim();
-      if (phone.length < 8) return setAuthMsg('Enter a valid phone number.', false);
-      if (pass.length < 6) return setAuthMsg('Password must be at least 6 characters.', false);
-      try {
-        setAuthMsg('Working...', true);
-        const db = await getDb();
-        const ref = db.collection('users').doc(phone);
-        const snap = await ref.get();
-        if (authMode === 'register') {
-          if (snap.exists) return setAuthMsg('Phone already registered.', false);
-          const salt = crypto.randomUUID();
-          await ref.set({ name: name || phone, phone, salt, hash: await hashPassword(pass, salt), createdAt: Date.now() });
-          localStorage.setItem(SESSION_KEY, JSON.stringify({ phone, name: name || phone }));
-        } else if (authMode === 'forgot') {
-          if (!snap.exists) return setAuthMsg('Phone number not found.', false);
-          const salt = crypto.randomUUID();
-          await ref.update({ salt, hash: await hashPassword(pass, salt), resetAt: Date.now() });
-          localStorage.setItem(SESSION_KEY, JSON.stringify({ phone, name: snap.data().name }));
-        } else {
-          if (!snap.exists) return setAuthMsg('Account not found.', false);
-          const u = snap.data();
-          if (await hashPassword(pass, u.salt) !== u.hash) return setAuthMsg('Wrong password.', false);
-          localStorage.setItem(SESSION_KEY, JSON.stringify({ phone, name: u.name }));
-        }
-        document.getElementById('authPass').value = '';
-        refreshAuthUI();
-        await cloudPull(false);
-        await cloudPushAll(false);
-      } catch (e) { setAuthMsg(e.message, false); }
-    }
-
-    function authLogout() { localStorage.removeItem(SESSION_KEY); refreshAuthUI(); }
-
-    function syncStatus(t) { const el = document.getElementById('authSyncStatus'); if (el) el.textContent = 'Cloud sync: ' + t; }
-
-    async function cloudPushAll(verbose) {
-      const s = getSession(); if (!s) return;
-      try {
-        const db = await getDb();
-        const col = db.collection('users').doc(s.phone).collection('snapshots');
-        const items = getSavedHistory();
-        for (let i = 0; i < items.length; i += 400) {
-          const batch = db.batch();
-          items.slice(i, i + 400).forEach(it => batch.set(col.doc(it.snapshotId.replace(/\//g, '_')), JSON.parse(JSON.stringify(it))));
-          await batch.commit();
-        }
-        syncStatus(`uploaded ${items.length} snapshot(s)`);
-        if (verbose) alert(`✓ Uploaded ${items.length} snapshot(s)`);
-      } catch (e) { syncStatus('error – ' + e.message); }
-    }
-
-    async function cloudPull(verbose) {
-      const s = getSession(); if (!s) return;
-      try {
-        const db = await getDb();
-        const qs = await db.collection('users').doc(s.phone).collection('snapshots').get();
-        const remote = qs.docs.map(d => d.data());
-        const merged = deduplicateHistoryByDay([...remote, ...getSavedHistory()].sort((a, b) => new Date(b.savedAtIso || 0) - new Date(a.savedAtIso || 0))).slice(0, 50);
-        saveHistoryArray(merged);
-        renderHistoryTable();
-        syncStatus(`downloaded ${remote.length}, now ${merged.length} total`);
-        if (verbose) alert(`✓ Merged ${remote.length} cloud snapshot(s)`);
-      } catch (e) { syncStatus('error – ' + e.message); }
-    }
-
-    // Auto-push after every local save when logged in
-    (function () {
-      const orig = saveHistoryArray;
-      saveHistoryArray = function (arr) {
-        orig(arr);
-        if (getSession() && localStorage.getItem(FB_CONFIG_KEY)) cloudPushAll(false);
-      };
-    })();
-
-    refreshAuthUI();
 </script>
-  <!-- ==================== ACCOUNT MODAL (LOGIN / REGISTER / FORGOT / CLOUD SETUP) ==================== -->
+  <!-- Firebase Auth, not a client-created phone/password session. -->
   <div id="authModal" class="hidden fixed inset-0 z-50 bg-slate-900/50 flex items-center justify-center p-4">
-    <div class="office-card w-full max-w-md p-6 bg-white relative">
-      <button onclick="closeAuthModal()" class="absolute top-3 right-4 text-slate-400 hover:text-slate-800 text-lg cursor-pointer">×</button>
-      <div id="authLoggedIn" class="hidden space-y-3">
-        <h3 class="text-base font-bold text-slate-900">Account</h3>
-        <div class="text-xs font-mono text-slate-600">Signed in as <b id="authWhoami">--</b></div>
-        <div id="authSyncStatus" class="text-[11px] font-mono text-slate-500">Cloud sync: idle</div>
-        <div class="flex gap-2 flex-wrap">
-          <button onclick="cloudPull(true)" class="px-3 py-1.5 rounded-lg border border-slate-300 text-xs font-semibold cursor-pointer">Download from cloud</button>
-          <button onclick="cloudPushAll(true)" class="px-3 py-1.5 rounded-lg bg-sky-600 text-white text-xs font-semibold cursor-pointer">Upload local history</button>
-          <button onclick="authLogout()" class="px-3 py-1.5 rounded-lg border border-rose-200 text-rose-600 text-xs font-semibold cursor-pointer">Logout</button>
-        </div>
+    <div class="office-card w-full max-w-md p-6 bg-white">
+      <button onclick="closeAuthModal()" class="float-right">×</button>
+      <h3 class="font-bold">Google account &amp; owner-only cloud history</h3>
+      <p class="text-xs my-3">Guest and signed-in histories are separate. Nothing uploads automatically. Cloud sync requires deployment configuration; old phone accounts are not used.</p>
+      <div id="authForms"><button onclick="authSubmit()" class="bg-sky-600 text-white p-2 rounded">Sign in with Google</button></div>
+      <div id="authLoggedIn" class="hidden">
+        <b id="authWhoami"></b><p id="authSyncStatus">Cloud sync: idle</p>
+        <button onclick="cloudPull(true)">Download cloud history</button> ·
+        <button onclick="cloudPushAll(true)">Upload this UID's local history</button> ·
+        <button onclick="authLogout()">Sign out</button>
       </div>
-      <div id="authForms" class="space-y-3">
-        <div class="flex gap-1 bg-slate-100 rounded-lg p-1 text-xs font-semibold">
-          <button id="authTabLogin" onclick="authSwitch('login')" class="flex-1 py-1.5 rounded-md cursor-pointer">Login</button>
-          <button id="authTabRegister" onclick="authSwitch('register')" class="flex-1 py-1.5 rounded-md cursor-pointer">Register</button>
-          <button id="authTabForgot" onclick="authSwitch('forgot')" class="flex-1 py-1.5 rounded-md cursor-pointer">Forgot password</button>
-        </div>
-        <input id="authName" type="text" placeholder="Display name" class="hidden w-full px-3 py-2 text-xs border border-slate-300 rounded-lg" />
-        <input id="authPhone" type="tel" placeholder="Phone number (login ID)" class="w-full px-3 py-2 text-xs font-mono border border-slate-300 rounded-lg" />
-        <input id="authPass" type="password" placeholder="Password (min 6 chars)" class="w-full px-3 py-2 text-xs font-mono border border-slate-300 rounded-lg" />
-        <button id="authSubmitBtn" onclick="authSubmit()" class="w-full py-2.5 bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold rounded-lg cursor-pointer">Login</button>
-        <div id="authMsg" class="text-[11px] font-mono text-slate-500"></div>
-      </div>
-      <details class="mt-4 pt-3 border-t border-slate-200">
-        <summary class="text-[11px] font-semibold text-slate-600 cursor-pointer">Cloud setup (Firebase Firestore config)</summary>
-        <p class="text-[11px] text-slate-500 mt-2">Paste your Firebase web config object (JSON or JS object) then Save.</p>
-        <textarea id="fbConfigInput" rows="5" class="w-full mt-1 p-2 text-[11px] font-mono border border-slate-300 rounded-lg" placeholder='{"apiKey":"...","authDomain":"...","projectId":"..."}'></textarea>
-        <button onclick="saveFirebaseConfig()" class="mt-2 px-3 py-1.5 bg-slate-900 text-white text-xs font-semibold rounded-lg cursor-pointer">Save config</button>
-      </details>
+      <p id="authMsg" role="status" class="text-xs"></p>
     </div>
   </div>
 </body>

@@ -1151,6 +1151,19 @@ const INCIDENTS_RIDE = [
   ['Tài xế báo sự cố khẩn cấp ngoài ý muốn', 'Đối tác tài xế gặp va quệt nhẹ trên đường tới đón bạn nên hệ thống đã tự động hủy chuyến và hoàn tiền.']
 ];
 
+function renderChatMessages(target, logs) {
+  if (!target) return;
+  target.replaceChildren();
+  if (!Array.isArray(logs)) return;
+  logs.slice(-200).forEach(message => {
+    if (!Array.isArray(message) || !['me', 'drv'].includes(message[0]) || typeof message[1] !== 'string') return;
+    const p = document.createElement('p');
+    p.className = message[0] === 'me' ? 'me' : '';
+    p.textContent = message[1];
+    target.appendChild(p);
+  });
+}
+
 function viewTrack(id) {
   tabs(false);
   const o = state.orders.find(x => x.id === id);
@@ -1218,10 +1231,10 @@ function viewTrack(id) {
     $('#call').onclick = () => toast('📞 Đang đổ chuông tới tài xế ' + drv[0] + '…');
     $('#msg').onclick = () => {
       const c = $('#chat'); if (c.innerHTML) { c.innerHTML = ''; return; }
-      if (!o.chatLogs) o.chatLogs = [['drv', `Chào bạn, mình là ${drv[0].split(' ').pop()}, mình đã nhận yêu cầu của bạn rồi nhé!`]];
+      if (!Array.isArray(o.chatLogs)) o.chatLogs = [['drv', `Chào bạn, mình là ${drv[0].split(' ').pop()}, mình đã nhận yêu cầu của bạn rồi nhé!`]];
       const drawChat = () => {
         if (!$('#ms')) return;
-        $('#ms').innerHTML = o.chatLogs.map(m => `<p class="${m[0] === 'me' ? 'me' : ''}">${m[1]}</p>`).join('');
+        renderChatMessages($('#ms'), o.chatLogs);
         $('#ms').scrollTop = 1e5;
       };
       c.innerHTML = `<div class="chatb"><div class="msgs" id="ms"></div><form id="cf"><input id="ci" placeholder="Nhắn tin cho tài xế..." autocomplete="off"><button>Gửi</button></form></div>`;

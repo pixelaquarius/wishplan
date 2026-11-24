@@ -1,38 +1,65 @@
-name: Deploy L.ASY Studio to GitHub Pages
+name: Test and deploy WishPlan to GitHub Pages
 
 on:
+  pull_request:
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: pages
+  group: pages-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - run: npm ci --ignore-scripts
+      - name: Unit and integration contracts
+        run: npm test
+      - name: Firestore isolation, schema, quota and RTDB emulator tests
+        run: npm run test:firebase
+      - name: Production dependency audit
+        run: npm audit --omit=dev --audit-level=high
+
   deploy:
+    needs: test
+    if: github.event_name != 'pull_request'
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
+      - uses: actions/checkout@v4
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
-
-      - name: Upload static artifact
+      - name: Stage only public static files
+        run: |
+          mkdir -p _site
+          cp index.html CNAME _site/
+          rsync -a --exclude='.*' assets guide checkkol ghepanh grab tetlasy _site/
+          node scripts/disable-public-cloud.cjs
+          touch _site/.nojekyll
+      - name: Upload static artifact (never Functions, tests, dependencies or secrets)
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
-
+          path: _site
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
