@@ -37,7 +37,10 @@ jobs:
   deploy:
     needs: test
     if: github.event_name != 'pull_request'
+    env:
+      PAGES_ARTIFACT_NAME: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
     permissions:
+      actions: read
       contents: read
       pages: write
       id-token: write
@@ -59,7 +62,28 @@ jobs:
       - name: Upload static artifact (never Functions, tests, dependencies or secrets)
         uses: actions/upload-pages-artifact@v3
         with:
+          name: ${{ env.PAGES_ARTIFACT_NAME }}
           path: _site
+      - name: Wait for the Pages artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Upload completion can precede visibility in the API read by deploy-pages.
+          for attempt in {1..18}; do
+            if json=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts?per_page=100"); then
+              count=$(jq --arg name "$PAGES_ARTIFACT_NAME" '[.artifacts[] | select(.name == $name and .expired == false)] | length' <<< "$json")
+              if [ "$count" -eq 1 ]; then exit 0; fi
+              if [ "$count" -gt 1 ]; then
+                echo "::error::More than one artifact matches $PAGES_ARTIFACT_NAME."
+                exit 1
+              fi
+            fi
+            if [ "$attempt" -lt 18 ]; then sleep 5; fi
+          done
+          echo "::error::Artifact $PAGES_ARTIFACT_NAME did not become visible in time."
+          exit 1
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          artifact_name: ${{ env.PAGES_ARTIFACT_NAME }}

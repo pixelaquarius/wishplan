@@ -29,6 +29,15 @@ test('public build cannot publish staging Firebase configuration', () => {
   } finally {fs.rmSync(dir, {recursive:true,force:true});}
 });
 
+test('Pages deploy waits for a unique artifact from the current run attempt', () => {
+  const workflow = fs.readFileSync(path.join(root, '.github/workflows/pages.yml'), 'utf8');
+  assert.match(workflow, /PAGES_ARTIFACT_NAME: github-pages-\$\{\{ github\.run_id \}\}-\$\{\{ github\.run_attempt \}\}/);
+  assert.match(workflow, /uses: actions\/upload-pages-artifact@v3\s+with:\s+name: \$\{\{ env\.PAGES_ARTIFACT_NAME \}\}/);
+  const barrier = workflow.indexOf('name: Wait for the Pages artifact');
+  assert.ok(barrier > workflow.indexOf('uses: actions/upload-pages-artifact') && barrier < workflow.indexOf('uses: actions/deploy-pages'));
+  assert.match(workflow, /uses: actions\/deploy-pages@v4\s+with:\s+artifact_name: \$\{\{ env\.PAGES_ARTIFACT_NAME \}\}/);
+});
+
 test('Pages staging step applies guard after copying tools and before artifact upload', () => {
   const workflow = fs.readFileSync(path.join(root, '.github/workflows/pages.yml'), 'utf8');
   const copy = workflow.indexOf('rsync -a');
