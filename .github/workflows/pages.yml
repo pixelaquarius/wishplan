@@ -53,7 +53,7 @@ jobs:
         run: |
           mkdir -p _site
           cp index.html CNAME _site/
-          rsync -a --exclude='.*' assets guide checkkol ghepanh grab tetlasy _site/
+          rsync -a --exclude='.*' assets guide checkkol ghepanh grab tetlasy tools workflows lab about _site/
           node scripts/disable-public-cloud.cjs
           touch _site/.nojekyll
       - name: Upload static artifact (never Functions, tests, dependencies or secrets)

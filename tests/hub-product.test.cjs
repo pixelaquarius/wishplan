@@ -12,13 +12,17 @@ const destinations = (html, base = 'https://wishplan.test/') => [...html.matchAl
 test('homepage prioritizes two daily tools and keeps experiments secondary', () => {
   const html = read('index.html');
   const daily = html.match(/<section[^>]*id="daily-tools"[\s\S]*?<\/section>/)?.[0] || '';
-  assert.ok(destinations(daily).includes('/ghepanh/'));
-  assert.ok(destinations(daily).includes('/checkkol/'));
+  for (const tool of ['ghepanh', 'checkkol']) {
+    assert.ok(destinations(daily).includes(`/tools/${tool}/`));
+    assert.ok(destinations(read(`tools/${tool}/index.html`), `https://wishplan.test/tools/${tool}/`).includes(`/${tool}/`));
+  }
   assert.doesNotMatch(daily, /grab\/|tetlasy\//);
-  const lab = html.match(/<details[^>]*id="lab"[^>]*>[\s\S]*?<\/details>/)?.[0] || '';
-  assert.ok(destinations(lab).includes('/grab/'));
-  assert.ok(destinations(lab).includes('/tetlasy/'));
-  assert.doesNotMatch(lab.split('>')[0], /\bopen\b/);
+  const lab = html.match(/<section[^>]*id="lab"[^>]*>[\s\S]*?<\/section>/)?.[0] || '';
+  assert.ok(destinations(lab).includes('/lab/'));
+  assert.doesNotMatch(lab, /grab\/|tetlasy\//);
+  const labDestinations = destinations(read('lab/index.html'), 'https://wishplan.test/lab/');
+  assert.ok(labDestinations.includes('/grab/'));
+  assert.ok(labDestinations.includes('/tetlasy/'));
   assert.doesNotMatch(html, /setInterval|hubCountdown|hubDays|100% Client-Side|Enterprise Edition/);
 });
 test('guide makes existing workflows and data boundaries visible without sign-in', () => {
@@ -30,9 +34,23 @@ test('guide makes existing workflows and data boundaries visible without sign-in
   assert.match(guide, /chưa|Chưa|Dự kiến|Đề xuất/);
   assert.match(guide, /không.*ROI|không.*lợi nhuận/);
 });
+test('legacy homepage fragments still resolve to visible navigation targets', () => {
+  const home = read('index.html');
+  for (const id of ['daily-tools','tools-heading','card-ghepanh','card-checkkol','lab','card-tetlasy','card-grab']) {
+    assert.equal([...home.matchAll(new RegExp(`\\bid="${id}"`, 'g'))].length, 1, id);
+  }
+  const lab = read('lab/index.html');
+  for (const id of ['card-tetlasy','card-grab']) {
+    assert.ok(destinations(home).includes(`/lab/#${id}`));
+    assert.ok(lab.includes(`id="${id}"`));
+  }
+});
 test('deployment includes shared assets and guide, not only legacy tool directories', () => {
   const workflow = read('.github/workflows/pages.yml');
-  assert.match(workflow, /rsync[^\n]+\bassets\b[^\n]+\bguide\b/);
+  const stage = workflow.split('\n').find(line => line.includes('rsync -a'));
+  for (const dir of ['assets','guide','tools','workflows','lab','about','checkkol','ghepanh','grab','tetlasy']) {
+    assert.ok(stage?.trim().split(/\s+/).includes(dir), `publish ${dir}`);
+  }
 });
 test('temple demo countdown is not advertised as an official holiday schedule', () => {
   const html = read('tetlasy/index.html');

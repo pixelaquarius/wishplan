@@ -1,35 +1,155 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8"><script src="./assets/clean-url.js"></script><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>WishPlan — Công cụ gọn, làm việc rõ ràng</title>
-<meta name="description" content="Ghép ảnh để gửi duyệt, đánh giá KOL từ dữ liệu Kalodata đã lưu. Không bắt đăng nhập để bắt đầu.">
-<meta name="theme-color" content="#1b604b">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link href="./assets/wishplan.css" rel="stylesheet">
+<meta charset="utf-8">
+<script src="./assets/clean-url.js">
+</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WishPlan — Công cụ cho công việc hằng ngày</title>
+<meta name="description" content="Ghép ảnh để gửi duyệt, đánh giá KOL từ dữ liệu Kalodata đã lưu. Không cần đăng nhập để bắt đầu.">
+<meta name="theme-color" content="#22513e">
+<link rel="stylesheet" href="./assets/product.css">
 </head>
-<body class="wp-site">
-<a class="wp-skip" href="#main">Bỏ qua điều hướng</a>
-<header class="wp-header"><div class="wp-shell wp-header-inner">
-<a class="wp-brand" href="./" aria-label="WishPlan — trang chủ"><div class="wp-mark" aria-hidden="true">W</div>WishPlan</a>
-<nav class="wp-nav" aria-label="Điều hướng chính"><a href="#daily-tools" aria-current="page">Công cụ</a><a href="./guide/">Hướng dẫn</a><a href="#lab">Thử nghiệm</a></nav>
-</div></header>
-<main id="main" class="wp-shell wp-main">
-<div class="wp-intro"><p class="wp-eyebrow">Bộ công cụ làm việc hằng ngày</p><h1>Ít thao tác hơn.<br>Rõ việc cần làm.</h1><p>WishPlan gom những việc nhỏ nhưng hay lặp lại vào một chỗ: chuẩn bị ảnh để gửi duyệt và đọc dữ liệu KOL trước khi hợp tác.</p></div>
-<div class="wp-workspace">
-<section id="daily-tools" aria-labelledby="tools-heading">
-<div class="wp-section-head"><h2 id="tools-heading">Bạn muốn làm gì?</h2><span class="wp-count">2 công cụ làm việc</span></div>
-<div class="wp-tool-list">
-<a class="wp-task tool-card" id="card-ghepanh" href="./ghepanh/"><div><div class="wp-task-meta"><span>Hình ảnh</span><span aria-hidden="true">·</span><span>Không cần đăng nhập</span></div><h3>Ghép ảnh thành một bảng</h3><p>Gom ảnh sản phẩm hoặc nội dung vào một lưới để gửi duyệt, đối chiếu và chia sẻ. Giữ tỷ lệ ảnh, không cắt góc.</p><p class="wp-output">Chọn ảnh → xem trước → tải ảnh ghép</p></div><span class="wp-go">Mở ghép ảnh <span class="wp-arrow" aria-hidden="true">↗</span></span></a>
-<a class="wp-task tool-card" id="card-checkkol" href="./checkkol/"><div><div class="wp-task-meta"><span>KOL &amp; Affiliate</span><span aria-hidden="true">·</span><span>Phân tích dữ liệu đã lưu</span></div><h3>Đánh giá KOL trước khi hợp tác</h3><p>Đọc file Kalodata, kiểm tra hiệu suất và độ phù hợp với chiến dịch skincare. Thấy rõ dữ liệu thiếu, lưu và so sánh các lần đánh giá.</p><p class="wp-output">HTML / JSON → đánh giá → lịch sử &amp; so sánh</p></div><span class="wp-go">Mở đánh giá KOL <span class="wp-arrow" aria-hidden="true">↗</span></span></a>
-</div></section>
-<aside class="wp-aside" aria-label="Bắt đầu và dữ liệu"><div><h2>Bắt đầu từ một việc nhỏ</h2><p>Không cần tạo tài khoản để ghép ảnh hoặc phân tích file KOL. Chọn công cụ và dùng dữ liệu của bạn.</p><a href="./guide/#workflows">Xem cách dùng thực tế →</a></div><div class="wp-note"><h2>Dữ liệu đi đâu?</h2><p>Ảnh được xử lý tại trình duyệt. Lịch sử KOL lưu trên thiết bị; đồng bộ cloud là lựa chọn riêng. Một số tính năng dùng dịch vụ bên ngoài.</p><a href="./guide/#data">Đọc trước khi dùng →</a></div></aside>
+<body>
+<a class="skip" href="#main">Đến nội dung chính</a>
+<header class="top">
+<div class="shell">
+<a href="./" class="brand">
+<svg viewBox="0 0 36 36" aria-hidden="true">
+<rect width="36" height="36" rx="8" fill="#22513e"/>
+<path d="M7 11l6 15 5-10 5 10 6-15" fill="none" stroke="#f6f4ed" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+</svg>WishPlan</a>
+<nav aria-label="Menu chính">
+<a href="./" aria-current="page">Tổng quan</a>
+<a href="./tools/">Công cụ</a>
+<a href="./workflows/">Tình huống</a>
+<a href="./guide/">Tài liệu</a>
+<a href="./lab/">Lab</a>
+<a href="./about/">Dự án</a>
+</nav>
+<a class="repo" href="https://github.com/pixelaquarius/wishplan">Mã nguồn ↗</a>
 </div>
-<details id="lab" class="wp-secondary"><summary>Khu thử nghiệm <span class="wp-summary-note">Giải trí và demo, tách khỏi công cụ làm việc</span></summary><p class="wp-lab-intro">Các bản thử vẫn được giữ lại, nhưng không phải chức năng vận hành hay dịch vụ thương mại.</p><div class="wp-lab-grid">
-<a href="./tetlasy/" id="card-tetlasy" class="wp-lab-link"><strong>Tết WishPlan — chùa 3D ↗</strong><p>Không gian giải trí với nhân vật và gieo quẻ. Chế độ solo, có NPC; không phải phòng chat riêng hay tư vấn tâm linh.</p></a>
-<a href="./grab/" id="card-grab" class="wp-lab-link"><strong>Grab — bản mô phỏng ↗</strong><p>Thử luồng chọn quán, giỏ hàng và bản đồ. Không đặt đơn, đặt xe hoặc thanh toán thật.</p></a>
-</div></details>
+</header>
+<main id="main">
+<section class="shell hero">
+<div>
+<h1>Từ dữ liệu thô đến việc cần làm.</h1>
+<p>Ghép ảnh để gửi duyệt. Đọc dữ liệu KOL trước khi hợp tác. WishPlan gom các công cụ nhỏ phục vụ công việc mà không bắt bạn tạo tài khoản để bắt đầu.</p>
+<div class="hero-actions">
+<a href="./tools/" class="button">Khám phá công cụ</a>
+<a href="./guide/" class="button secondary">Đọc hướng dẫn</a>
+</div>
+</div>
+<figure class="visual">
+<strong>Ghép ảnh · Bảng gửi duyệt</strong>
+<div class="sheet">
+<div class="sample">
+<svg viewBox="0 0 68 68" aria-hidden="true" stroke="currentColor" fill="none" stroke-width="2.4">
+<rect x="19" y="19" width="30" height="41" rx="5" fill="none"/>
+<path d="M25 19v-7h18v7m-19 23h20"/>
+</svg>
+</div>
+<div class="sample">
+<svg viewBox="0 0 68 68" aria-hidden="true" stroke="currentColor" fill="none" stroke-width="2.4">
+<rect x="12" y="26" width="44" height="33" rx="5" fill="none"/>
+<path d="M15 26v-8h38v8M25 42h18"/>
+</svg>
+</div>
+<div class="sample">
+<svg viewBox="0 0 68 68" aria-hidden="true" stroke="currentColor" fill="none" stroke-width="2.4">
+<path d="M24 15h20l5 42q0 4-4 4H23q-4 0-4-4z" fill="none"/>
+<path d="M24 15V9h20v6M24 43h20"/>
+</svg>
+</div>
+</div>
+<div class="evidence">
+<div>
+<span>Đánh giá KOL</span>
+<b>Kỳ dữ liệu</b>
+</div>
+<div>
+<span>Đọc trước khi quyết định</span>
+<b>Bằng chứng có / thiếu</b>
+</div>
+</div>
+<figcaption>Minh họa kết quả từ hai công cụ, không phải số liệu thực.</figcaption>
+</figure>
+</section>
+<section class="shell section" id="daily-tools" aria-labelledby="tools-heading">
+<div class="split">
+<div>
+<h2 id="tools-heading">Hai công cụ, hai kết quả rõ ràng.</h2>
+<p>Đầu vào và đầu ra nằm ngay trong phần giới thiệu của từng công cụ.</p>
+</div>
+<div class="rows">
+<div class="row">
+<div>
+<a id="card-ghepanh" href="./tools/ghepanh/">Ghép ảnh để gửi duyệt</a>
+<p>Nhiều ảnh sản phẩm → một bảng dễ chia sẻ.</p>
+</div>
+<span class="tag">Hình ảnh</span>
+</div>
+<div class="row">
+<div>
+<a id="card-checkkol" href="./tools/checkkol/">Đánh giá KOL trước khi hợp tác</a>
+<p>Tệp Kalodata → kết quả, bằng chứng còn thiếu và so sánh.</p>
+</div>
+<span class="tag">KOL</span>
+</div>
+</div>
+</div>
+</section>
+<section class="shell section">
+<h2>Bắt đầu từ một tình huống thực tế.</h2>
+<div class="jumps">
+<article>
+<h3>Duyệt ảnh trước khi đăng</h3>
+<p>Gom nhiều ảnh vào một bảng để team xem cùng một thứ tự.</p>
+<a href="./workflows/">Xem tình huống →</a>
+</article>
+<article>
+<h3>Chuẩn bị booking KOL</h3>
+<p>Xem tệp đang có đủ để ra quyết định chưa.</p>
+<a href="./tools/checkkol/">Tìm hiểu công cụ →</a>
+</article>
+<article>
+<h3>Đổi máy mà không mất lịch sử</h3>
+<p>Biết dữ liệu nằm ở đâu và khi nào cần sao lưu.</p>
+<a href="./guide/du-lieu/">Đọc hướng dẫn →</a>
+</article>
+</div>
+</section>
+<section class="shell section" id="lab">
+<div class="split">
+<h2>Khám phá ngoài công việc.</h2>
+<div>
+<p><a id="card-tetlasy" href="./lab/#card-tetlasy">Tết WishPlan</a> và <a id="card-grab" href="./lab/#card-grab">Grab mô phỏng</a> có khu riêng để thử. Chúng không phải dịch vụ đặt đơn hoặc giao thông thật.</p>
+<div class="hero-actions">
+<a href="./lab/" class="button secondary">Mở WishPlan Lab</a>
+</div>
+</div>
+</div>
+</section>
 </main>
-<footer class="wp-footer"><div class="wp-shell wp-footer-inner"><span>WishPlan · Công cụ gọn, kết quả rõ ràng.</span><div class="wp-footer-links"><a href="./guide/#limits">Giới hạn sử dụng</a><a href="https://github.com/pixelaquarius/wishplan" target="_blank" rel="noopener noreferrer">Mã nguồn ↗</a></div></div></footer>
-</body></html>
+<footer class="foot">
+<div class="shell foot-grid">
+<div>
+<strong>WishPlan</strong>
+<p>Công cụ nhỏ cho công việc hằng ngày.</p>
+</div>
+<div>
+<strong>Khám phá</strong>
+<a href="./tools/">Công cụ</a>
+<a href="./workflows/">Tình huống</a>
+<a href="./lab/">Lab</a>
+</div>
+<div>
+<strong>Tham khảo</strong>
+<a href="./guide/">Tài liệu</a>
+<a href="./guide/du-lieu/">Dữ liệu &amp; sao lưu</a>
+<a href="./about/">Về dự án</a>
+</div>
+</div>
+</footer>
+</body>
+</html>

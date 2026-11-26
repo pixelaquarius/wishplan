@@ -210,25 +210,26 @@ test('WishPlan branding, repository links and categorized inventory preserve rou
   }
   const home = read('index.html');
   // Inventory is a set of named destinations, not a CSS class or attribute order.
-  const cards = [...home.matchAll(/<a\b[^>]*>/g)].map(([tag]) =>
-    Object.fromEntries([...tag.matchAll(/([\w-]+)="([^"]*)"/g)].map(([, key, value]) => [key, value]))
-  ).filter(attrs => attrs.id?.startsWith('card-'));
+  const cards = ['tools', 'lab'].flatMap(dir => [...read(`${dir}/index.html`).matchAll(/<a\b[^>]*>/g)].map(([tag]) => {
+    const attrs = Object.fromEntries([...tag.matchAll(/([\w-]+)="([^"]*)"/g)].map(([, key, value]) => [key, value]));
+    return { ...attrs, pathname: new URL(attrs.href || './', `https://wishplan.test/${dir}/`).pathname };
+  }).filter(attrs => attrs.id?.startsWith('card-')));
   assert.equal(cards.length, 4);
-  assert.deepEqual(Object.fromEntries(cards.map(attrs => [attrs.id, new URL(attrs.href, 'https://wishplan.test/').pathname.replace(/index\.html$/, '')])), {
-    'card-ghepanh': '/ghepanh/',
-    'card-checkkol': '/checkkol/',
+  assert.deepEqual(Object.fromEntries(cards.map(attrs => [attrs.id, attrs.pathname])), {
+    'card-ghepanh': '/tools/ghepanh/',
+    'card-checkkol': '/tools/checkkol/',
     'card-tetlasy': '/tetlasy/',
     'card-grab': '/grab/'
   });
-  assert.match(home, /2 công cụ làm việc/);
-  assert.match(home, /<details\b[^>]*\bid="lab"/);
-  assert.ok(home.includes('aria-hidden="true">W</div>'));
+  assert.match(home, /Hai công cụ/);
+  assert.match(home, /<section\b[^>]*\bid="lab"/);
+  assert.match(home, /class="brand"/);
   assert.match(read('README.md'), /Chế độ solo/);
   assert.match(read('README.md'), /72/);
   assert.match(read('README.md'), /node --test/);
   assert.ok(read('README.md').replace(/\r/g, '').includes('|\n| **Grab (giả lập)**'), 'Grab remains in the same Markdown table');
   for (const route of ['tetlasy', 'ghepanh', 'checkkol', 'grab']) {
-    assert.ok(cards.some(attrs => new URL(attrs.href, 'https://wishplan.test/').pathname.replace(/index\.html$/, '') === `/${route}/`));
+    assert.ok(cards.some(attrs => attrs.pathname === `/${route}/`) || read(`tools/${route}/index.html`).includes(`href="../../${route}/"`));
     assert.ok([...read('README.md').matchAll(/\]\(([^)]+)\)/g)].some(([, href]) => new URL(href, 'https://wishplan.test/').pathname.replace(/index\.html$/, '') === `/${route}/`));
   }
   assert.match(home, /github\.com\/pixelaquarius\/wishplan/);

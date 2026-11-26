@@ -5,10 +5,15 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const root = path.join(__dirname, '..');
-const pages = ['index.html', 'guide/index.html', 'checkkol/index.html', 'ghepanh/index.html', 'grab/index.html', 'tetlasy/index.html'];
+const pages = [
+  'index.html', 'guide/index.html', 'checkkol/index.html', 'ghepanh/index.html',
+  'grab/index.html', 'tetlasy/index.html', 'tools/index.html', 'tools/ghepanh/index.html',
+  'tools/checkkol/index.html', 'workflows/index.html', 'guide/du-lieu/index.html',
+  'lab/index.html', 'about/index.html'
+];
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 
-test('all six pages synchronously load the shared cleaner first in the head', () => {
+test('all thirteen pages synchronously load the shared cleaner first in the head', () => {
   for (const page of pages) {
     const head = read(page).match(/<head\b[^>]*>([\s\S]*?)<\/head>/)?.[1];
     assert.ok(head, `Head exists: ${page}`);
@@ -25,7 +30,7 @@ test('all six pages synchronously load the shared cleaner first in the head', ()
 });
 
 // Exercise relative navigation under both a custom domain and a Pages project prefix.
-test('all six pages use directory navigation backed by real static index files', () => {
+test('all thirteen pages use directory navigation backed by real static index files', () => {
   for (const base of ['https://wishplan.test/', 'https://pixelaquarius.github.io/wishplan/']) {
     let checked = 0;
     for (const page of pages) {
